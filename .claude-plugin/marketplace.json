@@ -1,0 +1,23 @@
+{
+  "name": "unblocked-skills",
+  "owner": {
+    "name": "Unblocked",
+    "url": "https://getunblocked.com"
+  },
+  "metadata": {
+    "description": "Agent skills from Unblocked — context gathering and developer workflow tools",
+    "version": "1.0.0",
+    "repository": "https://github.com/unblocked/skills"
+  },
+  "plugins": [
+    {
+      "name": "unblocked-skills",
+      "description": "Skills for engineering context gathering — bring PRs, Slack, Jira, and docs into your coding workflow",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/unblocked"
+      ]
+    }
+  ]
+}

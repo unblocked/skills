@@ -16,7 +16,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblocked"
+        "./skills/unblocked",
+        "./skills/try-unblocked"
       ]
     }
   ]

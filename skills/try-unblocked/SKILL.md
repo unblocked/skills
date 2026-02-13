@@ -91,9 +91,14 @@ Share a brief summary with the user:
 **Tell the user:**
 > "I'm going to open a browser session now to login with Unblocked for Authorization. This will open your default browser to the Unblocked login page where you can sign in or create an account. The CLI will wait for the browser authentication to complete."
 
-**Tell the user the exact command you're about to run** (based on what you discovered in Step 2 from `unblocked help`).
+**Wait for user acknowledgement before opening the browser.**
 
-**Wait for user acknowledgement before running the auth command.**
+Run the auth command with the `--skip-prompt` flag so the browser opens immediately without
+waiting for interactive input (since we're running from an agent session). For example:
+```
+unblocked auth --skip-prompt
+```
+Use whichever auth command you discovered in Step 2, but always append `--skip-prompt`.
 
 After running:
 - Let the user know the browser should have opened

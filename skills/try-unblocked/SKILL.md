@@ -163,44 +163,34 @@ If everything passes, tell the user:
 
 > **You're all set!** Unblocked is installed, authenticated, and your MCP server is configured. Every AI coding agent you use now has access to your team's full context — PRs, Slack discussions, Jira tickets, docs, and code history — all queryable in natural language.
 >
+> **⚠️ Important: You need to restart your agent session** for the MCP server we just configured to become available. Close this session and start a new one — the Unblocked MCP tools won't be visible to your agent until you do.
+>
 > **Here's what changes now:** With Unblocked providing context, you can take on much more ambitious work with your AI agent. Instead of small, isolated tasks, you can tackle full features, complex refactors, and cross-system changes — because the agent understands _why_ your code exists, not just _what_ it does.
 >
-> **To get started, run the `/unblocked` skill.** It will hydrate your plan with real context from your team's history and use Unblocked throughout implementation. Try prompts like:
+> **Next step: restart your agent session.** Once you're in a fresh session, the Unblocked MCP tools will be available and you can start using the `/unblocked` skill by typing commands like:
 >
 > - `/unblocked implement [feature name]`
-> - `write me a plan for how we can approach [project] with /unblocked`
 > - `/unblocked refactor [system] to [goal]`
 > - `/unblocked investigate and fix [bug description]`
 >
-> The more context Unblocked has about your codebase, the more ambitious you can be. Ask it anything.
+> The more context Unblocked has about your codebase, the more ambitious you can be. Ask it anything — after you restart!
 
 ---
 
-## What You Can Do Now
+## What You Can Do After Restarting
 
-With Unblocked connected, your AI agent has access to your team's full knowledge graph — PRs, Slack threads, Jira tickets, design docs, and code history. This means you can stop scoping work to what the agent can see in your local files and start thinking bigger.
+Once you restart your agent session, Unblocked will be fully active. Your AI agent will have access to your team's full knowledge graph — PRs, Slack threads, Jira tickets, design docs, and code history. This means you can stop scoping work to what the agent can see in your local files and start thinking bigger.
 
-### Use `/unblocked`
+### Use the `/unblocked` skill
 
 The `/unblocked` skill is your primary workflow. It hydrates your plan with real context from your team's history and uses Unblocked throughout implementation — from planning to code generation to review.
 
-**Example prompts:**
+**Example prompts (use these in your new session):**
 
-```
-/unblocked implement [feature name]
-```
-
-```
-write me a plan for how we can approach [project] with /unblocked
-```
-
-```
-/unblocked refactor [system] to [goal]
-```
-
-```
-/unblocked investigate and fix [bug description]
-```
+- `/unblocked implement [feature name]`
+- `write me a plan for how we can approach [project] with /unblocked`
+- `/unblocked refactor [system] to [goal]`
+- `/unblocked investigate and fix [bug description]`
 
 ### Think Bigger
 

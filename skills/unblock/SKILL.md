@@ -1,5 +1,5 @@
 ---
-name: unblocked
+name: unblock
 description: >
   Context-driven development workflow using Unblocked MCP tools. Use this skill for ALL
   coding tasks: implementing features, fixing bugs, refactoring, or any code change.
@@ -22,32 +22,32 @@ context.** This catches problems at both ends — before code is written and aft
 │                                                              │
 │  1. SEED           Unblocked:Research                        │
 │     │              Query context from PRs, Slack,            │
-│     │              Jira, docs, code history                   │
+│     │              Jira, docs, code history                  │
 │     ▼                                                        │
-│  2. PLAN           Claude:Plan                               │
-│     │              Design implementation using                │
-│     │              seeded context                             │
+│  2. PLAN           Agent:Plan                               │
+│     │              Design implementation using               │
+│     │              seeded context                            │
 │     ▼                                                        │
-│  3. PLAN REVIEW    Unblocked:PlanReview           ◄──┐       │
-│     │              Critically evaluate the plan      │       │
-│     │              against org knowledge             │       │
-│     ▼                                                │       │
-│  4. REVISE         Claude:Plan:Revise                │       │
-│     │              Incorporate feedback               │       │
-│     │              [Major issues] ────────────────────┘       │
-│     │              [Minor/none]                               │
+│  3. PLAN REVIEW    Unblocked:PlanReview            ◄──┐      │
+│     │              Critically evaluate the plan       │      │
+│     │              against org knowledge              │      │
+│     ▼                                                 │      │
+│  4. REVISE         Agent:Plan:Revise                 │      │
+│     │              Incorporate feedback               │      │
+│     │              [Major issues] ────────────────────┘      │
+│     │              [Minor/none]                              │
 │     ▼                                                        │
-│  5. CODEGEN        Claude:Code                               │
-│     │              Implement the validated plan               │
+│  5. CODEGEN        Agent:Code                               │
+│     │              Implement the validated plan              │
 │     ▼                                                        │
-│  6. CODE REVIEW    Unblocked:CodeReview            ◄──┐      │
-│     │              Verify generated code against       │      │
-│     │              context, patterns, conventions      │      │
-│     ▼                                                  │      │
-│  7. CODE REVISE    Claude:Code:Revise                  │      │
-│     │              Fix issues found in review          │      │
-│     │              [Issues found] ─────────────────────┘      │
-│     │              [Pass]                                     │
+│  6. CODE REVIEW    Unblocked:CodeReview             ◄──┐     │
+│     │              Verify generated code against       │     │
+│     │              context, patterns, conventions      │     │
+│     ▼                                                  │     │
+│  7. CODE REVISE    Agent:Code:Revise                  │     │
+│     │              Fix issues found in review          │     │
+│     │              [Issues found] ─────────────────────┘     │
+│     │              [Pass]                                    │
 │     ▼                                                        │
 │     DONE                                                     │
 │                                                              │
@@ -99,7 +99,7 @@ data_retrieval: "PRs merged in the last 2 weeks touching the API layer"
 
 ---
 
-## Phase 2: Plan (Claude:Plan)
+## Phase 2: Plan (Agent:Plan)
 
 Design the implementation **referencing specific findings from Phase 1**. The plan must
 reflect the team's actual patterns, not generic best practices.
@@ -162,7 +162,7 @@ catch problems when they're cheap to fix — before they become code.
 
 ---
 
-## Phase 4: Revise Plan (Claude:Plan:Revise)
+## Phase 4: Revise Plan (Agent:Plan:Revise)
 
 Incorporate all feedback from the plan review. This is not cosmetic — if Unblocked surfaced
 that the team already does something a different way, the plan must change to match.
@@ -180,7 +180,7 @@ back to Phase 3** and run the plan review again on the revised plan. Minor revis
 
 ---
 
-## Phase 5: Codegen (Claude:Code)
+## Phase 5: Codegen (Agent:Code)
 
 Implement the validated, reviewed plan. The plan has been grounded in real context and
 reviewed against organizational knowledge — now execute it.
@@ -236,7 +236,7 @@ caught problems in the approach — this step catches problems in the execution.
 
 ---
 
-## Phase 7: Code Revise (Claude:Code:Revise)
+## Phase 7: Code Revise (Agent:Code:Revise)
 
 Fix all issues surfaced by the code review. These are not suggestions — if Unblocked showed
 that the team does something a different way, the code must change to match.

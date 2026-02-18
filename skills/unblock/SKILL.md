@@ -1,5 +1,5 @@
 ---
-name: unblocked
+name: unblock
 description: >
   Context-driven development workflow using Unblocked MCP tools. Use this skill for ALL
   coding tasks: implementing features, fixing bugs, refactoring, or any code change.

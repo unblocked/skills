@@ -22,32 +22,32 @@ context.** This catches problems at both ends — before code is written and aft
 │                                                              │
 │  1. SEED           Unblocked:Research                        │
 │     │              Query context from PRs, Slack,            │
-│     │              Jira, docs, code history                   │
+│     │              Jira, docs, code history                  │
 │     ▼                                                        │
 │  2. PLAN           Claude:Plan                               │
-│     │              Design implementation using                │
-│     │              seeded context                             │
+│     │              Design implementation using               │
+│     │              seeded context                            │
 │     ▼                                                        │
-│  3. PLAN REVIEW    Unblocked:PlanReview           ◄──┐       │
-│     │              Critically evaluate the plan      │       │
-│     │              against org knowledge             │       │
-│     ▼                                                │       │
-│  4. REVISE         Claude:Plan:Revise                │       │
-│     │              Incorporate feedback               │       │
-│     │              [Major issues] ────────────────────┘       │
-│     │              [Minor/none]                               │
+│  3. PLAN REVIEW    Unblocked:PlanReview            ◄──┐      │
+│     │              Critically evaluate the plan       │      │
+│     │              against org knowledge              │      │
+│     ▼                                                 │      │
+│  4. REVISE         Claude:Plan:Revise                 │      │
+│     │              Incorporate feedback               │      │
+│     │              [Major issues] ────────────────────┘      │
+│     │              [Minor/none]                              │
 │     ▼                                                        │
 │  5. CODEGEN        Claude:Code                               │
-│     │              Implement the validated plan               │
+│     │              Implement the validated plan              │
 │     ▼                                                        │
-│  6. CODE REVIEW    Unblocked:CodeReview            ◄──┐      │
-│     │              Verify generated code against       │      │
-│     │              context, patterns, conventions      │      │
-│     ▼                                                  │      │
-│  7. CODE REVISE    Claude:Code:Revise                  │      │
-│     │              Fix issues found in review          │      │
-│     │              [Issues found] ─────────────────────┘      │
-│     │              [Pass]                                     │
+│  6. CODE REVIEW    Unblocked:CodeReview             ◄──┐     │
+│     │              Verify generated code against       │     │
+│     │              context, patterns, conventions      │     │
+│     ▼                                                  │     │
+│  7. CODE REVISE    Claude:Code:Revise                  │     │
+│     │              Fix issues found in review          │     │
+│     │              [Issues found] ─────────────────────┘     │
+│     │              [Pass]                                    │
 │     ▼                                                        │
 │     DONE                                                     │
 │                                                              │

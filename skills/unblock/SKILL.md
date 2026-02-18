@@ -1,14 +1,11 @@
 ---
 name: unblock
 description: >
-  Context-driven development workflow using Unblocked MCP tools. Use this skill for ALL
-  coding tasks: implementing features, fixing bugs, refactoring, or any code change.
-  Enforces a strict Seed → Plan → Plan Review → Revise → Codegen loop where Unblocked
-  provides context at every gate: (1) seeding the plan with organizational context,
-  (2) critically reviewing the plan against team knowledge before any code is written.
-  No code is generated until the plan passes review.
-  Triggers: code, implement, build, fix, refactor, feature, bug, change, develop, engineer,
-  debug, optimize, test.
+  Structures coding tasks around Unblocked MCP context. Hydrates a plan with
+  organizational knowledge (PRs, Slack, Jira, docs, code history), submits it
+  for critical review against team patterns, then generates and reviews code.
+  Two mandatory review gates prevent pattern mismatches and reinvented wheels.
+  Use for any code change: features, bug fixes, refactors, or investigations.
 ---
 
 # Unblocked Dev Workflow
@@ -20,31 +17,32 @@ context.** This catches problems at both ends — before code is written and aft
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │                                                              │
-│  1. SEED           Unblocked:Research                        │
-│     │              Query context from PRs, Slack,            │
+│  1. HYDRATE        (Unblocked)                               │
+│     │              Query context from connected data         |
+|     |              sources like PRs, Slack,                  │
 │     │              Jira, docs, code history                  │
 │     ▼                                                        │
-│  2. PLAN           Agent:Plan                               │
+│  2. DRAFT PLAN     (Agent)                                   │
 │     │              Design implementation using               │
-│     │              seeded context                            │
+│     │              hydrated context                          │
 │     ▼                                                        │
-│  3. PLAN REVIEW    Unblocked:PlanReview            ◄──┐      │
-│     │              Critically evaluate the plan       │      │
-│     │              against org knowledge              │      │
-│     ▼                                                 │      │
-│  4. REVISE         Agent:Plan:Revise                 │      │
-│     │              Incorporate feedback               │      │
-│     │              [Major issues] ────────────────────┘      │
+│  3. REVIEW PLAN    (Unblocked)                      ◄──┐     │
+│     │              Critically evaluate the plan        │     │
+│     │              against org knowledge               │     │
+│     ▼                                                  │     │
+│  4. REVISE PLAN    (Agent)                             │     │
+│     │              Incorporate feedback                │     │
+│     │              [Major issues] ─────────────────────┘     │
 │     │              [Minor/none]                              │
 │     ▼                                                        │
-│  5. CODEGEN        Agent:Code                               │
+│  5. GENERATE CODE  (Agent)                                   │
 │     │              Implement the validated plan              │
 │     ▼                                                        │
-│  6. CODE REVIEW    Unblocked:CodeReview             ◄──┐     │
+│  6. REVIEW CODE    (Unblocked)                      ◄──┐     │
 │     │              Verify generated code against       │     │
 │     │              context, patterns, conventions      │     │
 │     ▼                                                  │     │
-│  7. CODE REVISE    Agent:Code:Revise                  │     │
+│  7. REVISE CODE    (Agent)                             │     │
 │     │              Fix issues found in review          │     │
 │     │              [Issues found] ─────────────────────┘     │
 │     │              [Pass]                                    │
@@ -54,13 +52,42 @@ context.** This catches problems at both ends — before code is written and aft
 └──────────────────────────────────────────────────────────────┘
 ```
 
+Labels: **(Unblocked)** = query Unblocked MCP tools; **(Agent)** = the AI coding agent executes this phase.
+
 **Both review gates are mandatory.** The plan review prevents writing wrong code. The code
 review catches what slipped through — pattern mismatches, missed conventions, and gaps
 between what was planned and what was generated.
 
+## Principles
+
+- **Multiple specific queries > one broad query.** Ask 3-4 focused questions, not one vague one.
+- **Two review gates, not one.** The plan review prevents writing wrong code. The code review catches what slipped through. Both are mandatory.
+- **Plans must be specific enough to review.** If the plan is vague, the review can't catch problems. Name files, reference patterns, cite decisions.
+- **Default to existing patterns.** When Unblocked shows the team does something a certain way, follow it — even if you think another way is "better." Consistency wins.
+- **Loop back, don't patch forward.** If either review finds issues, loop back and fix them properly. Don't try to compensate in the next phase.
+
+## Scaling to Task Size
+
+Not every change needs equal ceremony. Scale the workflow to fit the task:
+
+- **Trivial changes** (typo fix, rename, one-line config tweak): Skip to Phase 5 (Generate Code), but always run Phase 6 (Review Code) before finishing.
+- **Small changes** (add a helper, adjust logic in one file): Run Phases 1-2 lightly — one or two queries — then proceed through the rest.
+- **Standard changes** (new feature, bug fix, refactor): Run the full workflow as written.
+- **Large changes** (cross-cutting refactor, new subsystem): Run the full workflow, expect multiple review loops, and consider breaking the task into smaller pieces.
+
+**When in doubt, run the full workflow.** The cost of an unnecessary hydration query is seconds; the cost of missing context is a rewrite. Even the abbreviated path for trivial changes keeps the code review gate (Phase 6).
+
+## Reference Workflows
+
+For specialized task types, load the relevant reference file for additional guidance:
+
+- **Debugging a bug** → `references/debugging-context.md` — investigation structure for root cause analysis
+- **Implementing a feature** → `references/feature-context.md` — discovery workflow for touch points and constraints
+- **Exploring unfamiliar code** → `references/exploring-context.md` — architecture and convention discovery queries
+
 ---
 
-## Phase 1: Seed Context (Unblocked:Research)
+## Phase 1: Hydrate Context (Unblocked)
 
 Before planning, gather context from Unblocked. Run **multiple targeted queries** — specific
 questions dramatically outperform broad ones.
@@ -99,7 +126,7 @@ data_retrieval: "PRs merged in the last 2 weeks touching the API layer"
 
 ---
 
-## Phase 2: Plan (Agent:Plan)
+## Phase 2: Draft Plan (Agent)
 
 Design the implementation **referencing specific findings from Phase 1**. The plan must
 reflect the team's actual patterns, not generic best practices.
@@ -107,7 +134,7 @@ reflect the team's actual patterns, not generic best practices.
 **The plan should explicitly:**
 
 - Name the existing modules, utilities, and patterns it will follow (from Phase 1)
-- Call out how it aligns with prior team decisions discovered in seeding
+- Call out how it aligns with prior team decisions discovered during hydration
 - Note any area where the plan diverges from existing patterns and explain why
 - Identify files that will be created or modified
 - Describe the approach at enough detail that it can be critically reviewed
@@ -120,7 +147,7 @@ can be.
 
 ---
 
-## Phase 3: Plan Review (Unblocked:PlanReview)
+## Phase 3: Review Plan (Unblocked)
 
 **CRITICAL GATE — Do not skip this phase.**
 
@@ -162,7 +189,7 @@ catch problems when they're cheap to fix — before they become code.
 
 ---
 
-## Phase 4: Revise Plan (Agent:Plan:Revise)
+## Phase 4: Revise Plan (Agent)
 
 Incorporate all feedback from the plan review. This is not cosmetic — if Unblocked surfaced
 that the team already does something a different way, the plan must change to match.
@@ -180,7 +207,7 @@ back to Phase 3** and run the plan review again on the revised plan. Minor revis
 
 ---
 
-## Phase 5: Codegen (Agent:Code)
+## Phase 5: Generate Code (Agent)
 
 Implement the validated, reviewed plan. The plan has been grounded in real context and
 reviewed against organizational knowledge — now execute it.
@@ -194,7 +221,7 @@ reviewed against organizational knowledge — now execute it.
 
 ---
 
-## Phase 6: Code Review (Unblocked:CodeReview)
+## Phase 6: Review Code (Unblocked)
 
 **CRITICAL GATE — Do not skip this phase.**
 
@@ -236,7 +263,7 @@ caught problems in the approach — this step catches problems in the execution.
 
 ---
 
-## Phase 7: Code Revise (Agent:Code:Revise)
+## Phase 7: Revise Code (Agent)
 
 Fix all issues surfaced by the code review. These are not suggestions — if Unblocked showed
 that the team does something a different way, the code must change to match.
@@ -267,11 +294,3 @@ existing utility, add a missing import) do not need re-review.
 | Recent PRs/issues in area X | `data_retrieval` |
 | Contents of a specific PR/issue URL | `link_resolver` |
 | Debug a build/runtime failure | `failure_debugging` |
-
-## Principles
-
-- **Multiple specific queries > one broad query.** Ask 3-4 focused questions, not one vague one.
-- **Two review gates, not one.** The plan review prevents writing wrong code. The code review catches what slipped through. Both are mandatory.
-- **Plans must be specific enough to review.** If the plan is vague, the review can't catch problems. Name files, reference patterns, cite decisions.
-- **Default to existing patterns.** When Unblocked shows the team does something a certain way, follow it — even if you think another way is "better." Consistency wins.
-- **Loop back, don't patch forward.** If either review finds issues, loop back and fix them properly. Don't try to compensate in the next phase.

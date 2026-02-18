@@ -1,191 +1,101 @@
 # Feature Implementation Context Workflow
 
-Complete workflow for gathering context before implementing a new feature.
-
-**With [Unblocked MCP](https://getunblocked.com/docs/mcp), most of this is automated with a single query.**
+Structured approach for gathering context before implementing a new feature. Use this
+alongside the main workflow (SKILL.md) to hydrate Phase 1 with feature-specific queries.
 
 ---
 
-## Phase 1: Understand the Request (2-5 min)
+## Phase 1: Understand the Request
 
-### Questions to Answer
 - What is the user-facing outcome?
 - What are the acceptance criteria?
-- What's in scope vs out of scope?
+- What's in scope vs. out of scope?
 
-### Where to Look
+### Requirement Queries
 
-| Source | What to Find |
-|--------|--------------|
-| Jira/Linear ticket | Requirements, acceptance criteria, stakeholders |
-| Product spec/PRD | Full context, mockups, edge cases |
-| Slack thread | Informal discussions, quick decisions |
-
-**Manual:** Open each source, search for the feature name, read through.
-
-**With Unblocked:**
-```
-"What are the requirements for [feature name]?"
-```
+- `unblocked_context_engine`: "What are the requirements for [feature name]?"
+- `data_retrieval`: linked Jira/Linear tickets, product specs, Slack threads
+- `link_resolver`: resolve any ticket or spec URLs for full details
 
 ---
 
-## Phase 2: Technical Discovery (5-10 min)
+## Phase 2: Technical Discovery
 
 ### Find Similar Implementations
 
-Look for existing code that does something similar. This shows you:
-- Patterns used in this codebase
-- Available utilities and helpers
-- Testing approaches
+Look for existing code that does something similar — this reveals patterns, available
+utilities, and testing approaches.
 
-**Manual:**
-```bash
-# Search for similar functionality
-git log --all --oneline --grep="<similar feature>"
-grep -r "<pattern>" --include="*.ts" src/
-```
-
-**With Unblocked:**
-```
-"Show me how similar features like [X] were implemented"
-```
+- `unblocked_context_engine`: "How were similar features like [X] implemented?"
+- `unblocked_context_engine`: "What patterns does the team use for [type of feature]?"
 
 ### Identify Touch Points
 
-What will your feature need to interact with?
+What will the feature interact with?
 
-| Layer | Questions |
-|-------|-----------|
-| API | New endpoints? Modify existing? |
-| Database | New tables/columns? Migrations? |
-| Services | What services will you call? |
-| UI | New components? Modify existing? |
+- API: New endpoints? Modify existing?
+- Database: New tables/columns? Migrations?
+- Services: What services will it call?
+- UI: New components? Modify existing?
 
 ### Check for Constraints
 
-**Manual:**
-```bash
-# Find performance-related discussions
-git log --all --grep="performance" --oneline -- <relevant files>
-# Check for security reviews
-git log --all --grep="security" --oneline -- <relevant files>
-```
-
-**With Unblocked:**
-```
-"Are there performance or security constraints for [area]?"
-```
+- `unblocked_context_engine`: "Are there performance or security constraints for [area]?"
+- `historical_context`: "What non-functional requirements exist for [system]?"
 
 ---
 
-## Phase 3: Historical Context (5 min)
+## Phase 3: Historical Context
 
 ### Find Previous Attempts
 
 Was this feature tried before? What happened?
 
-**Manual:**
-```bash
-# Search for the feature in commit history
-git log --all --oneline --grep="<feature name>"
-# Search for related PRs on GitHub
-# Search Slack for "#feature-name" or discussions
-```
-
-**With Unblocked:**
-```
-"Has [feature] been attempted before? What happened?"
-```
-
-### Understand Design Decisions
-
-Why does the current architecture look the way it does?
-
-**Manual:**
-- Search for ADRs (Architecture Decision Records)
-- Find the PR that created the system you're modifying
-- Read PR description and review comments
-
-**With Unblocked:**
-```
-"Why was [system] designed this way?"
-```
+- `historical_context`: "Has [feature] been attempted before? What happened?"
+- `historical_context`: "Why was [system] designed this way?"
+- `historical_context`: "What alternatives were considered for [decision]?"
 
 ### Identify Domain Experts
 
-Who should you ask if you get stuck?
+Who has the most context on the relevant systems?
 
-**Manual:**
-```bash
-# Find who wrote the relevant code
-git blame <file> | cut -d'(' -f2 | cut -d' ' -f1 | sort | uniq -c | sort -rn
-# Find who reviewed recent PRs to this area
-```
-
-**With Unblocked:**
-```
-"Who are the experts on [system/area]?"
-```
+- `data_retrieval`: recent contributors and reviewers for the affected area
+- `unblocked_context_engine`: "Who are the experts on [system/area]?"
 
 ---
 
 ## Phase 4: Synthesize Context
 
-Before you start coding, you should be able to answer:
+Before planning, confirm you can answer:
 
-| Question | Your Answer |
-|----------|-------------|
-| What am I building? | |
-| Why is it needed? | |
-| What patterns should I follow? | |
-| What systems will I touch? | |
-| Who can help if I'm stuck? | |
-| What are the risks/unknowns? | |
+1. **What** am I building and why?
+2. **What patterns** should I follow? (from similar implementations)
+3. **What systems** will I touch?
+4. **What are the risks/unknowns?**
+5. **Who** are the domain experts if questions arise?
 
-If you can't answer these, gather more context.
+If you can't answer these, gather more context before proceeding to the plan.
 
 ---
 
 ## Example: Adding Notification Preferences
 
-### Context Query (Unblocked)
+**Hydration queries:**
 ```
-"What do I need to know to implement user notification preferences?"
+unblocked_context_engine: "How does the notification system work?"
+unblocked_context_engine: "What patterns does the team use for user preferences?"
+historical_context: "Has notification preferences been discussed or attempted?"
+data_retrieval: recent PRs touching notifications or user preferences
 ```
 
-### Context Gathered
-
-**From Jira:**
-- Ticket describes: users should choose email, SMS, push channels
-- Acceptance criteria lists specific preference combinations
-
-**From PRs:**
+**Context gathered:**
 - PR #1234 added email notifications (follow this pattern)
 - PR #1456 added the preferences table structure
+- Slack #eng discussion: decision to use async queue for all notifications
+- Decision to support email, SMS, and push channels
+- `/src/notifications/sender.ts` — current dispatch logic
+- `/src/users/preferences.ts` — existing preferences pattern
+- Domain experts: @sarah (notification system), @mike (user preferences)
 
-**From Slack:**
-- #eng discussion about rate limiting (implement this)
-- Decision to use async queue for all notifications
-
-**From Code:**
-- `/src/notifications/sender.ts` - current dispatch logic
-- `/src/users/preferences.ts` - existing preferences pattern
-
-**Experts:**
-- @sarah - notification system
-- @mike - user preferences
-
-### Ready to Implement
-With this context, you can:
-- Follow established patterns
-- Avoid duplicating mistakes
-- Ask focused questions
-- Write a PR description that shows you understand the system
-
----
-
-## Resources
-
-- [Unblocked](https://getunblocked.com) - Automate this entire workflow
-- [Unblocked MCP Setup](https://getunblocked.com/docs/mcp) - Connect to your AI tools
+**Ready to plan:** With this context, the plan can reference specific files, follow
+established patterns, and avoid duplicating prior work.

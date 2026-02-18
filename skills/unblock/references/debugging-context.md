@@ -1,219 +1,114 @@
 # Bug Investigation Context Workflow
 
-Complete workflow for gathering context when debugging issues.
-
-**With [Unblocked MCP](https://getunblocked.com/docs/mcp), you can query across git, PRs, Slack, and issues simultaneously.**
+Structured approach for gathering context when debugging issues. Use this alongside
+the main workflow (SKILL.md) to hydrate Phase 1 with debugging-specific queries.
 
 ---
 
-## Phase 1: Understand the Bug (2 min)
+## Phase 1: Understand the Bug
 
 ### Gather Symptoms
 
-| Question | Answer |
-|----------|--------|
-| What is happening? | |
-| What should happen? | |
-| When did it start? | |
-| Is it reproducible? | |
-| Who reported it? | |
-
-### Initial Scope
-
+- What is happening vs. what should happen?
+- When did it start? Is it reproducible?
 - Which system/component is affected?
-- Is it user-facing or internal?
-- What's the severity/impact?
-- Are there workarounds?
+- Is it user-facing or internal? What's the severity?
+
+### Initial Context Queries
+
+- `unblocked_context_engine`: "How does [affected component] work?"
+- `failure_debugging`: "[error message or symptoms]"
 
 ---
 
-## Phase 2: Recent Changes Investigation (5-10 min)
+## Phase 2: Recent Changes Investigation
 
 The bug probably started because something changed. Find what.
 
-### Git History
+### Git and PR History
 
-**Manual:**
-```bash
-# See recent commits to affected files
-git log --oneline -20 -- <affected files>
+- `historical_context`: "What changed recently in [file/system]?"
+- `historical_context`: "When was [function/code] last modified and why?"
+- `data_retrieval`: recent PRs touching the affected files
+- `unblocked_context_engine`: "What went out in the last deployment affecting [area]?"
 
-# See what changed in each commit
-git log -p --since="1 week ago" -- <affected files>
+### What to Look For
 
-# Find when a specific line was changed
-git log -S "<problematic code>" --oneline
-```
-
-**With Unblocked:**
-```
-"What changed recently in [file/system]?"
-"When was [function/code] last modified and why?"
-```
-
-### Recent Deployments
-
-**Manual:**
-- Check deployment history
-- Review release notes
-- Check for config changes
-
-**With Unblocked:**
-```
-"What went out in the last deployment affecting [area]?"
-```
-
-### Related PRs
-
-**Manual:**
-- Search GitHub/GitLab for recent PRs to affected files
-- Read PR descriptions and review comments
-- Look for noted risks or follow-ups
-
-**With Unblocked:**
-```
-"Show me recent PRs that touched [file/system]"
-```
+- Commits to affected files in the relevant timeframe
+- PRs with noted risks or follow-ups
+- Config changes or dependency updates
+- Deployment timing that correlates with bug onset
 
 ---
 
-## Phase 3: Bug History (5 min)
+## Phase 3: Bug History
 
-Has this happened before?
+Has this happened before? If so, the previous fix may have regressed.
 
-### Search for Similar Issues
+- `historical_context`: "Has this [error/bug] been reported before?"
+- `historical_context`: "What's the history of issues with [system]?"
+- `historical_context`: "How was [similar bug] fixed previously?"
 
-**Manual:**
-- Search Jira/Linear for similar error messages
-- Search GitHub issues
-- Search Slack for error symptoms
-
-**With Unblocked:**
-```
-"Has this [error/bug] been reported before?"
-"What's the history of issues with [system]?"
-```
-
-### Find Past Fixes
-
-If this was fixed before, the fix might have regressed.
-
-**Manual:**
-```bash
-# Search for fixes in commit messages
-git log --all --grep="fix" --grep="<area>" --all-match --oneline
-```
-
-**With Unblocked:**
-```
-"How was [similar bug] fixed previously?"
-```
+If a prior fix exists, check whether it was overwritten or bypassed by recent changes.
 
 ---
 
-## Phase 4: Code Archaeology (5-10 min)
+## Phase 4: Code Archaeology
 
-Understand the code you're debugging.
+Understand the code you're debugging — it may behave unexpectedly for a reason.
 
-### Git Blame
+- `unblocked_context_engine`: "Why does [function] work this way?"
+- `unblocked_context_engine`: "What was the original intent of [code block]?"
+- `data_retrieval`: find the PR that introduced the relevant code
 
-**Manual:**
-```bash
-# Find who wrote each line
-git blame <file>
-
-# Blame a specific function
-git blame -L <start>,<end> <file>
-
-# See blame at a specific commit
-git blame <commit>^ -- <file>
-```
-
-### Find Original Intent
-
-The code might be doing something unexpected for a reason.
-
-**Manual:**
-- Find the PR that introduced the code
-- Read the PR description
-- Read the review comments
-- Check linked tickets
-
-**With Unblocked:**
-```
-"Why does [function] work this way?"
-"What was the original intent of [code block]?"
-```
+The original PR description and review comments often explain constraints
+that aren't visible in the code itself.
 
 ---
 
 ## Phase 5: Root Cause Analysis
 
-Before fixing, understand WHY the bug exists.
+Before fixing, confirm you can explain:
 
-### Questions to Answer
+1. **What** the bug is
+2. **Why** it's happening (the root cause, not the symptom)
+3. **Why** your fix solves it
+4. **What else** your fix might affect
 
-| Question | Answer |
-|----------|--------|
-| What changed to cause this? | |
-| Why didn't tests catch it? | |
-| Is this a symptom of a larger issue? | |
-| Are there similar bugs elsewhere? | |
-
-### Fix Confidence Check
-
-Don't fix until you can explain:
-1. What the bug is
-2. Why it's happening
-3. Why your fix solves it
-4. What else your fix might affect
+If you can't answer all four, gather more context before proceeding.
 
 ---
 
 ## Example: Payment Timeout Bug
 
-### Bug Report
-"Payments failing with timeout errors since Tuesday's deploy"
+**Bug report:** "Payments failing with timeout errors since Tuesday's deploy"
 
-### Context Gathering (Unblocked)
+**Hydration queries:**
 ```
-"What changed in the payment system this week?"
-"Has the payment timeout issue happened before?"
-```
-
-### Context Gathered
-
-**From Git:**
-```
-Tuesday: PR #567 merged - "Refactor payment retry logic"
-Monday: PR #568 merged - "Update timeout configs"
+historical_context: "What changed in the payment system this week?"
+historical_context: "Has the payment timeout issue happened before?"
+data_retrieval: recent PRs touching the payment system
 ```
 
-**From PR #567:**
-- Changed retry logic, inadvertently reset timeout to default
-- No tests for timeout configuration
+**Context gathered:**
+- Tuesday: PR #567 merged — "Refactor payment retry logic"
+- Monday: PR #568 merged — "Update timeout configs"
+- PR #567 changed retry logic, inadvertently reset timeout to default
+- Same bug occurred 6 months ago, fixed in PR #234 by increasing timeout from 5s to 10s
+- Payment provider is slow during peak hours — 5s default is too low
 
-**From Historical Search:**
-- Same bug occurred 6 months ago
-- Fixed in PR #234 by increasing timeout from 5s to 10s
-- Payment provider is slow during peak hours
+**Root cause:** PR #567 overwrote the timeout config instead of merging. Timeout went from 10s back to 5s default. No test to catch this regression.
 
-**Root Cause:**
-- PR #567 overwrote the timeout config instead of merging
-- Timeout went from 10s back to 5s default
-- No test to catch this regression
-
-### Fix Plan
+**Fix plan:**
 1. Restore 10s timeout
 2. Add test for timeout configuration
-3. Consider: extract timeouts to constants file
-4. Consider: audit other configs for similar issues
+3. Consider extracting timeouts to constants file
 
 ---
 
-## Debugging Context Checklist
+## Debugging Checklist
 
-Before you write the fix:
+Before writing the fix:
 
 - [ ] I know WHEN the bug started
 - [ ] I know WHAT changed to cause it
@@ -221,10 +116,3 @@ Before you write the fix:
 - [ ] I've checked if this happened before
 - [ ] I understand the original intent of the code
 - [ ] I know what else my fix might affect
-
----
-
-## Resources
-
-- [Unblocked](https://getunblocked.com) - Query your codebase history in natural language
-- [Unblocked MCP Setup](https://getunblocked.com/docs/mcp) - Connect to your AI tools

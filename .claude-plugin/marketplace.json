@@ -16,8 +16,7 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblock",
-        "./skills/init-unblocked"
+        "./skills/unblock"
       ]
     }
   ]

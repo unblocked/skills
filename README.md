@@ -9,20 +9,29 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | Skill | Description |
 |-------|-------------|
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
-| [init-unblocked](skills/init-unblocked/) | One-time setup — installs the Unblocked CLI, authenticates, and configures the MCP server |
 
-## Installation
+## Setup
+
+### Unblocked CLI (Recommended)
+
+The fastest way to get started. Installs the Unblocked CLI, configures the MCP server for your agentic coding tools (Claude Code, Codex, Cursor), triggers Oauth with Unblocked, and installs skills — all in one command:
+
+```bash
+curl -fsSL https://getunblocked.com/install-mcp.sh | bash
+```
+
+### Claude Plugin
+
+Connect this repository as a plugin directly in Claude Code:
+
+```bash
+claude plugin add unblocked/skills
+```
 
 ### Using the Skills CLI
 
 ```bash
 npx skills add unblocked/skills
-```
-
-### Install a Specific Skill
-
-```bash
-npx skills add unblocked/skills@unblock
 ```
 
 ### Manual Copy

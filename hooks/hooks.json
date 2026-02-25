@@ -1,0 +1,16 @@
+{
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "type": "command",
+      "command": "./scripts/session-orient.sh",
+      "description": "Loads lightweight context at session start — recent PRs, active tickets, and key conventions for the current repo/branch."
+    },
+    {
+      "event": "Stop",
+      "type": "prompt",
+      "prompt": "Before ending this session, check if there appears to be unfinished work (uncommitted changes, incomplete implementations, or partially executed plans). If there is, suggest the user run /handoff to capture context for the next session. Keep this brief — it's a gentle reminder, not a hard block.",
+      "description": "Nudges the user to run /handoff if there's unfinished work before ending the session."
+    }
+  ]
+}

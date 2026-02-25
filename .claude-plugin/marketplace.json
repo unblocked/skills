@@ -16,7 +16,15 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblock"
+        "./skills/unblock",
+        "./skills/review-pr",
+        "./skills/write-pr-description",
+        "./skills/investigate",
+        "./skills/onboard-codebase",
+        "./skills/refactor",
+        "./skills/handoff",
+        "./skills/cloud-plan",
+        "./skills/unblock-team"
       ]
     }
   ]

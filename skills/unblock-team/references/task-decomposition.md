@@ -1,7 +1,6 @@
 # Task Decomposition Guide
 
-How to break a task into units suitable for multi-agent execution. Good decomposition
-is the difference between effective parallelism and merge conflict hell.
+How to break a task into units for multi-agent execution.
 
 ---
 
@@ -9,144 +8,65 @@ is the difference between effective parallelism and merge conflict hell.
 
 ### 1. Decompose by System Boundary
 
-The best decomposition follows system boundaries — API, UI, data layer, infrastructure.
-Each system is naturally independent and touches different files.
+Follow system boundaries — API, UI, data layer, infrastructure. Each is naturally independent.
 
-**Good decomposition:**
-- Unit A: API endpoint for notification preferences
-- Unit B: UI preferences page
-- Unit C: Database migration for preferences table
-
-**Bad decomposition:**
-- Unit A: The "happy path" for notification preferences
-- Unit B: Error handling for notification preferences
-- Unit C: Tests for notification preferences
-
-(The second decomposition has massive overlap — all units touch the same files.)
+**Good:** Unit A: API endpoint, Unit B: UI page, Unit C: DB migration.
+**Bad:** Unit A: happy path, Unit B: error handling, Unit C: tests. (Massive overlap.)
 
 ### 2. Minimize Overlap
 
-Units should touch different files. If two units must modify the same file, define
-exactly which sections each unit owns.
-
-**Acceptable overlap:**
-- Shared config file (each unit adds its own section)
-- Shared index/barrel file (each unit adds its own export)
-
-**Unacceptable overlap:**
-- Same function modified by two units
-- Same test file modified by two units without clear section ownership
+Units should touch different files. If two must modify the same file, define exactly which sections each owns.
 
 ### 3. Define Interfaces at Plan Time
 
-If units need to interact (API serves data, UI consumes it), the interface must be
-defined in the plan before implementation starts.
-
-**The plan specifies:**
+If units interact (API serves data, UI consumes), define the interface before implementation:
 ```
 Interface: Notification Preferences API
 Endpoint: GET /api/users/:id/preferences
 Response: { email: boolean, sms: boolean, push: boolean }
-Contract: Both API and UI implementers use this exact shape
 ```
-
-This lets both implementers work in parallel against the same contract.
 
 ### 4. Dependency-Ordered Execution
 
-Some units can't start until others finish. Map dependencies explicitly.
-
+Map dependencies explicitly:
 ```
-Migration (must complete first)
-    ├──► API (depends on new schema)
-    └──► Background job (depends on new schema)
-              │
-              ▼
-         UI (depends on API being ready)
+Migration (first)
+    ├──► API (needs schema)
+    └──► Background job (needs schema)
+              └──► UI (needs API)
 ```
 
 ---
 
-## Decomposition Process
+## Process
 
-### Step 1: List All Changes
-
-What files/systems will the task touch?
-
-### Step 2: Group by Boundary
-
-Group changes by system boundary (API, UI, data, infrastructure, etc.).
-
-### Step 3: Check Independence
-
-For each group:
-- Does it touch different files from other groups?
-- Can it be implemented without the other groups being done?
-- Can it be tested independently?
-
-### Step 4: Define Interfaces
-
-For groups that interact:
-- What data flows between them?
-- What's the contract (types, formats, protocols)?
-- Define the interface in the plan.
-
-### Step 5: Map Dependencies
-
-Draw the dependency graph:
-- Which groups can run in parallel?
-- Which must serialize?
-- What's the critical path?
-
-### Step 6: Validate with Unblocked
-
-Query Unblocked to validate the decomposition:
-- `unblocked_context_engine`: "What are the dependencies between [components]?"
-- `historical_context`: "How have similar multi-part changes been structured?"
+1. **List all changes** — what files/systems will the task touch?
+2. **Group by boundary** — API, UI, data, infrastructure
+3. **Check independence** — different files? Implementable alone? Testable alone?
+4. **Define interfaces** — data flow, contracts, types between groups
+5. **Map dependencies** — parallel vs. serial, critical path
+6. **Validate with Unblocked** — `unblocked_context_engine` for component dependencies, `historical_context` for prior multi-part changes
 
 ---
 
-## Common Decomposition Patterns
+## Common Patterns
 
-### Frontend + Backend
-```
-Plan ──► [API impl] ──────────────────► Review
-     └─► [UI impl (mocked API)] ───────►
-```
-Define the API contract in the plan. UI mocks the API until it's ready.
+**Frontend + Backend** — Define API contract in plan. UI mocks until API ready. Parallel.
 
-### Migration + Service + Consumer
-```
-Plan ──► [Migration] ──► [Service] ──► [Consumer] ──► Review
-```
-Strictly serial — each depends on the previous.
+**Migration + Service + Consumer** — Strictly serial. Each depends on previous.
 
-### Feature Flags + Implementation
-```
-Plan ──► [Feature flag + config] ──► [Implementation behind flag] ──► Review
-```
-Flag goes first so implementation can be safely deployed.
+**Feature Flags + Implementation** — Flag first, then implementation behind it.
 
-### Parallel Services
-```
-Plan ──► [Service A] ──────► Review
-     ├─► [Service B] ──────►
-     └─► [Service C] ──────►
-```
-Independent services with no shared state.
+**Parallel Services** — Independent services, no shared state. Fully parallel.
 
 ---
 
-## Red Flags in Decomposition
+## Red Flags
 
-**Too many units:** If you have more than 4-5 units, the coordination overhead likely
-exceeds the parallelism benefit. Consider grouping related units.
+**Too many units:** >4-5 units means coordination overhead exceeds parallelism benefit.
 
-**Circular dependencies:** If A depends on B and B depends on A, the decomposition
-is wrong. Refactor so one produces an interface the other consumes.
+**Circular dependencies:** A depends on B, B depends on A — decomposition is wrong.
 
-**Shared mutable state:** If two units both read and write the same state, they
-can't safely parallelize. Serialize them or extract the shared state into its own unit.
+**Shared mutable state:** Two units read/write same state — can't safely parallelize.
 
-**Vague boundaries:** If you can't clearly state which files each unit touches, the
-decomposition isn't clean enough. Refine until each unit has a clear file list.
+**Vague boundaries:** Can't state which files each unit touches — not clean enough.

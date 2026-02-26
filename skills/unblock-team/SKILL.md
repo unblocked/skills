@@ -11,103 +11,51 @@ description: >
 
 # Multi-Agent Team Orchestration
 
-Sets up agent teams with defined roles powered by Unblocked context. The critical
-insight: **planning must complete before coding starts.** The most common multi-agent
-failure is all agents coding simultaneously without coordination — this skill prevents
-that by enforcing a plan-first, implement-second structure.
+## Rules
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                                                              │
-│  1. ASSESS         (Agent)                                   │
-│     │              Evaluate task, select team size           │
-│     ▼                                                        │
-│  2. DECOMPOSE      (Agent + Unblocked)                       │
-│     │              Break task into plannable units            │
-│     ▼                                                        │
-│  3. PLAN           (Planner Agent)                           │
-│     │              Hydrate + plan + review for each unit     │
-│     │              ALL planning completes before coding      │
-│     ▼                                                        │
-│  4. IMPLEMENT      (Implementer Agent(s))                    │
-│     │              Execute reviewed plans                    │
-│     │              Can run in parallel for independent units │
-│     ▼                                                        │
-│  5. REVIEW         (Reviewer Agent)                          │
-│     │              Context-aware review of all changes       │
-│     ▼                                                        │
-│  6. INTEGRATE      (Agent)                                   │
-│     │              Merge, resolve conflicts, final check     │
-│     ▼                                                        │
-│     DONE                                                     │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
-```
-
-## Principles
-
-- **Plan first, code second.** All planning completes and is reviewed before any implementation starts. This is non-negotiable.
-- **Agents have defined roles.** Planner plans. Implementer codes. Reviewer reviews. No agent does everything.
-- **Independent units can parallelize.** After planning, truly independent implementation tasks can run in parallel.
-- **Dependent units must serialize.** If unit B depends on unit A's output, A must complete before B starts.
-- **One reviewer for all.** The reviewer sees all changes together, catching cross-unit issues that per-unit reviews miss.
+- **Plan first, code second.** All planning completes and is reviewed before any implementation starts. Non-negotiable.
+- **Agents have defined roles.** Planner plans. Implementer codes. Reviewer reviews.
+- **One reviewer for all.** The reviewer sees all changes together, catching cross-unit issues.
 
 ---
 
 ## Phase 1: Assess (Agent)
 
-Evaluate the task and select the right team size.
+Evaluate the task and select team size.
 
-### Team Size Selection
+**Small (2 agents)** — Planner + Implementer. Single implementation thread, no natural parallelism.
 
-**Small Team (2 agents)** — Planner + Implementer
-- Best for: tasks that need careful planning but have a single implementation thread
-- When: the task is too complex for one agent but doesn't benefit from parallel implementation
-- Example: "Refactor the authentication middleware"
+**Medium (3 agents)** — Planner + Implementer + Reviewer. Standard feature work where review independence matters.
 
-**Medium Team (3 agents)** — Planner + Implementer + Reviewer
-- Best for: standard feature work or complex changes where review independence matters
-- When: you want the review to happen with fresh eyes, not polluted by implementation reasoning
-- Example: "Add rate limiting to the API with proper testing"
+**Large (4+ agents)** — Planner + Parallel Implementers + Reviewer. Task decomposes into truly independent units.
 
-**Large Team (4+ agents)** — Planner + Parallel Implementers + Reviewer
-- Best for: tasks that decompose into truly independent implementation units
-- When: the task has natural parallelism (e.g., API + UI + tests, or multiple independent services)
-- Example: "Add notification preferences with API, UI, and migration"
-
-See `references/team-templates.md` for detailed team configurations.
+See `references/team-templates.md` for detailed configurations.
 
 ### Key Questions
 
-1. Can the task be decomposed into independent units?
-2. Would parallel implementation actually save time, or create merge conflicts?
-3. Does the review benefit from independence (separate agent) or is self-review sufficient?
+1. Can the task decompose into independent units?
+2. Would parallel implementation save time or create merge conflicts?
+3. Does review benefit from a separate agent?
 
 ---
 
 ## Phase 2: Decompose (Agent + Unblocked)
 
-Break the task into units that can be planned and implemented.
+Break the task into plannable, implementable units.
 
-### Query Unblocked for Decomposition Context
+### Queries
 
-1. `unblocked_context_engine`: "What are the components of [system area] that [task] touches?"
+1. `unblocked_context_engine`: "What components does [task] touch?"
 2. `unblocked_context_engine`: "What are the dependencies between [components]?"
 3. `historical_context`: "How have similar multi-part changes been structured?"
 
-### Decomposition Rules
+### Rules
 
 See `references/task-decomposition.md` for detailed guidance.
 
-**Each unit must:**
-- Have a clear scope (what's in, what's out)
-- Have clear inputs and outputs (so it can be planned independently)
-- Have defined boundaries (files it touches don't overlap with other units, or overlap is minimal and well-defined)
+Each unit must have: clear scope, clear inputs/outputs, defined file boundaries (minimal overlap).
 
-**Identify dependencies between units:**
-- Which units can run in parallel?
-- Which must serialize?
-- What's the integration order?
+Map dependencies: which units parallelize, which serialize, what's the integration order.
 
 ---
 
@@ -115,90 +63,48 @@ See `references/task-decomposition.md` for detailed guidance.
 
 **ALL planning completes before ANY implementation starts.**
 
-For each unit, the Planner Agent (see `agents/unblocked-planner.md`) runs:
+For each unit, the Planner Agent (`agents/unblocked-planner.md`) runs: Hydrate → Draft Plan → Review Plan → Revise Plan.
 
-1. **Hydrate** — gather context from Unblocked for this unit
-2. **Draft Plan** — design implementation referencing context
-3. **Review Plan** — submit to Unblocked for critical review
-4. **Revise Plan** — incorporate feedback
-
-### Planning Output
-
-Each unit gets a self-contained plan document:
-- Context gathered
-- Approach
-- Files to change
-- Patterns to follow
-- Execution steps
-- Risks and mitigations
+Each unit gets a self-contained plan: context, approach, files, patterns, steps, risks.
 
 ### Human Review Gate
 
-After all plans are produced, present them to the user for review:
-- Summary of all units and their plans
-- Dependency graph
-- Proposed execution order
-- Any concerns or risks
+After all plans are produced, present to user: summary of units, dependency graph, execution order, concerns.
 
-**Do not proceed to implementation without user approval of the plans.**
+**Do not proceed without user approval.**
 
 ---
 
 ## Phase 4: Implement (Implementer Agent(s))
 
-Execute the reviewed plans.
+### Independent Units (Parallel)
 
-### For Independent Units (Parallel)
+Spawn implementer agents in parallel, each with its unit's plan. Each works on isolated file scope.
 
-Spawn implementer agents in parallel, each working on their assigned plan:
-- Each agent receives its unit's plan as input
-- Each agent follows the plan's execution steps
-- Each agent works on a feature branch or in isolated file scope
+### Dependent Units (Serial)
 
-### For Dependent Units (Serial)
+Execute in dependency order. Complete unit A → verify → pass outputs to unit B → complete unit B.
 
-Execute in dependency order:
-- Complete unit A's implementation
-- Verify unit A works
-- Pass any outputs or interfaces to unit B
-- Complete unit B's implementation
-
-### During Implementation
-
-- Implementer agents follow the plan. Deviations require re-checking with the planner.
-- If an implementer encounters something unexpected, it flags the issue rather than improvising.
-- Use `failure_debugging` for build/runtime errors during implementation.
+Implementers follow the plan. Deviations require re-checking with planner. Unexpected issues get flagged, not improvised around.
 
 ---
 
 ## Phase 5: Review (Reviewer Agent)
 
-The Reviewer Agent (see `agents/unblocked-reviewer.md`) reviews **all changes together**.
+The Reviewer Agent (`agents/unblocked-reviewer.md`) reviews **all changes together**.
 
-### Why Review All Together
+Per-unit reviews miss: cross-unit inconsistencies, integration gaps, duplicate utilities.
 
-Per-unit reviews miss:
-- **Cross-unit inconsistencies** — different naming, error handling, or patterns across units
-- **Integration gaps** — units that don't connect properly at the boundaries
-- **Duplicate work** — utilities or patterns created independently by different implementers
-
-### Review Process
-
-1. Gather all diffs from all implementation units
-2. Hydrate context from Unblocked for the full scope
-3. Review for cross-unit consistency, integration, and alignment with team patterns
-4. Produce a unified review report
+Process: gather all diffs → hydrate context for full scope → review for consistency and team patterns → produce unified report.
 
 ---
 
 ## Phase 6: Integrate (Agent)
 
-Merge all implementation units and perform final verification.
-
-1. **Merge** — combine all unit branches/changes
-2. **Resolve conflicts** — if any units touched overlapping files
-3. **Run tests** — full test suite, not just unit-specific tests
-4. **Final check** — does the integrated whole match the original task requirements?
+1. Merge all unit changes
+2. Resolve conflicts from overlapping files
+3. Run full test suite
+4. Final check: does the integrated whole match original requirements?
 
 ---
 

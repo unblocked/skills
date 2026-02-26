@@ -9,14 +9,15 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | Skill | Description |
 |-------|-------------|
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
-| [review-pr](skills/review-pr/) | Context-aware PR review — hydrates the reviewer with team conventions and prior art, then categorizes findings with Unblocked citations |
-| [write-pr-description](skills/write-pr-description/) | Context-grounded PR descriptions — explains the reasoning, trade-offs, and team context behind a change, not just the diff |
-| [investigate](skills/investigate/) | Structured incident and bug investigation — correlates symptoms with recent changes, prior incidents, and team knowledge |
-| [onboard-codebase](skills/onboard-codebase/) | Produces a persistent orientation document for a codebase — architecture, key decisions, conventions, domain experts |
-| [refactor](skills/refactor/) | Refactoring with implicit contract preservation — scopes dependencies, hydrates conventions, and explicitly preserves team contracts |
-| [handoff](skills/handoff/) | Session continuity — captures reasoning, decisions, and progress into a handoff document for the next session |
-| [cloud-plan](skills/cloud-plan/) | Plans for headless/cloud agents — front-loads all context and embeds it inline for agents without MCP access |
+| [unblock-review](skills/unblock-review/) | Context-aware PR review — hydrates the reviewer with team conventions and prior art, then categorizes findings with Unblocked citations |
+| [unblock-describe](skills/unblock-describe/) | Context-grounded PR descriptions — explains the reasoning, trade-offs, and team context behind a change, not just the diff |
+| [unblock-investigate](skills/unblock-investigate/) | Structured incident and bug investigation — correlates symptoms with recent changes, prior incidents, and team knowledge |
+| [unblock-onboard](skills/unblock-onboard/) | Produces a persistent orientation document for a codebase — architecture, key decisions, conventions, domain experts |
+| [unblock-refactor](skills/unblock-refactor/) | Refactoring with implicit contract preservation — scopes dependencies, hydrates conventions, and explicitly preserves team contracts |
+| [unblock-handoff](skills/unblock-handoff/) | Session continuity — captures reasoning, decisions, and progress into a handoff document for the next session |
+| [unblock-cloud-plan](skills/unblock-cloud-plan/) | Plans for headless/cloud agents — front-loads all context and embeds it inline for agents without MCP access |
 | [unblock-team](skills/unblock-team/) | Multi-agent orchestration — sets up agent teams with plan-first, implement-second structure using dedicated planner and reviewer agents |
+| [unblock-enrich](skills/unblock-enrich/) | Ticket enrichment — gathers org context for tickets before work begins, with engineering and support modes |
 
 ## Agents
 
@@ -32,7 +33,7 @@ Specialized subagents for multi-agent workflows:
 | Hook | Event | Description |
 |------|-------|-------------|
 | Session Orient | SessionStart | Loads lightweight context at session start — recent PRs, active tickets, and handoff documents from previous sessions |
-| Handoff Nudge | Stop | Reminds the user to run `/handoff` if there appears to be unfinished work |
+| Handoff Nudge | Stop | Reminds the user to run `/unblock-handoff` if there appears to be unfinished work |
 
 ## Setup
 
@@ -65,7 +66,7 @@ Copy the skill directory into your agent's skills folder:
 ```bash
 # Claude Code
 cp -r skills/unblock ~/.claude/skills/
-cp -r skills/review-pr ~/.claude/skills/
+cp -r skills/unblock-review ~/.claude/skills/
 # ... (repeat for each skill you want)
 
 # Cursor
@@ -87,14 +88,15 @@ skills/
 │   └── session-orient.sh         # SessionStart hook script
 └── skills/
     ├── unblock/                  # Core context-aware dev workflow
-    ├── review-pr/                # Context-aware PR review
-    ├── write-pr-description/     # Context-grounded PR descriptions
-    ├── investigate/              # Structured bug/incident investigation
-    ├── onboard-codebase/         # Codebase orientation documents
-    ├── refactor/                 # Contract-preserving refactoring
-    ├── handoff/                  # Session continuity
-    ├── cloud-plan/               # Plans for headless/cloud agents
-    └── unblock-team/             # Multi-agent orchestration
+    ├── unblock-review/           # Context-aware PR review
+    ├── unblock-describe/         # Context-grounded PR descriptions
+    ├── unblock-investigate/      # Structured bug/incident investigation
+    ├── unblock-onboard/          # Codebase orientation documents
+    ├── unblock-refactor/         # Contract-preserving refactoring
+    ├── unblock-handoff/          # Session continuity
+    ├── unblock-cloud-plan/       # Plans for headless/cloud agents
+    ├── unblock-team/             # Multi-agent orchestration
+    └── unblock-enrich/           # Ticket enrichment
 ```
 
 All skills follow the same pattern: a `SKILL.md` with YAML frontmatter and workflow documentation, plus a `references/` directory with specialized templates and checklists. Every skill leverages Unblocked's MCP tools for organizational context — no skill builds its own context retrieval.
@@ -131,10 +133,10 @@ The agent reuses your team's retry utility instead of npm-installing a new libra
 
 ### 2. Investigate a production incident in minutes, not hours
 
-It's Tuesday morning and payments are failing with timeout errors. Instead of reading code blind, `/investigate` correlates the symptoms with what actually changed.
+It's Tuesday morning and payments are failing with timeout errors. Instead of reading code blind, `/unblock-investigate` correlates the symptoms with what actually changed.
 
 ```
-You:  /investigate Payments timing out since this morning, seeing
+You:  /unblock-investigate Payments timing out since this morning, seeing
       "gateway timeout" errors in the payment service logs
 
 Agent: [Phase 1 — TRIAGE]
@@ -165,34 +167,26 @@ Agent: [Phase 1 — TRIAGE]
        timeout value.
 ```
 
-Instead of an hour of log-reading and code-tracing, the agent found the root cause in minutes by checking what changed and whether it happened before — context that lives in your PRs and history, not in the code.
+Instead of an hour of log-reading and code-tracing, the agent found the root cause in minutes by checking what changed and whether it happened before.
 
 ### 3. Multi-session refactor with handoff between sessions
 
-You're refactoring the auth middleware from Express to Fastify. It's a multi-day effort. At the end of your first session, you've completed the adapter layer but haven't migrated the routes yet.
+You're refactoring the auth middleware from Express to Fastify. It's a multi-day effort.
 
 ```
 ── Session 1 ──
 
-You:  /refactor Migrate auth middleware from Express to Fastify
+You:  /unblock-refactor Migrate auth middleware from Express to Fastify
 
 Agent: [Works through SCOPE → HYDRATE → PLAN → REVIEW → EXECUTE]
        Discovers consumers, migration patterns from PR #890, implicit
        contracts (session format, error response shape, header conventions)...
        Completes the adapter layer.
 
-You:  /handoff
+You:  /unblock-handoff
 
 Agent: Capturing session state...
        Saved to .claude/handoffs/2025-01-15-16-30-auth-fastify-migration.md
-
-       Handoff includes:
-       - Approach: strangler fig pattern per team convention from PR #890
-       - Done: adapter layer in src/auth/fastify-adapter.ts
-       - Remaining: migrate 12 route handlers, update tests
-       - Key context: session cookie format must stay {sid, exp, uid} per PR #445
-       - Failed approach: tried direct port but middleware signature
-         differences broke 3 implicit contracts
 
 ── Session 2 (next day) ──
 
@@ -203,23 +197,19 @@ Agent: Loaded handoff from previous session. Continuing auth middleware
        preserving session cookie format {sid, exp, uid}.
 ```
 
-Session 2 picks up exactly where session 1 left off — with the decisions, failed approaches, and gathered context intact. No re-querying, no re-discovery.
+Session 2 picks up exactly where session 1 left off — with the decisions, failed approaches, and gathered context intact.
 
 ### 4. Prepare a plan for a cloud agent to execute without MCP access
 
-You need to add a feature but want to run the implementation on a remote Claude instance or in CI. The remote agent won't have access to Unblocked's MCP tools, so `/cloud-plan` front-loads all the context and embeds it directly in the plan.
+You need to add a feature but want to run the implementation on a remote Claude instance or in CI.
 
 ```
-You:  /cloud-plan Add user notification preferences API endpoint
+You:  /unblock-cloud-plan Add user notification preferences API endpoint
 
 Agent: [Phase 1 — HYDRATE DEEPLY]
        Running extended queries (12 instead of the usual 6)...
-       Gathering conventions, naming patterns, error handling examples,
-       testing patterns, existing utilities, related PRs, review comments...
 
        [Phase 2 — PLAN WITH EMBEDDED CONTEXT]
-       Building self-contained plan with inline code examples...
-
        Instead of "follow the team's error handling pattern," the plan says:
 
        > Error handling: wrap service calls in try/catch, log with
@@ -227,15 +217,8 @@ Agent: [Phase 1 — HYDRATE DEEPLY]
        > Example from src/api/users.ts:
        > [actual code snippet pasted inline]
 
-       Instead of "check related PRs," the plan embeds:
-
-       > PR #456 "Add email preferences" — introduced the preferences
-       > table with columns: user_id, channel (enum: email|sms|push),
-       > enabled (boolean). Follow this schema for notification preferences.
-
        [Phase 3 — REVIEW]
-       Validating completeness — is enough context embedded for a
-       context-blind agent?
+       Validating completeness...
 
        [Phase 4 — PACKAGE]
        Saved self-contained plan to cloud-plan-notification-prefs.md
@@ -243,53 +226,62 @@ Agent: [Phase 1 — HYDRATE DEEPLY]
 You:  claude --headless --plan cloud-plan-notification-prefs.md
 ```
 
-The cloud agent gets a plan where every convention is shown with code examples, every decision is quoted with rationale, and every constraint is explicit. It can implement without ever calling Unblocked.
+The cloud agent gets a plan where every convention is shown with code examples and every constraint is explicit.
 
 ### 5. Coordinate a multi-agent team on a cross-cutting feature
 
-You're adding a new billing system that touches the API, database, background jobs, and frontend. Instead of one agent struggling with the entire scope, `/unblock-team` sets up a coordinated team where planning happens first and implementation parallelizes.
+You're adding a new billing system that touches the API, database, background jobs, and frontend.
 
 ```
 You:  /unblock-team Add usage-based billing with metering, invoicing, and a
       billing dashboard
 
 Agent: [Phase 1 — ASSESS]
-       This decomposes into 4 independent systems. Recommending Large Team:
-       Planner + 3 parallel Implementers + Reviewer.
+       Recommending Large Team: Planner + 3 parallel Implementers + Reviewer.
 
        [Phase 2 — DECOMPOSE]
-       Querying Unblocked for system boundaries and dependencies...
-
-       Unit A: Metering API (src/api/metering/) — new endpoints, event ingestion
-       Unit B: Invoice generation (src/jobs/billing/) — background job, PDF generation
-       Unit C: Billing dashboard (src/ui/billing/) — React components, API integration
-       Dependencies: A must define the metering event schema before B and C start.
-                     B and C are independent of each other.
+       Unit A: Metering API (src/api/metering/)
+       Unit B: Invoice generation (src/jobs/billing/)
+       Unit C: Billing dashboard (src/ui/billing/)
 
        [Phase 3 — PLAN (Planner Agent)]
-       Planner agent hydrates context for all 3 units from Unblocked,
-       drafts plans grounded in team patterns, reviews each against
-       organizational context...
-
-       3 reviewed plans produced. Presenting for your approval:
-       - Unit A plan: [summary]
-       - Unit B plan: [summary]
-       - Unit C plan: [summary]
+       3 reviewed plans produced. Presenting for approval...
 
 You:  Looks good, go ahead.
 
        [Phase 4 — IMPLEMENT]
-       Implementer A: Building metering API (defines event schema first)
-       Implementer B: Building invoice generation (parallel, uses schema from plan)
-       Implementer C: Building billing dashboard (parallel, uses schema from plan)
+       Implementers A, B, C working in parallel...
 
        [Phase 5 — REVIEW (Reviewer Agent)]
-       Reviewer agent reviews ALL changes together — catches that Implementer B
-       used a different date format than Implementer C, and that both created
-       a formatCurrency helper instead of using the existing one in src/lib/format.ts.
+       Catches cross-unit inconsistencies: different date formats,
+       duplicate formatCurrency helpers.
 
        [Phase 6 — INTEGRATE]
-       Merging all units, resolving the review findings, running full test suite.
+       Merging, resolving findings, running full test suite.
 ```
 
-The planner gathered context once and produced plans for all three units. The implementers worked in parallel without duplicating context queries. The reviewer caught cross-unit inconsistencies that per-unit reviews would have missed. Total context-gathering cost: one planning phase instead of three separate full hydrations.
+### 6. Enrich a ticket before starting work
+
+You've been assigned a ticket but need to understand the full context before diving in.
+
+```
+You:  /unblock-enrich PROJ-1234
+
+Agent: [Phase 1 — GET TICKET]
+       Fetching ticket PROJ-1234: "API returns 500 on large payloads"
+
+       [Phase 2 — CLASSIFY]
+       Engineering mode — code bug in API layer.
+
+       [Phase 3 — GATHER CONTEXT]
+       - failure_debugging: found similar 500 errors from 3 months ago
+       - historical_context: PR #789 added payload size limits but
+         didn't handle the error gracefully
+       - data_retrieval: 2 related tickets filed in the last month
+
+       [Phase 4 — SYNTHESIZE]
+       Enrichment document produced with affected systems, related PRs,
+       prior incidents, and suggested direction.
+
+       Attach this to PROJ-1234 before starting work.
+```

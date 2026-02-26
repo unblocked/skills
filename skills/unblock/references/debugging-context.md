@@ -1,7 +1,7 @@
 # Bug Investigation Context Workflow
 
-Structured approach for gathering context when debugging issues. Use this alongside
-the main workflow (SKILL.md) to hydrate Phase 1 with debugging-specific queries.
+Structured approach for gathering context when debugging. Use alongside the main
+workflow (SKILL.md) to hydrate Phase 1 with debugging-specific queries.
 
 ---
 
@@ -16,8 +16,8 @@ the main workflow (SKILL.md) to hydrate Phase 1 with debugging-specific queries.
 
 ### Initial Context Queries
 
-- `unblocked_context_engine`: "How does [affected component] work?"
 - `failure_debugging`: "[error message or symptoms]"
+- `unblocked_context_engine`: "How does [affected component] work?"
 
 ---
 
@@ -25,19 +25,12 @@ the main workflow (SKILL.md) to hydrate Phase 1 with debugging-specific queries.
 
 The bug probably started because something changed. Find what.
 
-### Git and PR History
-
 - `historical_context`: "What changed recently in [file/system]?"
 - `historical_context`: "When was [function/code] last modified and why?"
 - `data_retrieval`: recent PRs touching the affected files
 - `unblocked_context_engine`: "What went out in the last deployment affecting [area]?"
 
-### What to Look For
-
-- Commits to affected files in the relevant timeframe
-- PRs with noted risks or follow-ups
-- Config changes or dependency updates
-- Deployment timing that correlates with bug onset
+Look for: commits to affected files, PRs with noted risks, config changes, deployment timing that correlates with bug onset.
 
 ---
 
@@ -61,8 +54,7 @@ Understand the code you're debugging — it may behave unexpectedly for a reason
 - `unblocked_context_engine`: "What was the original intent of [code block]?"
 - `data_retrieval`: find the PR that introduced the relevant code
 
-The original PR description and review comments often explain constraints
-that aren't visible in the code itself.
+The original PR description and review comments often explain constraints not visible in code.
 
 ---
 
@@ -71,7 +63,7 @@ that aren't visible in the code itself.
 Before fixing, confirm you can explain:
 
 1. **What** the bug is
-2. **Why** it's happening (the root cause, not the symptom)
+2. **Why** it's happening (root cause, not symptom)
 3. **Why** your fix solves it
 4. **What else** your fix might affect
 
@@ -79,36 +71,7 @@ If you can't answer all four, gather more context before proceeding.
 
 ---
 
-## Example: Payment Timeout Bug
-
-**Bug report:** "Payments failing with timeout errors since Tuesday's deploy"
-
-**Hydration queries:**
-```
-historical_context: "What changed in the payment system this week?"
-historical_context: "Has the payment timeout issue happened before?"
-data_retrieval: recent PRs touching the payment system
-```
-
-**Context gathered:**
-- Tuesday: PR #567 merged — "Refactor payment retry logic"
-- Monday: PR #568 merged — "Update timeout configs"
-- PR #567 changed retry logic, inadvertently reset timeout to default
-- Same bug occurred 6 months ago, fixed in PR #234 by increasing timeout from 5s to 10s
-- Payment provider is slow during peak hours — 5s default is too low
-
-**Root cause:** PR #567 overwrote the timeout config instead of merging. Timeout went from 10s back to 5s default. No test to catch this regression.
-
-**Fix plan:**
-1. Restore 10s timeout
-2. Add test for timeout configuration
-3. Consider extracting timeouts to constants file
-
----
-
 ## Debugging Checklist
-
-Before writing the fix:
 
 - [ ] I know WHEN the bug started
 - [ ] I know WHAT changed to cause it

@@ -17,14 +17,15 @@
       "strict": false,
       "skills": [
         "./skills/unblock",
-        "./skills/review-pr",
-        "./skills/write-pr-description",
-        "./skills/investigate",
-        "./skills/onboard-codebase",
-        "./skills/refactor",
-        "./skills/handoff",
-        "./skills/cloud-plan",
-        "./skills/unblock-team"
+        "./skills/unblock-review",
+        "./skills/unblock-describe",
+        "./skills/unblock-investigate",
+        "./skills/unblock-onboard",
+        "./skills/unblock-refactor",
+        "./skills/unblock-handoff",
+        "./skills/unblock-cloud-plan",
+        "./skills/unblock-team",
+        "./skills/unblock-enrich"
       ]
     }
   ]

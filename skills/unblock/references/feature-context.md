@@ -1,7 +1,7 @@
 # Feature Implementation Context Workflow
 
-Structured approach for gathering context before implementing a new feature. Use this
-alongside the main workflow (SKILL.md) to hydrate Phase 1 with feature-specific queries.
+Structured approach for gathering context before implementing a feature. Use alongside
+the main workflow (SKILL.md) to hydrate Phase 1 with feature-specific queries.
 
 ---
 
@@ -23,15 +23,10 @@ alongside the main workflow (SKILL.md) to hydrate Phase 1 with feature-specific 
 
 ### Find Similar Implementations
 
-Look for existing code that does something similar — this reveals patterns, available
-utilities, and testing approaches.
-
 - `unblocked_context_engine`: "How were similar features like [X] implemented?"
 - `unblocked_context_engine`: "What patterns does the team use for [type of feature]?"
 
 ### Identify Touch Points
-
-What will the feature interact with?
 
 - API: New endpoints? Modify existing?
 - Database: New tables/columns? Migrations?
@@ -49,15 +44,11 @@ What will the feature interact with?
 
 ### Find Previous Attempts
 
-Was this feature tried before? What happened?
-
 - `historical_context`: "Has [feature] been attempted before? What happened?"
 - `historical_context`: "Why was [system] designed this way?"
 - `historical_context`: "What alternatives were considered for [decision]?"
 
 ### Identify Domain Experts
-
-Who has the most context on the relevant systems?
 
 - `data_retrieval`: recent contributors and reviewers for the affected area
 - `unblocked_context_engine`: "Who are the experts on [system/area]?"
@@ -69,33 +60,9 @@ Who has the most context on the relevant systems?
 Before planning, confirm you can answer:
 
 1. **What** am I building and why?
-2. **What patterns** should I follow? (from similar implementations)
+2. **What patterns** should I follow?
 3. **What systems** will I touch?
 4. **What are the risks/unknowns?**
 5. **Who** are the domain experts if questions arise?
 
 If you can't answer these, gather more context before proceeding to the plan.
-
----
-
-## Example: Adding Notification Preferences
-
-**Hydration queries:**
-```
-unblocked_context_engine: "How does the notification system work?"
-unblocked_context_engine: "What patterns does the team use for user preferences?"
-historical_context: "Has notification preferences been discussed or attempted?"
-data_retrieval: recent PRs touching notifications or user preferences
-```
-
-**Context gathered:**
-- PR #1234 added email notifications (follow this pattern)
-- PR #1456 added the preferences table structure
-- Slack #eng discussion: decision to use async queue for all notifications
-- Decision to support email, SMS, and push channels
-- `/src/notifications/sender.ts` — current dispatch logic
-- `/src/users/preferences.ts` — existing preferences pattern
-- Domain experts: @sarah (notification system), @mike (user preferences)
-
-**Ready to plan:** With this context, the plan can reference specific files, follow
-established patterns, and avoid duplicating prior work.

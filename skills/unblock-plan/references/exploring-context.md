@@ -1,7 +1,7 @@
 # Exploring Unfamiliar Code
 
 Structured approach for building context when working in an unfamiliar codebase area.
-Use alongside the main workflow (SKILL.md) to hydrate Phase 1 with exploration-specific queries.
+Use alongside the planning workflow to hydrate with exploration-specific queries.
 
 ---
 

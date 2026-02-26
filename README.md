@@ -9,6 +9,13 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | Skill | Description |
 |-------|-------------|
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
+| [unblock-plan](skills/unblock-plan/) | Context-rich planning — hydrates and validates implementation plans against org knowledge, no codegen |
+| [unblock-review](skills/unblock-review/) | Code review with org context — checks diffs/PRs against team conventions, patterns, and prior decisions |
+| [unblock-tix-enrich](skills/unblock-tix-enrich/) | Ticket enrichment — gathers and adds org context to tickets for engineering or support teams |
+| [unblock-debug](skills/unblock-debug/) | Bug investigation — structured root-cause analysis hydrated with org context |
+| [unblock-explore](skills/unblock-explore/) | Codebase orientation — builds a mental map of unfamiliar code areas |
+| [unblock-incident](skills/unblock-incident/) | Incident response — rapid context for on-call engineers investigating production issues |
+| [unblock-handoff](skills/unblock-handoff/) | Context transfer — creates handoff documents for humans or agents picking up work |
 
 ## Setup
 

@@ -1,7 +1,7 @@
 # Feature Implementation Context Workflow
 
 Structured approach for gathering context before implementing a new feature. Use alongside
-the main workflow (SKILL.md) to hydrate Phase 1 with feature-specific queries.
+the planning workflow to hydrate with feature-specific queries.
 
 ---
 

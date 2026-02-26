@@ -1,7 +1,7 @@
 # Bug Investigation Context Workflow
 
 Structured approach for gathering context when debugging issues. Use alongside
-the main workflow (SKILL.md) to hydrate Phase 1 with debugging-specific queries.
+the planning workflow to hydrate with debugging-specific queries.
 
 ---
 
@@ -56,7 +56,7 @@ The original PR description and review comments often explain constraints not vi
 
 ## Phase 5: Root Cause Analysis
 
-Before fixing, confirm you can explain:
+Before planning a fix, confirm you can explain:
 
 1. **What** the bug is
 2. **Why** it's happening (root cause, not symptom)

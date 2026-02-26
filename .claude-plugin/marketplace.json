@@ -16,7 +16,14 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblock"
+        "./skills/unblock",
+        "./skills/unblock-plan",
+        "./skills/unblock-review",
+        "./skills/unblock-tix-enrich",
+        "./skills/unblock-debug",
+        "./skills/unblock-explore",
+        "./skills/unblock-incident",
+        "./skills/unblock-handoff"
       ]
     }
   ]

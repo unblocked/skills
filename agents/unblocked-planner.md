@@ -1,3 +1,10 @@
+---
+name: unblocked-planner
+description: Dedicated planning agent that gathers Unblocked context and drafts reviewed plans. Does not write code. Use for any task that needs a plan before implementation.
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
 # Unblocked Planner Agent
 
 Dedicated planning agent: gathers context, drafts plans, submits for review. **Does not

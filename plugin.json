@@ -1,0 +1,13 @@
+{
+  "name": "unblocked-skills",
+  "version": "1.0.0",
+  "description": "Skills for engineering context gathering — bring PRs, Slack, Jira, and docs into your coding workflow",
+  "author": {
+    "name": "Unblocked",
+    "url": "https://getunblocked.com"
+  },
+  "repository": "https://github.com/unblocked/skills",
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "hooks": "./hooks/hooks.json"
+}

@@ -25,7 +25,8 @@ curl -fsSL https://getunblocked.com/install-mcp.sh | bash
 Connect this repository as a plugin directly in Claude Code:
 
 ```bash
-claude plugin add unblocked/skills
+claude plugin marketplace add unblocked/skills
+claude plugin install unblocked-skills
 ```
 
 ### Using the Skills CLI

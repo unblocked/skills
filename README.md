@@ -9,6 +9,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | Skill | Description |
 |-------|-------------|
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
+| [unblocked-research](skills/unblocked-research/) | Deep research workflow for investigation and explanation tasks — understanding how something works, why it behaves a certain way, what changed, and what risks exist |
 
 ## Setup
 
@@ -42,7 +43,9 @@ Copy the skill directory into your agent's skills folder:
 ```bash
 # Claude Code
 cp -r skills/unblock ~/.claude/skills/
+cp -r skills/unblocked-research ~/.claude/skills/
 
 # Cursor
 cp -r skills/unblock .cursor/skills/
+cp -r skills/unblocked-research .cursor/skills/
 ```

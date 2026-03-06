@@ -114,6 +114,23 @@ historical_context: "Has rate limiting been attempted or discussed before?"
 data_retrieval: "PRs merged in the last 2 weeks touching the API layer"
 ```
 
+**Repo rules (if available):**
+
+If `repo-rules-agent` is installed and a rules index exists for the repo, fetch rules
+relevant to the task. This gives the plan concrete coding constraints before generation,
+reducing review-loop token waste.
+
+```
+repo-rules-agent rerank <index.json> --query "<task description>" -t code-generation -k 10 -f prompt
+```
+
+If no index exists but `repo-rules-agent` is available, build one first:
+```
+repo-rules-agent index <repo-path> -o /tmp/rules-index.json
+```
+
+Include the returned rules in the plan context — they become constraints the plan must satisfy.
+
 **Collect and carry forward:**
 - Existing modules to extend (not reinvent)
 - Naming conventions and code style patterns
@@ -121,6 +138,7 @@ data_retrieval: "PRs merged in the last 2 weeks touching the API layer"
 - Related recent work that might conflict or coordinate
 - Prior decisions and rejected approaches
 - Known edge cases and gotchas
+- **Repo rules** — coding constraints extracted from CLAUDE.md, AGENTS.md, copilot-instructions.md, etc.
 
 **All of this context feeds into Phase 2. Do not start planning without it.**
 
@@ -244,8 +262,18 @@ caught problems in the approach — this step catches problems in the execution.
 4. `historical_context`: "Have there been issues in the past with [the approach taken in
    generated code] in this area of the codebase?"
 
+**Repo rules check (if rules were fetched in Phase 1):**
+
+Re-run the reranker against the generated code summary to catch any rules the plan missed:
+```
+repo-rules-agent rerank <index.json> --query "<summary of generated code>" -t code-review -k 10 -f prompt
+```
+Compare the returned rules against the generated code. Flag any violations.
+
 **What you're looking for in the review:**
 
+- **Repo rule violations:** The generated code breaks a rule from the repo's coding instructions.
+  This is caught cheaply here instead of in a full code review cycle.
 - **Reinvented wheels:** The code creates something that already exists as a utility, helper,
   or shared module in the codebase. This is the #1 thing the code review catches.
 - **Convention drift:** The code works but doesn't match how the team writes this kind of

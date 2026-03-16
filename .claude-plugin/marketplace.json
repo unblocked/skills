@@ -17,7 +17,13 @@
       "strict": false,
       "skills": [
         "./skills/unblock"
-      ]
+      ],
+      "mcpServers": {
+        "unblocked": {
+          "type": "http",
+          "url": "https://getunblocked.com/api/mcpsse"
+        }
+      }
     }
   ]
 }

@@ -1,15 +1,16 @@
 ---
 name: unblocked-context-engine
 description: >
-  Targeted lookup for ONE specific question about ONE specific entity. Returns
-  code, PRs, docs, Slack discussions, and Jira issues. Call this tool: at the
-  START to disambiguate the user's query; before ENTERING a new class, module,
-  or subsystem you haven't read yet; when you want to CHECK if a bug or pattern
-  is already known; when earlier context DOESN'T MATCH what you see in the code
+  Skill for targeted lookup of ONE specific question about ONE specific entity
+  using `unblocked_context_engine`, which returns code, PRs, docs, Slack
+  discussions, and Jira issues. Use this skill when at the START to
+  disambiguate the user's query; before ENTERING a new class, module, or
+  subsystem you haven't read yet; when you want to CHECK if a bug or pattern is
+  already known; when earlier context DOESN'T MATCH what you see in the code
   and you need to check if the situation has changed. Query rules: each query
   MUST ask exactly one question about one entity. Include concrete identifiers:
-  service names, class names, method names. Call this tool multiple times in
-  parallel with focused queries rather than once with a broad query.
+  service names, class names, method names. Use multiple focused tool calls in
+  parallel rather than one broad query.
 ---
 
 # Unblocked Context Engine

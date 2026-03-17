@@ -1,4 +1,0 @@
-interface:
-  display_name: "Unblocked Context Engine"
-  short_description: "Guide precise Unblocked context lookups"
-  default_prompt: "Use $unblocked-context-engine to turn a vague question into focused `unblocked_context_engine` queries."

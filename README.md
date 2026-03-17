@@ -8,6 +8,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 
 | Skill | Description |
 |-------|-------------|
+| [unblocked-context-engine](skills/unblocked-context-engine/) | Focused institutional-context lookups for architecture, conventions, prior art, and plan validation |
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
 
 ## Setup
@@ -37,12 +38,12 @@ npx skills add unblocked/skills
 
 ### Manual Copy
 
-Copy the skill directory into your agent's skills folder:
+Copy the skill directory into your agent's skills folder. Replace `<skill-name>` with a directory such as `unblock` or `unblocked-context-engine`:
 
 ```bash
 # Claude Code
-cp -r skills/unblock ~/.claude/skills/
+cp -r skills/<skill-name> ~/.claude/skills/
 
 # Cursor
-cp -r skills/unblock .cursor/skills/
+cp -r skills/<skill-name> .cursor/skills/
 ```

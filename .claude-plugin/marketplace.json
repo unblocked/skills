@@ -17,7 +17,8 @@
       "strict": false,
       "skills": [
         "./skills/unblock",
-        "./skills/unblocked-context-engine"
+        "./skills/unblocked-context-engine",
+        "./skills/link-resolver"
       ],
       "mcpServers": {
         "unblocked": {

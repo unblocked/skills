@@ -8,6 +8,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 
 | Skill | Description |
 |-------|-------------|
+| [link-resolver](skills/link-resolver/) | Hydrate supported URLs into readable PR, doc, and thread content with clear failure handling |
 | [unblocked-context-engine](skills/unblocked-context-engine/) | Focused institutional-context lookups for architecture, conventions, prior art, and plan validation |
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
 

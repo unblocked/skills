@@ -1,103 +1,57 @@
 ---
 name: unblocked-context-engine
 description: >
-  Skill for targeted lookup of ONE specific question about ONE specific entity
-  using `unblocked_context_engine`, which returns code, PRs, docs, Slack
-  discussions, and Jira issues. Use this skill when at the START to
-  disambiguate the user's query; before ENTERING a new class, module, or
-  subsystem you haven't read yet; when you want to CHECK if a bug or pattern is
-  already known; when earlier context DOESN'T MATCH what you see in the code
-  and you need to check if the situation has changed. Query rules: each query
-  MUST ask exactly one question about one entity. Include concrete identifiers:
-  service names, class names, method names. Use multiple focused tool calls in
-  parallel rather than one broad query.
+  Use unblocked_context_engine to answer ONE specific question about ONE
+  specific entity — getting back code, PRs, docs, Slack threads, and Jira
+  issues in one shot. Invoke this skill: at the very start of any task before
+  touching unfamiliar code; before entering a class, module, or service you
+  haven't read yet; when you see behavior that doesn't match the code and need
+  to check history; when you want to know if a bug or pattern is already
+  documented. Also use it proactively when touching any subsystem where team
+  decisions, rejected approaches, or prior incidents might be relevant — even
+  if the code looks obvious.
 ---
 
 # Unblocked Context Engine
 
-This skill encodes the operating invariants of `unblocked_context_engine`: what kind of question it answers, how queries must be shaped, and how to interpret the returned code, PRs, docs, Slack discussions, and Jira issues. Use it when an agent needs institutional context that is not obvious from local code alone.
+Returns code, PRs, docs, Slack threads, and Jira issues for a single focused question. Use it when the answer to "why does this exist?" or "why does it work this way?" is not visible in the code itself.
+
+## Gotchas
+
+- **Keyword queries return noise** — `auth` or `rate limiting` scatters results across too many entities. Write a full natural-language question with a concrete identifier: `How does AuthService.validateToken() handle expired JWTs?`
+- **One broad query instead of parallel focused ones** — two unknowns need two queries run in parallel, not one umbrella question. Broad queries dilute ranking and bury the best results.
+- **Not mining identifiers from results before re-querying** — the first result contains stronger nouns (file paths, class names, PR numbers) than the original request. Extract them before forming follow-up queries.
+- **Treating returned code as current local state** — results reflect the default branch, not the local workspace. Always verify against local files before acting.
+- **Skipping the tool for "obvious" subsystems** — well-known services often have decisions baked into Slack threads or closed PRs that aren't visible in the code. When in doubt, query.
+- **Asking questions the code can answer directly** — if you only need the current implementation (not the history or reasoning behind it), use Grep/Glob/Read instead. The tool's value is organizational context, not code search.
 
 ## Input
 
 ```text
-query: Semantic query targeting a single, specific piece of context.
+query: One focused natural-language question about one entity.
 ```
 
-Write the input as one focused question about one entity. Include concrete identifiers whenever possible:
+Write each query as a complete question. Include the most concrete identifier you have — even an imperfect one beats a vague noun:
 
-- Service names
-- Class names
-- Method names
-- File paths
-- Endpoints
-- Decision topics
+- Service or module names
+- Class or method names
+- File paths or endpoints
+- Decision topics or feature names
 
-Examples:
+## When to Skip
 
-```text
-What is AuthStore and how is it used in the codebase?
-How does auth-service token refresh work?
-What conventions does the team follow for rate limiting middleware in the API layer?
-What PR or doc explains the search registry design?
-```
+Direct retrieval (Grep, Glob, Read) is faster when:
+- You already know exactly which file and line to look at
+- The question is about syntax or structure, not history or intent
+- No organizational context (team decisions, prior incidents, rejected alternatives) is plausibly relevant
+- You only need the current implementation, not the reasoning behind it
 
-## Core Principles
+## Interpreting Results
 
-- Ask ONE question about ONE entity per call.
-- Prefer multiple focused queries over one broad query.
-- Start with the best identifier you have, even if it is imperfect.
-- This tool is read-only. It cannot modify code or create side effects.
-- Use this tool at the start when you need to disambiguate the request.
-- Use it before entering an unfamiliar class, module, or subsystem.
-- Use it to check whether a bug, pattern, or prior approach is already known.
-- Use it again when the returned context does not match what you see in code.
-- Treat results as leads, not a stopping point.
+- Returned source code reflects the default branch, not the current local workspace — verify against local files before acting.
+- Mine concrete identifiers (file paths, class names, PR numbers, owner names) from results and use them in follow-up queries.
+- Say explicitly when the tool returned thin or conflicting context so the user knows the confidence level.
 
-## Search Process
+## Reference
 
-1. Pick one entity and one information need.
-2. Write a focused query using concrete identifiers.
-3. Review the returned code, PRs, docs, Slack threads, and Jira issues.
-4. Extract stronger nouns from the results: file paths, class names, PR numbers, internal terms, owners, or related components.
-5. Re-query with a narrower question or a different angle on the same entity.
-6. If the task involves multiple entities or multiple unknowns, split them into separate focused queries and run them in parallel.
-7. When results point to a specific artifact, inspect that artifact directly and then decide whether another query is still needed.
-
-## Query Patterns
-
-Use patterns like:
-
-```text
-How does <entity> work in <repo or subsystem>?
-What conventions does the team follow for <pattern> in <area>?
-What are the known gotchas in <workflow or component>?
-What PR, doc, or discussion explains <decision topic>?
-Why does <component> behave this way?
-```
-
-Avoid queries like:
-
-- `auth`
-- `rate limiting`
-- `planning`
-- `search registry`
-
-Prefer:
-
-- `How does the auth-service token refresh flow work?`
-- `What conventions does the team follow for rate limiting middleware in the API layer?`
-- `What are the known gotchas in the planner loop for answer refinement?`
-- `What PR or design doc explains the agentic search registry design?`
-
-## Using the Output
-
-Typical output includes the most relevant source code, PRs, docs, Slack conversations, and issues for the query. Use that output to drive the next step:
-
-- Treat returned source code as reference context for the default branch, not necessarily for the current local workspace.
-- Pull out concrete entities from the returned snippets.
-- Follow links and referenced artifacts inside the results when they look promising.
-- Follow the strongest lead first.
-- Re-query if the result is promising but incomplete.
-- Re-query if the result answers only part of the question.
-- Use extracted entities to drive follow-up retrieval or code exploration.
-- Say explicitly when the tool returned thin or conflicting context.
+See `references/query-cookbook.md` for example queries organized by scenario.

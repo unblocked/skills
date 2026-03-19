@@ -4,9 +4,8 @@ description: >
   Deep research for broad investigation across code, PRs, docs, Slack, and
   Jira. Use when the agent needs to understand how something works, why it
   behaves this way, what changed, or what risks exist before coding or while
-  stuck. Prefer one `research_task` call at the start for cross-system or
-  ambiguous investigations, and use narrower tools only for targeted follow-up
-  gaps.
+  stuck. Encodes when to use `research_task`, how to shape the input, how to
+  choose `effort`, and when a narrower tool is a better fit.
 ---
 
 # Unblocked Research
@@ -98,6 +97,14 @@ Prefer:
    - If the gap spans multiple sources or systems, make another `research_task` call for the missing aspect.
    - If the gap is a single entity, artifact, or URL, use the appropriate narrower tool (`unblocked_context_engine`, `data_retrieval`, `link_resolver`, etc.).
 7. Reassess before making further calls.
+
+## Parallel Exploration
+
+For broad or unfamiliar investigations, you can launch `research_task` in parallel with exploration agents working the local codebase. This is useful when both paths are likely to be slow and complementary.
+
+- Use one clear investigation objective per `research_task` call.
+- Keep the research question distinct from the local exploration task to avoid duplicating work.
+- Use the research brief to steer the next local reads, searches, or follow-up tool calls.
 
 ## Handling Failure or Empty Results
 

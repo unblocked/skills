@@ -1,15 +1,14 @@
 ---
 name: unblocked-context-engine
 description: >
-  Use unblocked_context_engine to answer ONE specific question about ONE
-  specific entity — getting back code, PRs, docs, Slack threads, and Jira
-  issues in one shot. Invoke this skill: at the very start of any task before
-  touching unfamiliar code; before entering a class, module, or service you
-  haven't read yet; when you see behavior that doesn't match the code and need
-  to check history; when you want to know if a bug or pattern is already
-  documented. Also use it proactively when touching any subsystem where team
-  decisions, rejected approaches, or prior incidents might be relevant — even
-  if the code looks obvious.
+  Use unblocked_context_engine for a focused question about a specific entity
+  (class, service, method, API, or module) — returns code, PRs, docs, Slack
+  threads, and Jira issues in one shot. Use when the user asks "what is X",
+  "how does X work", "why does X do Y", or "tell me about X". Also use
+  proactively before touching unfamiliar code, when behavior doesn't match
+  expectations, or to check if a bug or pattern is already documented. For
+  broad investigation spanning multiple entities or systems, use
+  unblocked-research instead.
 ---
 
 # Unblocked Context Engine
@@ -45,6 +44,11 @@ Direct retrieval (Grep, Glob, Read) is faster when:
 - The question is about syntax or structure, not history or intent
 - No organizational context (team decisions, prior incidents, rejected alternatives) is plausibly relevant
 - You only need the current implementation, not the reasoning behind it
+
+Use `unblocked-research` instead when:
+- The question spans multiple entities, systems, or APIs
+- The user is planning integration, migration, or upgrade work
+- You would need 3+ separate context-engine calls to build the picture
 
 ## Interpreting Results
 

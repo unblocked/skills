@@ -2,12 +2,13 @@
 name: unblocked-research
 description: >
   Deep research via research_task for broad investigation across code, PRs,
-  docs, Slack, and Jira. Use when the agent needs to understand how a system
-  works, why behavior changed, what risks exist, or when 5+ exploration steps
-  haven't converged. Also use when you would otherwise need 3+ separate lookups
-  to build the picture, or are tempted to inspect build caches, decompile jars,
-  or manually research library changes. Encodes how to shape the input, how to
-  choose effort, and when a narrower tool is a better fit.
+  docs, Slack, and Jira. Use when the user asks to "research", "investigate",
+  "look into", or "explore" a topic, or when the question spans multiple
+  entities, systems, or APIs (e.g., planning integration, migration, or upgrade
+  work). Also use when you need 3+ separate lookups to build the picture, or
+  when prior exploration hasn't converged. Encodes how to shape the input, how
+  to choose effort, and when a narrower tool is a better fit. For a focused
+  question about one specific entity, use unblocked-context-engine instead.
 ---
 
 # Unblocked Research

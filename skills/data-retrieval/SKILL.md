@@ -45,7 +45,7 @@ Include the most specific details you have — project keys, channel names, repo
 - Question is about *how* or *why*, not *what happened* — use `unblocked_context_engine`.
 - Need a synthesized investigation across multiple sources — use `research_task`.
 - Already have the exact URL — use `link_resolver`.
-- Need a timeline or decision narrative — use `historical_context`.
+- Need a timeline or decision narrative — use `unblocked_context_engine`.
 
 ## Interpreting Results
 

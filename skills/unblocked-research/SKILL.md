@@ -17,7 +17,7 @@ Calls `research_task` for multi-source investigation — synthesizing code, PRs,
 
 ## Gotchas
 
-- **Using research_task when a narrower tool suffices** — `research_task` has higher latency. Use `unblocked_context_engine` for one question about one entity, `data_retrieval` for known PR/Jira/Slack lookups, `link_resolver` for a URL you already have, `historical_context` for a timeline or decision narrative.
+- **Using research_task when a narrower tool suffices** — `research_task` has higher latency. Use `unblocked_context_engine` for one question about one entity, `data_retrieval` for known PR/Jira/Slack lookups, `link_resolver` for a URL you already have.
 - **Keyword fragments instead of detailed directives** — `auth` or `gradle upgrade` returns noise. Write 2-5 sentences with concrete entities and investigative questions.
 - **Defaulting to `effort: high`** — `medium` is the right default. Reserve `high` for architecture, cross-system, or last-resort investigations.
 - **One sprawling query instead of scoped calls** — split distinct unknowns into separate `research_task` calls (possibly parallel) rather than cramming everything into one query.

@@ -13,7 +13,7 @@ Understand the high-level shape before diving into details.
 - `unblocked_context_engine`: "What is the purpose of [system/repo]?"
 - `unblocked_context_engine`: "What are the main components of [system] and how do they interact?"
 - `unblocked_context_engine`: "What does [system] depend on and what depends on it?"
-- `historical_context`: "Why was [system] designed this way? What alternatives were considered?"
+- `unblocked_context_engine`: "Why was [system] designed this way? What alternatives were considered?"
 
 ### What to Capture
 
@@ -62,9 +62,9 @@ Understand how the team writes code in this area before writing your own.
 
 Understand why the code looks the way it does — not just what it does.
 
-- `historical_context`: "What key decisions shaped [system]?"
-- `historical_context`: "What technical debt exists in [area]? Are there known issues?"
-- `historical_context`: "What was the original design intent for [component]?"
+- `unblocked_context_engine`: "What key decisions shaped [system]?"
+- `unblocked_context_engine`: "What technical debt exists in [area]? Are there known issues?"
+- `unblocked_context_engine`: "What was the original design intent for [component]?"
 
 ### What to Watch For
 
@@ -92,8 +92,8 @@ Know who has context when questions arise during implementation.
 unblocked_context_engine: "What is the notification system and how does it work?"
 unblocked_context_engine: "What are the main components of the notification pipeline?"
 unblocked_context_engine: "What patterns does the team use for async message processing?"
-historical_context: "Why was the notification system designed with an event-driven architecture?"
-historical_context: "What technical debt exists in the notification system?"
+unblocked_context_engine: "Why was the notification system designed with an event-driven architecture?"
+unblocked_context_engine: "What technical debt exists in the notification system?"
 data_retrieval: recent PRs touching src/notifications/
 ```
 

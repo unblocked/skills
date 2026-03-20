@@ -27,8 +27,8 @@ The bug probably started because something changed. Find what.
 
 ### Git and PR History
 
-- `historical_context`: "What changed recently in [file/system]?"
-- `historical_context`: "When was [function/code] last modified and why?"
+- `unblocked_context_engine`: "What changed recently in [file/system]?"
+- `unblocked_context_engine`: "When was [function/code] last modified and why?"
 - `data_retrieval`: recent PRs touching the affected files
 - `unblocked_context_engine`: "What went out in the last deployment affecting [area]?"
 
@@ -45,9 +45,9 @@ The bug probably started because something changed. Find what.
 
 Has this happened before? If so, the previous fix may have regressed.
 
-- `historical_context`: "Has this [error/bug] been reported before?"
-- `historical_context`: "What's the history of issues with [system]?"
-- `historical_context`: "How was [similar bug] fixed previously?"
+- `unblocked_context_engine`: "Has this [error/bug] been reported before?"
+- `unblocked_context_engine`: "What's the history of issues with [system]?"
+- `unblocked_context_engine`: "How was [similar bug] fixed previously?"
 
 If a prior fix exists, check whether it was overwritten or bypassed by recent changes.
 
@@ -85,8 +85,8 @@ If you can't answer all four, gather more context before proceeding.
 
 **Hydration queries:**
 ```
-historical_context: "What changed in the payment system this week?"
-historical_context: "Has the payment timeout issue happened before?"
+unblocked_context_engine: "What changed in the payment system this week?"
+unblocked_context_engine: "Has the payment timeout issue happened before?"
 data_retrieval: recent PRs touching the payment system
 ```
 

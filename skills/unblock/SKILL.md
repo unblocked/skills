@@ -96,12 +96,12 @@ questions dramatically outperform broad ones.
 
 1. `unblocked_context_engine`: "How does [feature area] work in this codebase?"
 2. `unblocked_context_engine`: "What conventions does the team follow for [relevant pattern]?"
-3. `historical_context`: "What decisions were made about [related area]?"
+3. `unblocked_context_engine`: "What decisions were made about [related area]?"
 4. `data_retrieval`: recent PRs and issues related to the area being changed
 
 **Also query for potential pitfalls:**
 
-5. `historical_context`: "Has the team tried [this kind of change] before? What happened?"
+5. `unblocked_context_engine`: "Has the team tried [this kind of change] before? What happened?"
 6. `unblocked_context_engine`: "What are the known gotchas or edge cases in [area]?"
 
 **Example** — "add rate limiting to the API":
@@ -109,8 +109,8 @@ questions dramatically outperform broad ones.
 unblocked_context_engine: "How does the API middleware pipeline work?"
 unblocked_context_engine: "Are there existing rate limiting or throttling mechanisms?"
 unblocked_context_engine: "What patterns does the team use for middleware configuration?"
-historical_context: "What decisions were made about API authentication and middleware?"
-historical_context: "Has rate limiting been attempted or discussed before?"
+unblocked_context_engine: "What decisions were made about API authentication and middleware?"
+unblocked_context_engine: "Has rate limiting been attempted or discussed before?"
 data_retrieval: "PRs merged in the last 2 weeks touching the API layer"
 ```
 
@@ -164,7 +164,7 @@ catch problems when they're cheap to fix — before they become code.
    to know about these files and their dependencies? Are there conventions for how changes
    in this area are typically structured?"
 
-3. `historical_context`: "Has the team tried [planned approach] before? Were there any
+3. `unblocked_context_engine`: "Has the team tried [planned approach] before? Were there any
    problems or rejected alternatives?"
 
 4. `unblocked_context_engine`: "What could go wrong with [planned approach]? Are there
@@ -241,7 +241,7 @@ caught problems in the approach — this step catches problems in the execution.
 3. `unblocked_context_engine`: "What are the team's testing conventions for [area changed]?
    Do the changes we made follow those patterns?"
 
-4. `historical_context`: "Have there been issues in the past with [the approach taken in
+4. `unblocked_context_engine`: "Have there been issues in the past with [the approach taken in
    generated code] in this area of the codebase?"
 
 **What you're looking for in the review:**
@@ -290,7 +290,7 @@ existing utility, add a missing import) do not need re-review.
 | Question | Tool |
 |---|---|
 | How/why does X work? | `unblocked_context_engine` |
-| What was decided about X? | `historical_context` |
+| What was decided about X? | `unblocked_context_engine` |
 | Recent PRs/issues in area X | `data_retrieval` |
 | Contents of a specific PR/issue URL | `link_resolver` |
 | Debug a build/runtime failure | `failure_debugging` |

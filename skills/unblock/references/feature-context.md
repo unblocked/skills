@@ -41,7 +41,7 @@ What will the feature interact with?
 ### Check for Constraints
 
 - `unblocked_context_engine`: "Are there performance or security constraints for [area]?"
-- `historical_context`: "What non-functional requirements exist for [system]?"
+- `unblocked_context_engine`: "What non-functional requirements exist for [system]?"
 
 ---
 
@@ -51,9 +51,9 @@ What will the feature interact with?
 
 Was this feature tried before? What happened?
 
-- `historical_context`: "Has [feature] been attempted before? What happened?"
-- `historical_context`: "Why was [system] designed this way?"
-- `historical_context`: "What alternatives were considered for [decision]?"
+- `unblocked_context_engine`: "Has [feature] been attempted before? What happened?"
+- `unblocked_context_engine`: "Why was [system] designed this way?"
+- `unblocked_context_engine`: "What alternatives were considered for [decision]?"
 
 ### Identify Domain Experts
 
@@ -84,7 +84,7 @@ If you can't answer these, gather more context before proceeding to the plan.
 ```
 unblocked_context_engine: "How does the notification system work?"
 unblocked_context_engine: "What patterns does the team use for user preferences?"
-historical_context: "Has notification preferences been discussed or attempted?"
+unblocked_context_engine: "Has notification preferences been discussed or attempted?"
 data_retrieval: recent PRs touching notifications or user preferences
 ```
 

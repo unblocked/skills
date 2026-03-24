@@ -1,19 +1,25 @@
 ---
 name: unblocked-context-engine
 description: >
-  Use unblocked_context_engine for a focused question about a specific entity
-  (class, service, method, API, or module) — returns code, PRs, docs, Slack
-  threads, and Jira issues in one shot. Use when the user asks "what is X",
-  "how does X work", "why does X do Y", or "tell me about X". Also use
-  proactively before touching unfamiliar code, when behavior doesn't match
-  expectations, or to check if a bug or pattern is already documented. For
-  broad investigation spanning multiple entities or systems, use
-  unblocked-research instead.
+  Surgical single-entity lookup via unblocked_context_engine. Returns code,
+  PRs, docs, Slack threads, and Jira issues for ONE focused question about
+  ONE specific class, module, endpoint, or service. Invoke proactively
+  mid-implementation whenever you encounter an unknown about a specific
+  entity.
+  TRIGGER when: you are mid-implementation and hit a specific unknown about
+  one entity; you need to know why a method behaves a certain way; you need
+  to check if a bug or pattern is already documented; you need the decision
+  history behind one specific piece of code — without breaking your coding
+  flow.
+  DO NOT TRIGGER when: you are planning, scoping, or investigating before
+  writing code; the question spans multiple systems or entities; you need to
+  build a broad picture — use unblocked-research for comprehensive
+  investigation during planning phases.
 ---
 
 # Unblocked Context Engine
 
-Returns code, PRs, docs, Slack threads, and Jira issues for a single focused question. Use it when the answer to "why does this exist?" or "why does it work this way?" is not visible in the code itself.
+Surgical single-entity retrieval during active coding. Returns code, PRs, docs, Slack threads, and Jira issues for one focused question. Use it mid-implementation when the answer to "why does this exist?" or "why does it work this way?" is not visible in the code itself. If you are still in a planning or investigation phase, use `research_task` instead for a comprehensive picture.
 
 ## Gotchas
 
@@ -21,7 +27,6 @@ Returns code, PRs, docs, Slack threads, and Jira issues for a single focused que
 - **One broad query instead of parallel focused ones** — two unknowns need two queries run in parallel, not one umbrella question. Broad queries dilute ranking and bury the best results.
 - **Not mining identifiers from results before re-querying** — the first result contains stronger nouns (file paths, class names, PR numbers) than the original request. Extract them before forming follow-up queries.
 - **Treating returned code as current local state** — results reflect the default branch, not the local workspace. Always verify against local files before acting.
-- **Skipping the tool for "obvious" subsystems** — well-known services often have decisions baked into Slack threads or closed PRs that aren't visible in the code. When in doubt, query.
 - **Asking questions the code can answer directly** — if you only need the current implementation (not the history or reasoning behind it), use Grep/Glob/Read instead. The tool's value is organizational context, not code search.
 
 ## Input
@@ -40,6 +45,7 @@ Write each query as a complete question. Include the most concrete identifier yo
 ## When to Skip
 
 Direct retrieval (Grep, Glob, Read) is faster when:
+- You are in a planning, scoping, or investigation phase and need to understand how multiple things fit together — use `research_task` instead.
 - You already know exactly which file and line to look at
 - The question is about syntax or structure, not history or intent
 - No organizational context (team decisions, prior incidents, rejected alternatives) is plausibly relevant

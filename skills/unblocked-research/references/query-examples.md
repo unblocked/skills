@@ -14,6 +14,15 @@
 **Assessing risk:**
 `Assess the risk of removing the legacy sync path in DataExportJob. Identify which downstream consumers still rely on synchronous exports, what monitoring exists, and whether there are recent Slack threads or Jira issues about deprecation timelines.`
 
+**Onboarding to an unfamiliar area:**
+`Explain how the notification pipeline works end-to-end — from event emission through the queue to channel adapters (email, SMS, push). Include the key abstractions, which teams own which pieces, any recent migrations or known tech debt, and where the main configuration lives.`
+
+**Investigating an incident:**
+`Research what caused the elevated error rates in checkout-service between March 10-12. Include recent deployments, any related Slack incident threads, config changes, and whether similar incidents have occurred before.`
+
+**Pre-refactor impact analysis:**
+`Map everything that depends on the LegacyUserProfile model — which services read from it, which write to it, what API contracts expose its fields, and whether there are existing plans or discussions about replacing it.`
+
 ## Bad vs Good
 
 | Bad | Good |

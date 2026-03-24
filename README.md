@@ -12,6 +12,14 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | [unblocked-research](skills/unblocked-research/) | Deep investigation across code, PRs, docs, Slack, and Jira when the agent needs to understand how something works, what changed, or what risks exist |
 | [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
 
+## Cookbook
+
+Recipes that compose skills for specific scenarios — fork and customize for your environment:
+
+| Recipe | Description |
+|--------|-------------|
+| [headless-workflow](cookbook/headless-workflow/) | Autonomous coding workflow for headless/background agents — `research_task` hydration, autonomous review gates, no user checkpoints |
+
 ## Setup
 
 ### Unblocked CLI (Recommended)

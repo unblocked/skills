@@ -1,20 +1,25 @@
 ---
 name: unblocked-context-engine
 description: >
-  Use unblocked_context_engine to answer ONE specific question about ONE
-  specific entity — getting back code, PRs, docs, Slack threads, and Jira
-  issues in one shot. Invoke this skill: at the very start of any task before
-  touching unfamiliar code; before entering a class, module, or service you
-  haven't read yet; when you see behavior that doesn't match the code and need
-  to check history; when you want to know if a bug or pattern is already
-  documented. Also use it proactively when touching any subsystem where team
-  decisions, rejected approaches, or prior incidents might be relevant — even
-  if the code looks obvious.
+  Surgical single-entity lookup via unblocked_context_engine. Returns code,
+  PRs, docs, Slack threads, and Jira issues for ONE focused question about
+  ONE specific class, module, endpoint, or service. Invoke proactively
+  mid-implementation whenever you encounter an unknown about a specific
+  entity.
+  TRIGGER when: you are mid-implementation and hit a specific unknown about
+  one entity; you need to know why a method behaves a certain way; you need
+  to check if a bug or pattern is already documented; you need the decision
+  history behind one specific piece of code — without breaking your coding
+  flow.
+  DO NOT TRIGGER when: you are planning, scoping, or investigating before
+  writing code; the question spans multiple systems or entities; you need to
+  build a broad picture — use unblocked-research for comprehensive
+  investigation during planning phases.
 ---
 
 # Unblocked Context Engine
 
-Returns code, PRs, docs, Slack threads, and Jira issues for a single focused question. Use it when the answer to "why does this exist?" or "why does it work this way?" is not visible in the code itself.
+Surgical single-entity retrieval during active coding. Returns code, PRs, docs, Slack threads, and Jira issues for one focused question. Use it mid-implementation when the answer to "why does this exist?" or "why does it work this way?" is not visible in the code itself. If you are still in a planning or investigation phase, use `research_task` instead for a comprehensive picture.
 
 ## Gotchas
 
@@ -22,7 +27,6 @@ Returns code, PRs, docs, Slack threads, and Jira issues for a single focused que
 - **One broad query instead of parallel focused ones** — two unknowns need two queries run in parallel, not one umbrella question. Broad queries dilute ranking and bury the best results.
 - **Not mining identifiers from results before re-querying** — the first result contains stronger nouns (file paths, class names, PR numbers) than the original request. Extract them before forming follow-up queries.
 - **Treating returned code as current local state** — results reflect the default branch, not the local workspace. Always verify against local files before acting.
-- **Skipping the tool for "obvious" subsystems** — well-known services often have decisions baked into Slack threads or closed PRs that aren't visible in the code. When in doubt, query.
 - **Asking questions the code can answer directly** — if you only need the current implementation (not the history or reasoning behind it), use Grep/Glob/Read instead. The tool's value is organizational context, not code search.
 
 ## Input
@@ -41,10 +45,16 @@ Write each query as a complete question. Include the most concrete identifier yo
 ## When to Skip
 
 Direct retrieval (Grep, Glob, Read) is faster when:
+- You are in a planning, scoping, or investigation phase and need to understand how multiple things fit together — use `research_task` instead.
 - You already know exactly which file and line to look at
 - The question is about syntax or structure, not history or intent
 - No organizational context (team decisions, prior incidents, rejected alternatives) is plausibly relevant
 - You only need the current implementation, not the reasoning behind it
+
+Use `unblocked-research` instead when:
+- The question spans multiple entities, systems, or APIs
+- The user is planning integration, migration, or upgrade work
+- You would need 3+ separate context-engine calls to build the picture
 
 ## Interpreting Results
 

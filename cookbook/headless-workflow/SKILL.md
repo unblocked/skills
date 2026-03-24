@@ -10,9 +10,7 @@ description: >
 
 # Headless Workflow
 
-Execute this task autonomously: **$ARGUMENTS**
-
-Autonomous 7-phase coding workflow for headless execution. The agent runs to completion without user checkpoints, uses `research_task` for broad context hydration, and makes autonomous decisions at review gates.
+Autonomous 7-phase coding workflow for headless execution. Apply this workflow to the task provided in the user's prompt. The agent runs to completion without user checkpoints, uses `research_task` for broad context hydration, and makes autonomous decisions at review gates.
 
 ## Gotchas
 

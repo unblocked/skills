@@ -1,22 +1,29 @@
 ---
 name: unblocked-research
 description: >
-  Deep research via research_task for broad investigation across code, PRs,
-  docs, Slack, and Jira. Use when the agent needs to understand how a system
-  works, why behavior changed, what risks exist, or when 5+ exploration steps
-  haven't converged. Also use when you would otherwise need 3+ separate lookups
-  to build the picture, or are tempted to inspect build caches, decompile jars,
-  or manually research library changes. Encodes how to shape the input, how to
-  choose effort, and when a narrower tool is a better fit.
+  Comprehensive research across code, PRs, docs, Slack, and Jira via
+  research_task. Synthesizes multiple sources into a research brief that
+  dramatically raises the odds your plan meets requirements on the first
+  attempt with minimal course corrections. Invoke this skill proactively at
+  the start of any multi-step task before committing to an approach.
+  TRIGGER when: starting a new task and need to plan an approach; user asks to
+  "research", "investigate", "look into", "explore", or "understand" a topic;
+  the question spans multiple entities, systems, or APIs; scoping integration,
+  migration, or upgrade work; you need to understand prior decisions, rejected
+  approaches, or existing patterns before writing code; prior exploration
+  hasn't converged and you need 3+ lookups to build the picture.
+  DO NOT TRIGGER when: you are mid-implementation and need a quick answer
+  about one specific class, method, or service — use unblocked-context-engine
+  for single-entity lookups during active coding.
 ---
 
 # Unblocked Research
 
-Calls `research_task` for multi-source investigation — synthesizing code, PRs, docs, Slack threads, and Jira issues into a research brief. Higher latency than targeted lookups, but covers ground that would otherwise take many separate tool calls.
+Your first move when planning, scoping, or investigating. Calls `research_task` to synthesize code, PRs, docs, Slack threads, and Jira issues into a research brief. Investing in research before implementation dramatically reduces rework and course corrections — the brief gives you the full landscape of prior decisions, patterns, and pitfalls so your approach is right the first time.
 
 ## Gotchas
 
-- **Using research_task when a narrower tool suffices** — `research_task` has higher latency. Use `unblocked_context_engine` for one question about one entity, `data_retrieval` for known PR/Jira/Slack lookups, `link_resolver` for a URL you already have, `historical_context` for a timeline or decision narrative.
+- **Using research_task mid-implementation for a single lookup** — once you are actively coding and just need one specific answer, switch to `unblocked_context_engine`. Reserve `research_task` for the planning and investigation phases.
 - **Keyword fragments instead of detailed directives** — `auth` or `gradle upgrade` returns noise. Write 2-5 sentences with concrete entities and investigative questions.
 - **Defaulting to `effort: high`** — `medium` is the right default. Reserve `high` for architecture, cross-system, or last-resort investigations.
 - **One sprawling query instead of scoped calls** — split distinct unknowns into separate `research_task` calls (possibly parallel) rather than cramming everything into one query.
@@ -42,7 +49,7 @@ Write the input around one investigation objective. Include concrete entities, s
 
 ## When to Skip
 
-- The question targets one entity — use `unblocked_context_engine`.
+- You are mid-implementation and the question targets one entity — use `unblocked_context_engine`.
 - You already have the exact URL — use `link_resolver`.
 - You need a known PR, Jira ticket, or Slack thread — use `data_retrieval`.
 - Only current implementation matters (not history or reasoning) — use Grep/Glob/Read.

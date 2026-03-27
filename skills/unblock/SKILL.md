@@ -61,6 +61,7 @@ between what was planned and what was generated.
 ## Principles
 
 - **Multiple specific queries > one broad query.** Ask 3-4 focused questions, not one vague one.
+- **Use `research_task` for deep investigation.** When the task requires understanding how something works, why it behaves a certain way, or what changed — prefer one `research_task` call over multiple individual lookups. Use targeted tools for narrow follow-ups.
 - **Two review gates, not one.** The plan review prevents writing wrong code. The code review catches what slipped through. Both are mandatory.
 - **Plans must be specific enough to review.** If the plan is vague, the review can't catch problems. Name files, reference patterns, cite decisions.
 - **Default to existing patterns.** When Unblocked shows the team does something a certain way, follow it — even if you think another way is "better." Consistency wins.
@@ -74,6 +75,7 @@ Not every change needs equal ceremony. Scale the workflow to fit the task:
 - **Small changes** (add a helper, adjust logic in one file): Run Phases 1-2 lightly — one or two queries — then proceed through the rest.
 - **Standard changes** (new feature, bug fix, refactor): Run the full workflow as written.
 - **Large changes** (cross-cutting refactor, new subsystem): Run the full workflow, expect multiple review loops, and consider breaking the task into smaller pieces.
+- **Investigation tasks** (understand architecture, debug root cause, triage, explain behaviour): Use `research_task` as the primary hydration tool (see Phase 1). If the goal is purely understanding with no code change, Phases 2-7 are optional — present findings directly.
 
 **When in doubt, run the full workflow.** The cost of an unnecessary hydration query is seconds; the cost of missing context is a rewrite. Even the abbreviated path for trivial changes keeps the code review gate (Phase 6).
 
@@ -89,7 +91,44 @@ For specialized task types, load the relevant reference file for additional guid
 
 ## Phase 1: Hydrate Context (Unblocked)
 
-Before planning, gather context from Unblocked. Run **multiple targeted queries** — specific
+Before planning, gather context from Unblocked. Choose the hydration strategy based on the
+nature of the task.
+
+### Strategy A: Deep Research (investigation-heavy tasks)
+
+When the task requires broad understanding — investigating how a system works, why something
+behaves a certain way, debugging root causes, or gathering context across multiple systems —
+start with `research_task`. One call replaces multiple individual lookups.
+
+**Default behaviour:**
+- Use `effort: medium` by default.
+- Use `effort: high` for high-stakes or cross-system investigations.
+- Use `effort: low` only for narrow, low-risk questions.
+- Keep one topic per call. For multiple independent topics, run parallel `research_task` calls.
+
+**Write the `query` in natural language. There is no fixed template.**
+
+```
+research_task (effort: medium): "How does [feature area] work in this codebase,
+  what conventions does the team follow, and what decisions have been made?"
+```
+
+```
+research_task (effort: high): "Investigate [cross-cutting concern] across
+  [system A] and [system B] — how do they interact, what changed recently,
+  and what are the risks?"
+```
+
+**After `research_task`, fill gaps with targeted follow-ups (one at a time):**
+- Missing a specific PR/Jira/Slack record → `data_retrieval`
+- Need details behind a known GitHub PR/issue link → `link_resolver`
+- Need historical sequence or decision timeline → `historical_context`
+- Need team convention/terminology clarification → `unblocked_context_engine`
+
+### Strategy B: Targeted Queries (well-scoped tasks)
+
+When you already understand the problem space and need specific facts — a known pattern,
+a recent PR, a particular convention — run **multiple targeted queries** directly. Specific
 questions dramatically outperform broad ones.
 
 **Required queries (run all of these):**
@@ -104,7 +143,18 @@ questions dramatically outperform broad ones.
 5. `historical_context`: "Has the team tried [this kind of change] before? What happened?"
 6. `unblocked_context_engine`: "What are the known gotchas or edge cases in [area]?"
 
-**Example** — "add rate limiting to the API":
+### Choosing a strategy
+
+| Situation | Strategy |
+|---|---|
+| Investigating, triaging, or debugging root cause | A (Deep Research) |
+| Understanding unfamiliar architecture or data flow | A (Deep Research) |
+| Cross-system or high-stakes change | A (Deep Research) |
+| Gathering context before a well-understood feature | B (Targeted Queries) |
+| Looking up a specific convention or recent PR | B (Targeted Queries) |
+| Small/trivial change needing light hydration | B (Targeted Queries) |
+
+**Example** — "add rate limiting to the API" (Strategy B):
 ```
 unblocked_context_engine: "How does the API middleware pipeline work?"
 unblocked_context_engine: "Are there existing rate limiting or throttling mechanisms?"
@@ -112,6 +162,13 @@ unblocked_context_engine: "What patterns does the team use for middleware config
 historical_context: "What decisions were made about API authentication and middleware?"
 historical_context: "Has rate limiting been attempted or discussed before?"
 data_retrieval: "PRs merged in the last 2 weeks touching the API layer"
+```
+
+**Example** — "why are API responses slow for large payloads?" (Strategy A):
+```
+research_task (effort: medium): "Investigate how API response serialization and
+  payload handling works in this codebase, including any known performance issues
+  or recent changes to the response pipeline."
 ```
 
 **Collect and carry forward:**
@@ -289,8 +346,23 @@ existing utility, add a missing import) do not need re-review.
 
 | Question | Tool |
 |---|---|
-| How/why does X work? | `unblocked_context_engine` |
+| Deep investigation across systems/history | `research_task` |
+| How/why does X work? (targeted) | `unblocked_context_engine` |
 | What was decided about X? | `historical_context` |
 | Recent PRs/issues in area X | `data_retrieval` |
 | Contents of a specific PR/issue URL | `link_resolver` |
 | Debug a build/runtime failure | `failure_debugging` |
+
+### `research_task` vs. individual tools
+
+`research_task` produces a structured, evidence-based briefing by searching across all
+connected sources (code, PRs, Slack, Jira, docs) in a single call. Prefer it when:
+- The question spans multiple systems or data sources
+- You need to understand *how* and *why*, not just retrieve a record
+- You would otherwise need 3+ individual tool calls to cover the topic
+
+Use individual tools (`unblocked_context_engine`, `historical_context`, `data_retrieval`,
+`link_resolver`) when:
+- The question is narrow and specific (one convention, one PR, one decision)
+- You already have broad context and need to fill a specific gap
+- You need a filtered activity lookup (e.g., "PRs by Alice last week")

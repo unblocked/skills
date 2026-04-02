@@ -10,7 +10,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 |-------|-------------|
 | [unblocked-context-engine](skills/unblocked-context-engine/) | Focused institutional-context lookups for architecture, conventions, prior art, and plan validation |
 | [unblocked-research](skills/unblocked-research/) | Deep investigation across code, PRs, docs, Slack, and Jira when the agent needs to understand how something works, what changed, or what risks exist |
-| [unblock](skills/unblock/) | Context gathering workflows for software engineering — helps engineers bring external context (PRs, Slack, Jira, docs) into their coding environment |
+| [unblocked-data-retrieval](skills/unblocked-data-retrieval/) | Targeted record retrieval for Jira issues, Slack channels/threads, and pull requests — direct lookups, filtered queries, and activity checks |
 
 ## Setup
 
@@ -39,7 +39,7 @@ npx skills add unblocked/skills
 
 ### Manual Copy
 
-Copy the skill directory into your agent's skills folder. Replace `<skill-name>` with a directory such as `unblock` or `unblocked-context-engine`:
+Copy the skill directory into your agent's skills folder. Replace `<skill-name>` with a directory such as `unblocked-data-retrieval` or `unblocked-context-engine`:
 
 ```bash
 # Claude Code

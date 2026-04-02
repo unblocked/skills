@@ -22,7 +22,7 @@ description: >
   DO NOT TRIGGER when: you need a quick answer about one specific class,
   method, or service — use unblocked-context-engine for single-entity
   lookups; you already have the exact URL — use link_resolver; you need a
-  known PR, Jira ticket, or Slack thread — use data-retrieval.
+  known PR, Jira ticket, or Slack thread — use unblocked-data-retrieval.
 ---
 
 # Unblocked Research

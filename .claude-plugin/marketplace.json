@@ -16,10 +16,9 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblock",
         "./skills/unblocked-context-engine",
         "./skills/unblocked-research",
-        "./skills/data-retrieval"
+        "./skills/unblocked-data-retrieval"
       ],
       "mcpServers": {
         "unblocked": {

@@ -1,5 +1,5 @@
 ---
-name: data-retrieval
+name: unblocked-data-retrieval
 description: >
   Targeted record retrieval via data_retrieval for Jira issues, Slack
   channels/threads, and pull requests. Use when the agent needs to look up

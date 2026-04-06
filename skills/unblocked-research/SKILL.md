@@ -2,27 +2,20 @@
 name: unblocked-research
 description: >
   Comprehensive research across code, PRs, docs, Slack, and Jira via
-  research_task. Synthesizes multiple sources into a research brief that
-  dramatically raises the odds your plan meets requirements on the first
-  attempt with minimal course corrections. Invoke this skill proactively at
-  the start of any multi-step task before committing to an approach.
-  TRIGGER when: starting a new task and need to plan an approach; user asks
-  to "research", "investigate", "look into", "explore", "understand",
-  "deep dive", "map out", "audit", or "assess" a topic; user asks "how
-  does X work" and the answer spans multiple services, systems, or teams;
-  user asks "what's the history of", "what's the story with", "give me
-  context on", or "what do we know about" a topic; the question spans
-  multiple entities, systems, or APIs; scoping integration, migration,
-  upgrade, or refactor work; onboarding to an unfamiliar area of the
-  codebase; investigating an incident or production issue; assessing risk
-  or impact before a significant change; you need to understand prior
-  decisions, rejected approaches, or existing patterns before writing code;
-  prior exploration hasn't converged and you need 3+ lookups to build the
-  picture.
-  DO NOT TRIGGER when: you need a quick answer about one specific class,
-  method, or service — use unblocked-context-engine for single-entity
-  lookups; you already have the exact URL — use link_resolver; you need a
-  known PR, Jira ticket, or Slack thread — use unblocked-data-retrieval.
+  research_task. Synthesizes multiple sources into a brief that raises the
+  odds your plan meets requirements on the first attempt. Invoke at the
+  start of any multi-step task. TRIGGER when: planning a new task or
+  approach; user asks to "research", "investigate", "explore", "deep dive",
+  "map out", or "audit" a topic; user asks "how does X work" spanning
+  multiple services or teams; user asks for history or context on a topic;
+  question spans multiple entities, systems, or APIs; scoping integration,
+  migration, upgrade, or refactor; onboarding to an unfamiliar codebase
+  area; investigating an incident; assessing risk before a significant
+  change; need prior decisions or patterns before writing code; 3+ lookups
+  needed to build the picture. DO NOT TRIGGER when: quick answer about one
+  specific entity — use unblocked-context-engine; you have the exact URL —
+  use link_resolver; need a known PR, Jira ticket, or Slack thread — use
+  unblocked-data-retrieval.
 ---
 
 # Unblocked Research

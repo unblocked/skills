@@ -3,24 +3,19 @@ name: unblocked-context-engine
 description: >
   Surgical single-entity lookup via unblocked_context_engine. Returns code,
   PRs, docs, Slack threads, and Jira issues for ONE focused question about
-  ONE specific class, module, endpoint, or service. Invoke proactively
-  whenever you encounter an unknown about a specific entity — whether
-  reading, writing, or reviewing code.
-  TRIGGER when: you hit a specific unknown about one entity at any phase
-  of work; you just read code and need to understand WHY it works a
-  certain way — not just WHAT it does; you are about to modify code and
-  need the reasoning or decision history behind it; you need to check if
+  ONE specific class, module, endpoint, or service. Invoke proactively when
+  you encounter an unknown about a specific entity. TRIGGER when: you hit
+  an unknown about one entity at any phase of work; you need to understand
+  WHY code works a certain way, not just WHAT it does; you need the
+  reasoning or decision history before modifying code; you need to check if
   a bug, error pattern, or edge case is already documented; you need to
-  verify whether generated or planned code matches team conventions for
-  a specific pattern; you need to validate one specific assumption about
-  how something works; the question is "why does this exist?" or "why is
-  this done this way?" for a single entity.
-  DO NOT TRIGGER when: the question spans multiple systems or entities
-  and you need to build a broad picture — use unblocked-research for
-  comprehensive investigation; you would need 3+ context-engine calls to
-  answer the question — use unblocked-research instead; you only need
-  the current implementation (not history or reasoning) — use
-  Grep/Glob/Read directly.
+  verify code matches team conventions for a specific pattern; the question
+  is "why does this exist?" or "why is this done this way?" for a single
+  entity. DO NOT TRIGGER when: the question spans multiple systems or
+  entities — use unblocked-research for broad investigation; you would need
+  3+ context-engine calls — use unblocked-research instead; you only need
+  current implementation (not history or reasoning) — use Grep/Glob/Read
+  directly.
 ---
 
 # Unblocked Context Engine

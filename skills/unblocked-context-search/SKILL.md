@@ -13,8 +13,9 @@ description: >
   APIs; planning integration, migration, upgrade, or refactor;
   investigating an incident; assessing risk before a significant change;
   user asks to "research", "investigate", or "deep dive" a topic; you need
-  issues, messages, or PRs by filter (PROJ-123, #channel-name,
-  PR #42, "what did X work on last week", "open bugs in PROJECT"); user
+  filtered lookups across issues, messages, or PRs by issue number,
+  project ID, channel name, or keyword (e.g., "open bugs in PROJECT",
+  "what did X work on last week", PR #42); user
   asks "what's in the current sprint" or "what did X work on";
   Grep/Glob/Read failed to find the referenced code, service, or module,
   as this skill can search across repos and systems beyond the current

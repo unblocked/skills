@@ -11,6 +11,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | [unblocked-context-engine](skills/unblocked-context-engine/) | Focused institutional-context lookups for architecture, conventions, prior art, and plan validation |
 | [unblocked-research](skills/unblocked-research/) | Deep investigation across code, PRs, docs, Slack, and Jira when the agent needs to understand how something works, what changed, or what risks exist |
 | [unblocked-data-retrieval](skills/unblocked-data-retrieval/) | Targeted record retrieval for Jira issues, Slack channels/threads, and pull requests — direct lookups, filtered queries, and activity checks |
+| [unblocked-context-search](skills/unblocked-context-search/) | Unified context retrieval — semantic lookups, structured data queries, and multi-source research through a single `context_search` tool |
 
 ## Setup
 

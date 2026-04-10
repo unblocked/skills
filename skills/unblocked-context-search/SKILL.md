@@ -37,8 +37,9 @@ Grep and Read show you **what the code does now**. This tool adds:
 - **What the team expects** (conventions from team messages, docs, review comments)
 - **What's documented elsewhere** (issue trackers, wiki pages, message threads)
 - **What happened** (filtered activity — PRs merged, issues completed, message threads in a time range)
+- **What exists elsewhere** (code in other repos, services, or systems not in the local workspace)
 
-If your question is purely about current implementation, Grep/Read is faster. If your question involves intent, history, conventions, or activity across systems, this tool surfaces context that isn't in the code.
+If your question is purely about current implementation and the code is local, Grep/Read is faster. If your question involves intent, history, conventions, activity across systems, or code outside the current repo, this tool surfaces context that isn't available locally.
 
 ## Gotchas
 
@@ -53,9 +54,13 @@ If your question is purely about current implementation, Grep/Read is faster. If
 
 ## Input
 
-```text
-query: A natural-language question describing what you need.
-```
+| Parameter | Required | Description |
+|:---|:---|:---|
+| `query` | Yes | What to search for — the topic, entities, and any hard filters (date range, author, status). Write a complete phrase, not bare keywords. |
+| `effort` | No | Search effort: `low`, `medium` (default), or `high`. Use `high` for broad or exploratory searches; `low` for quick lookups on a specific topic. |
+| `include_content` | No | If `true`, return full content for each match. If `false` or omitted, return only title and URL. |
+| `instruction` | No | Relevance criteria that shape which results surface and in what order, without changing what is searched. E.g., "Prefer architecture decision records over API reference docs". |
+| `max_results` | No | Maximum number of documents to return. Defaults to the server's limit if omitted. |
 
 Write each query as a complete question or directive. Include the most concrete details you have:
 

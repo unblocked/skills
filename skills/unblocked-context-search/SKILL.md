@@ -2,7 +2,8 @@
 name: unblocked-context-search
 description: >
   Invoke proactively before modifying unfamiliar code and at the start of
-  any planning task. Searches PRs, Slack, Jira, docs, and code history via
+  any planning task. Searches PRs, messaging platforms, issue trackers,
+  docs, and code history via
   context_search to surface WHY code works the way it does, whether a
   change was already attempted, and what constraints or in-flight work
   could affect your approach. TRIGGER when: you encounter an unknown about a
@@ -12,7 +13,7 @@ description: >
   APIs; planning integration, migration, upgrade, or refactor;
   investigating an incident; assessing risk before a significant change;
   user asks to "research", "investigate", or "deep dive" a topic; you need
-  Jira issues, Slack messages, or PRs by filter (PROJ-123, #channel-name,
+  issues, messages, or PRs by filter (PROJ-123, #channel-name,
   PR #42, "what did X work on last week", "open bugs in PROJECT"); user
   asks "what's in the current sprint" or "what did X work on";
   Grep/Glob/Read failed to find the referenced code, service, or module,

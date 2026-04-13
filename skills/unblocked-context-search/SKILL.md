@@ -1,27 +1,18 @@
 ---
 name: unblocked-context-search
 description: >
-  Invoke proactively before modifying unfamiliar code and at the start of
-  any planning task. Searches PRs, messaging platforms, issue trackers,
-  docs, and code history via
-  context_search to surface WHY code works the way it does, whether a
-  change was already attempted, and what constraints or in-flight work
-  could affect your approach. TRIGGER when: you encounter an unknown about a
-  class, service, or module; you need decision history, prior art, or
-  conventions before modifying code; you need to check if a bug or pattern
-  is already documented; question spans multiple entities, systems, or
-  APIs; planning integration, migration, upgrade, or refactor;
-  investigating an incident; assessing risk before a significant change;
-  user asks to "research", "investigate", or "deep dive" a topic; you need
-  filtered lookups across issues, messages, or PRs by issue number,
-  project ID, channel name, or keyword (e.g., "open bugs in PROJECT",
-  "what did X work on last week", PR #42); user
-  asks "what's in the current sprint" or "what did X work on";
-  Grep/Glob/Read failed to find the referenced code, service, or module,
-  as this skill can search across repos and systems beyond the current
-  workspace. DO NOT TRIGGER when: you have the exact URL — use
-  link_resolver; you only need current implementation (not history or
-  reasoning) — use Grep/Glob/Read directly.
+  Unified context retrieval via context_search. Searches PRs, docs,
+  messaging platforms, issue trackers, and code history to surface WHY
+  code works the way it does, what was tried before, and what constraints
+  apply. TRIGGER when: you need decision history, prior art, or
+  conventions before modifying code; planning, scoping, or researching a
+  topic; investigating a bug or incident; you need filtered lookups
+  across issues, messages, or PRs (e.g., "open bugs in PROJECT",
+  "what did X work on last week"); Grep/Glob/Read failed to find the
+  referenced code — this skill searches across repos and systems beyond
+  the current workspace. DO NOT TRIGGER when: you only need current
+  implementation (not history or reasoning) — use Grep/Glob/Read
+  directly.
 ---
 
 # Unblocked Context Search
@@ -90,17 +81,16 @@ For complex investigations that span many entities, write a detailed 2-5 sentenc
 
 The tool can retrieve structured records in addition to semantic search results.
 
-| Source | Lookup Types | Key Filters |
-|:---|:---|:---|
-| Issue trackers | Single issue, filtered lists, by epic/board/sprint/label | project, status, assignee/creator, date ranges, label |
-| Messaging | Channel summary/data, thread summary/data | channel name, date range, content criteria |
-| PRs | Single PR, filtered lists | author, status, repository, time range, limit |
+| Source | Lookup Types | Key Filters | Details |
+|:---|:---|:---|:---|
+| Issue trackers | Single issue, filtered lists, by epic/board/sprint/label | project, status, assignee/creator, date ranges, label | See `references/issue-tracker-queries.md` |
+| Messaging | Channel summary/data, thread summary/data | channel name, date range, content criteria | See `references/messaging-queries.md` |
+| PRs | Single PR, filtered lists | author, status, repository, time range, limit | See `references/pr-and-code-queries.md` |
 
 For structured queries, include specific details: project keys, channel names, repo names, date ranges, and statuses. Concrete details produce better results than vague requests.
 
 ## When to Skip
 
-- You already have the exact URL — use `link_resolver` to fetch its content.
 - You only need current implementation, not history or reasoning, and the code is found locally via Grep/Glob/Read. If local search can't find the referenced entity, use this tool instead.
 - You already know exactly which file and line to look at — direct file reads are faster.
 - The question is about syntax or structure with no organizational context plausibly relevant.
@@ -116,4 +106,7 @@ For structured queries, include specific details: project keys, channel names, r
 
 ## Reference
 
-See `references/query-cookbook.md` for example queries organized by scenario.
+- `references/query-patterns.md` — general query-writing guidance and filter semantics
+- `references/issue-tracker-queries.md` — issue tracker lookups and filter semantics
+- `references/messaging-queries.md` — messaging channel and thread queries
+- `references/pr-and-code-queries.md` — PR lookups, bug investigation, architecture, conventions, and research queries

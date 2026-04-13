@@ -1,6 +1,26 @@
-# Query Cookbook
+# PR and Code Context Queries
 
-Concrete query examples organized by scenario. Each query includes real identifiers and enough context for the tool to route effectively.
+Queries for PR lookups, bug investigation, architecture understanding, conventions, prior decisions, planning, and incident investigation.
+
+## What to Expect
+
+Responses vary by query complexity:
+
+- **PR lookups**: Structured records — title, status, author, repo, dates, and description.
+- **Single-entity questions** (bug, convention, decision): Ranked results from PRs, docs, code, and discussions with excerpts and citations.
+- **Multi-entity research** (architecture, planning, incidents): Synthesized research briefs with narrative, citations, and cross-references across multiple sources.
+
+## PR Lookups
+
+```
+What PRs did I merge last week?
+```
+```
+Show open PRs in the billing-service repo.
+```
+```
+Get the details of PR #342 in the web-client repo.
+```
 
 ## Investigating a Bug
 
@@ -90,80 +110,4 @@ Are there existing helpers or shared utilities for retry-with-backoff in the mon
 ```
 ```
 Does the team use a shared base class or mixin for API controllers, or does each controller stand alone?
-```
-
-## Issue Tracker Lookups
-
-```
-What bugs are open in the PAYMENTS project?
-```
-```
-Show me issues assigned to me that were completed last week.
-```
-```
-What issues are in the current sprint for the Platform board?
-```
-```
-What issues did I complete last week in the PAYMENTS project?
-```
-
-## Messaging Lookups
-
-```
-Summarize the #incident-response channel from the last 24 hours.
-```
-```
-Find messages mentioning "deployment rollback" in #devops this week.
-```
-```
-Show me the thread in #backend-eng about the database migration.
-```
-
-## PR Lookups
-
-```
-What PRs did I merge last week?
-```
-```
-Show open PRs in the billing-service repo.
-```
-```
-Get the details of PR #342 in the web-client repo.
-```
-
-## Filter Semantics Quick Reference
-
-- **"completed" / "finished"** — maps to *resolved date* (issue trackers) or *merged status* (PRs), not created date.
-- **"working on" / "in progress"** — maps to a *status filter* (open, InProgress). Do not add a time range.
-- **"last N PRs"** — maps to a *limit*, not a time filter. "My last 5 PRs" = most recent 5 by me.
-- **"me" / "my" / "I"** — use `me` for the current user. Use actual names only for other people.
-- **Single-day queries** — "on Monday" means start-of-day to end-of-day for that date.
-
-## Bad vs Good
-
-| Bad | Why | Good |
-|:---|:---|:---|
-| `auth` | Keyword, no question | `How does AuthService.validateToken() verify JWTs and handle expiration?` |
-| `gradle upgrade` | Too vague | `Research the Gradle 8.x upgrade path for the Android monorepo, including plugin compatibility and prior attempts.` |
-| `PROJ-123` (bare ID) | Tool needs natural language | `Show me the details of PROJ-123.` |
-| `What's happening in messaging?` | No channel, timeframe, or filter | `Summarize #platform-eng from the last 3 days.` |
-| `Find my PR about auth` | Vague | `Find my open PRs in the auth-service repo.` |
-| `Issues from last week` | Missing project or assignee | `What issues did I complete last week in the PAYMENTS project?` |
-| `why is this slow` | No entity or context | `Explain why SearchIndexer.reindexAll() degrades on catalogs with 100k+ items.` |
-
-## Splitting into Parallel Queries
-
-One broad query dilutes ranking. Split unknowns into focused queries and run them in parallel.
-
-**Bad — one umbrella query:**
-```
-How does auth work and what are the rate limiting conventions?
-```
-
-**Good — two parallel queries:**
-```
-How does AuthService.validateToken() verify JWTs and handle expiration?
-```
-```
-What conventions does the team follow for rate limiting middleware in the API gateway?
 ```

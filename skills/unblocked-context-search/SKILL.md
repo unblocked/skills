@@ -35,7 +35,6 @@ If your question is purely about current implementation and the code is local, G
 ## Gotchas
 
 - **Keyword queries return noise** — `auth` or `rate limiting` scatters results across too many entities. Write a full natural-language question with concrete identifiers: `How does AuthService.validateToken() handle expired JWTs?`
-- **One broad query instead of parallel focused ones** — two distinct unknowns need two queries run in parallel, not one umbrella question. Broad queries dilute ranking and bury the best results.
 - **Not mining identifiers from results before re-querying** — the first result contains stronger nouns (file paths, class names, PR numbers) than the original request. Extract them before forming follow-up queries.
 - **Treating returned code as current local state** — results reflect the default branch, not the local workspace. Always verify against local files before acting.
 - **Asking questions the code can answer directly** — if you only need the current implementation (not history or reasoning), use Grep/Glob/Read instead. The tool's value is organizational context, not code search.
@@ -49,9 +48,13 @@ If your question is purely about current implementation and the code is local, G
 |:---|:---|:---|
 | `query` | Yes | What to search for — the topic, entities, and any hard filters (date range, author, status). Write a complete phrase, not bare keywords. |
 | `effort` | No | Search effort: `low`, `medium` (default), or `high`. Use `high` for broad or exploratory searches; `low` for quick lookups on a specific topic. |
-| `include_content` | No | If `true`, return full content for each match. If `false` or omitted, return only title and URL. |
+| `include_content` | No | String. If `"true"`, return full content for each match. If omitted, return only title and URL. |
 | `instruction` | No | Relevance criteria that shape which results surface and in what order, without changing what is searched. E.g., "Prefer architecture decision records over API reference docs". |
-| `max_results` | No | Maximum number of documents to return. Defaults to the server's limit if omitted. |
+| `max_results` | No | String. Maximum number of documents to return. Defaults to the server's limit if omitted. |
+
+**`effort` selection:** Use `low` for single-entity lookups with concrete identifiers; `medium` (default) for most queries; `high` for exploratory or multi-source searches where you don't know which source has the answer.
+
+**`include_content` selection:** Use `"true"` when you need to read the actual content inline. Omit it for initial discovery passes where titles and URLs suffice — you can always follow up with `include_content: "true"` or resolve individual URLs.
 
 Write each query as a complete question or directive. Include the most concrete details you have:
 

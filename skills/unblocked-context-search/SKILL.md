@@ -107,6 +107,25 @@ For structured queries, include specific details: project keys, channel names, r
 - For messaging results, distinguish summary vs data content — if you got the wrong mode, re-query with the other.
 - If important gaps remain, make one targeted follow-up query with the identifiers you mined from the first result.
 
+## Going Deeper with Source-Specific Tools
+
+`context_search` casts a wide net across all sources. When results point toward a specific source type and you want more depth from that source alone, use the fine-grained tool for it — they search the same data but let you focus and filter without noise from other sources.
+
+| If results surface… | And you want more… | Use |
+|:---|:---|:---|
+| Code snippets or implementations | Code from other repos, or semantic code search | `context_search_code` |
+| PR descriptions or review discussions | More PR history, rejected approaches, change reasoning | `context_search_prs` |
+| Issue reports or tickets | More issues, related bugs, in-progress work | `context_search_issues` |
+| Wiki pages, runbooks, or design docs | More documentation across Confluence, Notion, Google Drive | `context_search_documentation` |
+| Slack threads or team conversations | More messaging context, specific channels or time ranges | `context_search_messaging` |
+
+**When to escalate to a fine-grained tool:**
+- The broad results surfaced one strong signal in a specific source type and you want to pull more from it
+- You want to filter or shape results within a source (e.g., only merged PRs, only open issues, only a specific channel)
+- The initial results mixed sources in a way that's noisy — a focused tool returns cleaner, ranked results for that source
+
+Run fine-grained follow-ups in parallel when you're chasing independent threads across multiple source types.
+
 ## Reference
 
 - `references/query-patterns.md` — general query-writing guidance and filter semantics

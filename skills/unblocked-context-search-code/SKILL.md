@@ -17,6 +17,8 @@ description: >
 
 Code-only retrieval across the current repo and other connected repos. Calls `context_search_code` with a natural-language query to semantically search code — finding implementations, usages, and patterns that Grep can't reach because the code lives in another repo or the query is conceptual rather than literal.
 
+**Sources:** GitHub, GitHub Enterprise, GitLab, GitLab Self-Managed, Bitbucket, Bitbucket Data Center, Azure DevOps.
+
 ## When This Adds Value Over Grep/Read
 
 Grep and Read are fast for literal matches in the local workspace. Use this tool when:

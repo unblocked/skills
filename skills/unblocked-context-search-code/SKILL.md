@@ -2,7 +2,7 @@
 name: unblocked-context-search-code
 description: >
   Code-only search across the current repo and connected repos via
-  context_search_code. Use this instead of context_search when you want
+  context_search_code. Use this instead of context_research when you want
   code results without Slack, Jira, or doc noise mixed in. TRIGGER when:
   Grep/Glob/Read can't find a referenced class, function, or module (it may
   live in another connected repo); you need semantic code search rather than
@@ -10,7 +10,7 @@ description: >
   used across repos; the user asks to "find", "locate", or "search for" code.
   DO NOT TRIGGER when: local Grep/Glob/Read can find what you need; you also
   need PR history, team decisions, Slack context, or issue tracker data —
-  use context_search instead.
+  use context_research instead.
 ---
 
 # Unblocked Context Search — Code
@@ -25,13 +25,13 @@ Grep and Read are fast for literal matches in the local workspace. Use this tool
 
 - **The code might live elsewhere** — a referenced class, service, or utility may be in a connected repo that isn't in the local workspace
 - **The query is conceptual** — "find all payment processors" or "how is retry logic implemented" won't match a grep pattern
-- **You want code-only results** — `context_search` returns everything (Slack, Jira, docs, PRs); this returns only code, so results stay focused when that's all you need
+- **You want code-only results** — `context_research` returns everything (Slack, Jira, docs, PRs); this returns only code, so results stay focused when that's all you need
 
 If local Grep can find it, use that. This tool's value is reach (cross-repo) and semantics (concept-level matching).
 
-## When to Use `context_search` Instead
+## When to Use `context_research` Instead
 
-Use `context_search` when you need the full picture alongside the code — PR discussions, team decisions, issue tracker context, Slack threads, architectural docs. This tool returns code only; organizational context requires `context_search`.
+Use `context_research` when you need the full picture alongside the code — PR discussions, team decisions, issue tracker context, Slack threads, architectural docs. This tool returns code only; organizational context requires `context_research`.
 
 ## Input
 
@@ -76,7 +76,7 @@ Split distinct unknowns into separate `context_search_code` calls rather than cr
 ## When to Skip
 
 - Local Grep/Glob/Read finds what you need — no reason to reach for this tool
-- You also need PR history, team discussions, issue context, or docs — use `context_search` instead, which covers all sources in one call
+- You also need PR history, team discussions, issue context, or docs — use `context_research` instead, which covers all sources in one call
 - You already know the exact file and line — direct file reads are faster
 
 ## Interpreting Results

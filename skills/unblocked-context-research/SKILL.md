@@ -47,12 +47,12 @@ If your question is purely about current implementation and the code is local, G
 | Parameter | Required | Description |
 |:---|:---|:---|
 | `query` | Yes | What to search for — the topic, entities, and any hard filters (date range, author, status). Write a complete phrase, not bare keywords. |
-| `effort` | No | Search effort: `low`, `medium` (default), or `high`. Use `high` for broad or exploratory searches; `low` for quick lookups on a specific topic. |
+| `effort` | No | Search effort: `low` (default), `medium`, or `high`. Use `low` for targeted lookups anchored on one entity, URL, or file; `medium` for exploratory queries without a clear anchor; `high` for planning, architecture reviews, migrations, incident retros, and cross-system investigations. |
 | `include_content` | No | String. If `"true"`, return full content for each match. If omitted, return only title and URL. |
 | `instruction` | No | Relevance criteria that shape which results surface and in what order, without changing what is searched. E.g., "Prefer architecture decision records over API reference docs". |
 | `max_results` | No | String. Maximum number of documents to return. Defaults to the server's limit if omitted. |
 
-**`effort` selection:** Use `low` for single-entity lookups with concrete identifiers; `medium` (default) for most queries; `high` for exploratory or multi-source searches where you don't know which source has the answer.
+**`effort` selection:** `low` (default) for targeted lookups anchored on one entity, URL, or file. `medium` for exploratory queries without a clear anchor. `high` for planning, architecture, migrations, incident retros, and cross-system investigations — use whenever you're about to produce a plan or design.
 
 **`include_content` selection:** Use `"true"` when you need to read the actual content inline. Omit it for initial discovery passes where titles and URLs suffice — you can always follow up with `include_content: "true"` or resolve individual URLs.
 

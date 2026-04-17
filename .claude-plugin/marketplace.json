@@ -16,10 +16,13 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblocked-context-engine",
-        "./skills/unblocked-research",
-        "./skills/unblocked-data-retrieval",
-        "./skills/unblocked-context-search"
+        "./skills/unblocked-context-research",
+        "./skills/unblocked-context-search-code",
+        "./skills/unblocked-context-search-prs",
+        "./skills/unblocked-context-search-issues",
+        "./skills/unblocked-context-search-documentation",
+        "./skills/unblocked-context-search-messaging",
+        "./skills/unblocked-tools-guide"
       ],
       "mcpServers": {
         "unblocked": {

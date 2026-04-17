@@ -2,7 +2,7 @@
 name: unblocked-context-search-documentation
 description: >
   Documentation-only search via context_search_documentation. Use this
-  instead of context_search when you want docs — wikis, READMEs, runbooks,
+  instead of context_research when you want docs — wikis, READMEs, runbooks,
   API references, architecture docs, ADRs, and onboarding guides — without
   Slack, PR, or issue noise mixed in. TRIGGER when: looking for setup or
   configuration instructions; finding a runbook or operational procedure;
@@ -10,7 +10,7 @@ description: >
   decision record or design doc; the user asks "is there docs for X",
   "how do I set up Y", "is this documented", or "find the runbook for Z".
   DO NOT TRIGGER when: you need the current code state — use Grep/Glob/Read;
-  you need Slack threads, PRs, or issues alongside docs — use context_search
+  you need Slack threads, PRs, or issues alongside docs — use context_research
   instead.
 ---
 
@@ -26,12 +26,12 @@ Grep and Read search local files. Use this tool when:
 
 - **The doc lives outside the repo** — wikis, internal portals, and team docs aren't in the local workspace
 - **You need operational guidance** — runbooks, deployment procedures, and incident playbooks are typically documented, not coded
-- **You want doc-only results** — `context_search` returns everything (Slack, PRs, issues, code); this returns only documentation, so results stay focused when that's all you need
+- **You want doc-only results** — `context_research` returns everything (Slack, PRs, issues, code); this returns only documentation, so results stay focused when that's all you need
 - **You're looking for explained concepts** — architecture decisions, design rationale, and API contracts are often captured in docs rather than code comments
 
-## When to Use `context_search` Instead
+## When to Use `context_research` Instead
 
-Use `context_search` when you need the full picture alongside docs — PR discussions, Slack threads, issue tracker context, or code history. This tool returns documentation only; broader context requires `context_search`.
+Use `context_research` when you need the full picture alongside docs — PR discussions, Slack threads, issue tracker context, or code history. This tool returns documentation only; broader context requires `context_research`.
 
 ## Input
 
@@ -76,7 +76,7 @@ Split distinct unknowns into separate `context_search_documentation` calls rathe
 ## When to Skip
 
 - You need the current code state — use Grep/Glob/Read
-- You also need Slack threads, PRs, or issues — use `context_search` instead
+- You also need Slack threads, PRs, or issues — use `context_research` instead
 
 ## Interpreting Results
 

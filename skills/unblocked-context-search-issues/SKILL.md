@@ -2,7 +2,7 @@
 name: unblocked-context-search-issues
 description: >
   Issue-only search across connected projects via context_search_issues. Use
-  this instead of context_search when you want issue tracker results —
+  this instead of context_research when you want issue tracker results —
   bug reports, feature requests, tasks, and epics — without Slack, PR, or
   doc noise mixed in. TRIGGER when: investigating whether a bug is already
   known or tracked; finding the requirement or ticket behind a feature;
@@ -10,7 +10,7 @@ description: >
   there an issue for this", "is this a known bug", "what ticket covers X",
   or "has this been reported before". DO NOT TRIGGER when: you need the
   current code state — use Grep/Glob/Read; you need Slack threads, PRs, or
-  docs alongside issues — use context_search instead.
+  docs alongside issues — use context_research instead.
 ---
 
 # Unblocked Context Search — Issues
@@ -26,11 +26,11 @@ Grep and Read show you what the code does now. Use this tool when:
 - **You're investigating a bug** — checking whether it's already reported, tracked, or has a known root cause
 - **You need requirement context** — the original intent behind a feature often lives in the issue, not the code
 - **You want to avoid duplicate work** — finding in-progress or planned issues before starting something new
-- **You want issue-only results** — `context_search` returns everything (Slack, PRs, docs, code); this returns only issues, so results stay focused when that's all you need
+- **You want issue-only results** — `context_research` returns everything (Slack, PRs, docs, code); this returns only issues, so results stay focused when that's all you need
 
-## When to Use `context_search` Instead
+## When to Use `context_research` Instead
 
-Use `context_search` when you need the full organizational picture alongside issues — PR discussions, Slack threads, design docs, or code history. This tool returns issues only; broader context requires `context_search`.
+Use `context_research` when you need the full organizational picture alongside issues — PR discussions, Slack threads, design docs, or code history. This tool returns issues only; broader context requires `context_research`.
 
 ## Input
 
@@ -75,7 +75,7 @@ Split distinct unknowns into separate `context_search_issues` calls rather than 
 ## When to Skip
 
 - You need the current code state — use Grep/Glob/Read
-- You also need Slack threads, PRs, or docs — use `context_search` instead
+- You also need Slack threads, PRs, or docs — use `context_research` instead
 
 ## Interpreting Results
 

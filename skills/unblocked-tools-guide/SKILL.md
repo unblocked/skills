@@ -29,7 +29,7 @@ Unblocked exposes different tool sets depending on how it's connected:
 | `context_search_prs` | PR descriptions and review discussions only |
 | `context_search_issues` | Issue tracker results only (bugs, tasks, epics) |
 | `context_search_documentation` | Wikis, runbooks, ADRs, and docs only |
-| `context_search_messaging` | Slack and Teams conversations only |
+| `context_search_messages` | Slack and Teams conversations only |
 
 If you're on MCP and a fine-grained tool call fails with "tool not found", that's expected — use `context_research` instead.
 
@@ -54,7 +54,7 @@ Use the preferred tool when available. If it isn't (tool not found error), fall 
 | PR history and decision reasoning | `context_search_prs` | `"Prefer PR descriptions and review discussions; deprioritize other sources"` |
 | Issue tracker (bugs, tasks, epics) | `context_search_issues` | `"Prefer issue tracker results; deprioritize code and messages"` |
 | Docs (wikis, runbooks, ADRs) | `context_search_documentation` | `"Prefer documentation, wikis, and runbooks; deprioritize code and messages"` |
-| Team chat (Slack, Teams) | `context_search_messaging` | `"Prefer Slack threads and team conversations; deprioritize code and docs"` |
+| Team chat (Slack, Teams) | `context_search_messages` | `"Prefer Slack threads and team conversations; deprioritize code and docs"` |
 | Current local code | Grep / Glob / Read | — |
 
-For detailed guidance on any tool, see the corresponding skill: `unblocked-context-research`, `unblocked-context-search-code`, `unblocked-context-search-prs`, `unblocked-context-search-issues`, `unblocked-context-search-documentation`, or `unblocked-context-search-messaging`.
+For detailed guidance on any tool, see the corresponding skill: `unblocked-context-research`, `unblocked-context-search-code`, `unblocked-context-search-prs`, `unblocked-context-search-issues`, `unblocked-context-search-documentation`, or `unblocked-context-search-messages`.

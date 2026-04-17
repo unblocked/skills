@@ -117,7 +117,7 @@ For structured queries, include specific details: project keys, channel names, r
 | PR descriptions or review discussions | More PR history, rejected approaches, change reasoning | `context_search_prs` |
 | Issue reports or tickets | More issues, related bugs, in-progress work | `context_search_issues` |
 | Wiki pages, runbooks, or design docs | More documentation across Confluence, Notion, Google Drive | `context_search_documentation` |
-| Slack threads or team conversations | More messaging context, specific channels or time ranges | `context_search_messaging` |
+| Slack threads or team conversations | More messaging context, specific channels or time ranges | `context_search_messages` |
 
 **When to escalate to a fine-grained tool:**
 - The broad results surfaced one strong signal in a specific source type and you want to pull more from it

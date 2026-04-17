@@ -1,6 +1,6 @@
 # Messaging Query Patterns
 
-Query examples for `context_search_messaging`, organized by use case.
+Query examples for `context_search_messages`, organized by use case.
 
 ## Good vs. Bad Queries
 

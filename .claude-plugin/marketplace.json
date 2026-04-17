@@ -21,7 +21,7 @@
         "./skills/unblocked-context-search-prs",
         "./skills/unblocked-context-search-issues",
         "./skills/unblocked-context-search-documentation",
-        "./skills/unblocked-context-search-messaging",
+        "./skills/unblocked-context-search-messages",
         "./skills/unblocked-tools-guide"
       ],
       "mcpServers": {

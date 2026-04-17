@@ -1,7 +1,7 @@
 ---
-name: unblocked-context-search-messaging
+name: unblocked-context-search-messages
 description: >
-  Messaging-only search via context_search_messaging. Use this instead of
+  Messaging-only search via context_search_messages. Use this instead of
   context_research when you want team conversation results — Slack threads,
   channel discussions, and chat history — without PR, issue, or doc noise
   mixed in. TRIGGER when: finding what the team discussed or decided in
@@ -15,7 +15,7 @@ description: >
 
 # Unblocked Context Search — Messaging
 
-Messaging-only retrieval. Calls `context_search_messaging` with a natural-language query to semantically search team conversations — surfacing informal context, decisions, and discussions that don't make it into code or docs.
+Messaging-only retrieval. Calls `context_search_messages` with a natural-language query to semantically search team conversations — surfacing informal context, decisions, and discussions that don't make it into code or docs.
 
 **Sources:** Slack, Microsoft Teams.
 
@@ -62,7 +62,7 @@ Write a complete question or directive, not a keyword fragment:
 
 ## Splitting Queries
 
-Split distinct unknowns into separate `context_search_messaging` calls rather than cramming everything into one query. Run them in parallel when the unknowns are independent.
+Split distinct unknowns into separate `context_search_messages` calls rather than cramming everything into one query. Run them in parallel when the unknowns are independent.
 
 **One query, two unknowns (diluted results):**
 > Find discussions about the rate limiting approach and also the gRPC migration decision.

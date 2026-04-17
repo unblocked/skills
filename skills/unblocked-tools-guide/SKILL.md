@@ -17,12 +17,13 @@ description: >
 
 Unblocked exposes different tool sets depending on how it's connected:
 
-**Available everywhere — MCP and Claude Code CLI:**
+**Available everywhere — MCP and Unblocked CLI:**
 | Tool | Purpose |
 |:---|:---|
 | `context_research` | Broad search across all sources: code, PRs, docs, issues, messages |
+| `context_get_urls` | Resolve a URL into its content |
 
-**Available in Claude Code CLI only:**
+**Available in Unblocked CLI only:**
 | Tool | Purpose |
 |:---|:---|
 | `context_search_code` | Code-only search across connected repos |

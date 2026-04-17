@@ -1,7 +1,7 @@
 ---
-name: unblocked-context-search
+name: unblocked-context-research
 description: >
-  Unified context retrieval via context_search. Searches PRs, docs,
+  Unified context retrieval via context_research. Searches PRs, docs,
   messaging platforms, issue trackers, and code history to surface WHY
   code works the way it does, what was tried before, and what constraints
   apply. TRIGGER when: you need decision history, prior art, or
@@ -17,7 +17,7 @@ description: >
 
 # Unblocked Context Search
 
-Unified retrieval for engineering context. Calls `context_search` with a natural-language query to search across code, PRs, docs, message threads, and issues — whether you need a focused single-entity lookup, a filtered data query, or a multi-source research synthesis. One tool replaces the need to choose between semantic search, structured retrieval, and deep investigation.
+Unified retrieval for engineering context. Calls `context_research` with a natural-language query to search across code, PRs, docs, message threads, and issues — whether you need a focused single-entity lookup, a filtered data query, or a multi-source research synthesis. One tool replaces the need to choose between semantic search, structured retrieval, and deep investigation.
 
 ## When This Adds Value Over Grep/Read
 
@@ -68,7 +68,7 @@ The tool routes your query to the right retrieval strategy internally — you do
 
 ## Splitting Queries
 
-Split distinct unknowns into separate `context_search` calls rather than cramming everything into one query. Each call should have one objective. Run them in parallel when the unknowns are independent.
+Split distinct unknowns into separate `context_research` calls rather than cramming everything into one query. Each call should have one objective. Run them in parallel when the unknowns are independent.
 
 **One query, two unknowns (diluted results):**
 > Investigate the authentication flow and the rate limiting conventions in the API gateway.
@@ -109,7 +109,7 @@ For structured queries, include specific details: project keys, channel names, r
 
 ## Going Deeper with Source-Specific Tools
 
-`context_search` casts a wide net across all sources. When results point toward a specific source type and you want more depth from that source alone, use the fine-grained tool for it — they search the same data but let you focus and filter without noise from other sources.
+`context_research` casts a wide net across all sources. When results point toward a specific source type and you want more depth from that source alone, use the fine-grained tool for it — they search the same data but let you focus and filter without noise from other sources.
 
 | If results surface… | And you want more… | Use |
 |:---|:---|:---|

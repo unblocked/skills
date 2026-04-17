@@ -1,6 +1,6 @@
 # Query Patterns
 
-General guidance for writing effective `context_search` queries.
+General guidance for writing effective `context_research` queries.
 
 ## Bad vs Good
 

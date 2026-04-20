@@ -22,6 +22,20 @@ description: >
 
 Your first move when planning, scoping, or investigating. Calls `research_task` to synthesize code, PRs, docs, Slack threads, and Jira issues into a research brief. Investing in research before implementation dramatically reduces rework and course corrections — the brief gives you the full landscape of prior decisions, patterns, and pitfalls so your approach is right the first time.
 
+## Tool Availability Safety Handler
+
+Tool names referenced in this skill (e.g. `research_task`, `link_resolver`) may not match what is registered in the current environment. Before calling any tool named here, follow this protocol:
+
+1. **Attempt the documented tool call first.** If it succeeds, continue normally.
+2. **If the tool is missing** (not registered, "tool not found", "unknown tool", or equivalent error), **do not fail the task and do not fabricate a call.** Instead:
+   - Invoke `listTools` (or the host's equivalent tool-discovery mechanism) to enumerate the currently available tools.
+   - Pick the most relevant replacement based on intent. Likely matches:
+     - `research_task` → `context_research`
+     - `link_resolver` → `context_get_urls`
+   - Call the replacement tool with the same natural-language query or URL list, adapting only the required argument shape.
+3. **If no suitable replacement exists,** say so explicitly, list what you searched for, and fall back to Grep/Glob/Read plus any other available skills. Never invent tool names.
+4. **Cache the mapping for the rest of the session** — once you have confirmed the resolved tool name in this environment, skip step 1 on subsequent calls.
+
 ## When This Adds Value Over Multiple Lookups
 
 Individual lookups (context-engine, Grep, Read) answer isolated questions. Research synthesizes across sources to build a coherent picture:

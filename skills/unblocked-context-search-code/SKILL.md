@@ -19,6 +19,14 @@ Code-only retrieval across the current repo and other connected repos. Calls `co
 
 **Sources:** GitHub, GitHub Enterprise, GitLab, GitLab Self-Managed, Bitbucket, Bitbucket Data Center, Azure DevOps.
 
+## How to Invoke
+
+Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix and `context_research` fallback instructions.
+
+1. **Try the CLI first.** Run `unblocked context-search-code --query "<your query>" [--instruction "<instruction>"]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
+2. **If the CLI is not installed or fails to run**, try MCP. Note that `context_search_code` is not exposed on MCP in most environments — if it's missing, fall back to the MCP `context_research` tool with a steering `instruction` like `"Prefer code and implementation results; deprioritize docs, issues, and messages"` (see `unblocked-tools-guide` for per-source steering instructions).
+3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with other code-search tools as a replacement.
+
 ## When This Adds Value Over Grep/Read
 
 Grep and Read are fast for literal matches in the local workspace. Use this tool when:
@@ -38,7 +46,7 @@ Use `context_research` when you need the full picture alongside the code — PR 
 | Parameter | Required | Description |
 |:---|:---|:---|
 | `query` | Yes | What to find — write a complete phrase with concrete identifiers, not bare keywords. |
-| `instructions` | No | Fine-grained control over which results surface: preferred repos, file types, or code patterns to prioritize or deprioritize. |
+| `instruction` | No | Fine-grained control over which results surface: preferred repos, file types, or code patterns to prioritize or deprioritize. |
 
 **Writing effective queries** — include the most concrete identifiers you have:
 
@@ -56,7 +64,7 @@ Write a complete question or directive, not a keyword fragment:
 | `PaymentProcessor` | `How is PaymentProcessor.charge() implemented, and which services call it?` |
 | `pagination` | `How do connected repos implement cursor-based pagination in REST APIs?` |
 
-**`instructions` examples:**
+**`instruction` examples:**
 - `"Prefer interface definitions and entry points over test files"`
 - `"Focus results on the billing-service and payments-service repos"`
 - `"Deprioritize generated or vendor code"`
@@ -88,4 +96,4 @@ Split distinct unknowns into separate `context_search_code` calls rather than cr
 
 ## Reference
 
-- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instructions` patterns
+- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instruction` patterns

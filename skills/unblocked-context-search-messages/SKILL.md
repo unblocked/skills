@@ -13,11 +13,19 @@ description: >
   instead.
 ---
 
-# Unblocked Context Search — Messaging
+# Unblocked Context Search — Messages
 
 Messaging-only retrieval. Calls `context_search_messages` with a natural-language query to semantically search team conversations — surfacing informal context, decisions, and discussions that don't make it into code or docs.
 
 **Sources:** Slack, Microsoft Teams.
+
+## How to Invoke
+
+Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix and `context_research` fallback instructions.
+
+1. **Try the CLI first.** Run `unblocked context-search-messages --query "<your query>" [--instruction "<instruction>"]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
+2. **If the CLI is not installed or fails to run**, try MCP. Note that `context_search_messages` is not exposed on MCP in most environments — if it's missing, fall back to the MCP `context_research` tool with a steering `instruction` like `"Prefer Slack threads and team conversations; deprioritize code and docs"` (see `unblocked-tools-guide` for per-source steering instructions).
+3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with other messaging-search tools as a replacement.
 
 ## When This Adds Value Over Grep/Read
 
@@ -37,7 +45,7 @@ Use `context_research` when you need the full picture alongside messages — PR 
 | Parameter | Required | Description |
 |:---|:---|:---|
 | `query` | Yes | What to find — write a complete question with concrete identifiers, not bare keywords. |
-| `instructions` | No | Fine-grained control over which results surface: preferred channels, date ranges, or topics to prioritize or deprioritize. |
+| `instruction` | No | Fine-grained control over which results surface: preferred channels, date ranges, or topics to prioritize or deprioritize. |
 
 **Writing effective queries** — include the most concrete identifiers you have:
 
@@ -55,7 +63,7 @@ Write a complete question or directive, not a keyword fragment:
 | `auth refactor` | `What did the team discuss when planning the JWT token refresh refactor?` |
 | `outage` | `Were there Slack discussions about the checkout-service outage in March?` |
 
-**`instructions` examples:**
+**`instruction` examples:**
 - `"Focus results on the #payments-team and #backend-review channels"`
 - `"Focus on discussions from the last 3 months"`
 - `"Prefer threads with multiple participants over one-off messages"`
@@ -86,4 +94,4 @@ Split distinct unknowns into separate `context_search_messages` calls rather tha
 
 ## Reference
 
-- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instructions` patterns
+- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instruction` patterns

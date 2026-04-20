@@ -98,26 +98,26 @@ Find issues that describe problems with the current feature flag evaluation in t
 Are there open issues about the two-phase commit approach in the checkout flow?
 ```
 
-## Using `instructions` for Fine-Grained Control
+## Using `instruction` for Fine-Grained Control
 
-The `instructions` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
+The `instruction` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
 
 **Prefer open issues:**
 ```
-instructions: "Prefer open or in-progress issues; deprioritize resolved or closed"
+instruction: "Prefer open or in-progress issues; deprioritize resolved or closed"
 ```
 
 **Scope to a project or team:**
 ```
-instructions: "Focus results on the payments project; deprioritize unrelated teams"
+instruction: "Focus results on the payments project; deprioritize unrelated teams"
 ```
 
 **Prefer bugs over tasks:**
 ```
-instructions: "Prefer bug reports and incidents over feature requests and tasks"
+instruction: "Prefer bug reports and incidents over feature requests and tasks"
 ```
 
 **Surface high-priority items:**
 ```
-instructions: "Prefer high-priority or critical issues over low-priority backlog items"
+instruction: "Prefer high-priority or critical issues over low-priority backlog items"
 ```

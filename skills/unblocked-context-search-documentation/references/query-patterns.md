@@ -98,26 +98,26 @@ Is there a guide explaining the team's branching and PR review conventions?
 Find the getting-started documentation for contributing to the web-client repo.
 ```
 
-## Using `instructions` for Fine-Grained Control
+## Using `instruction` for Fine-Grained Control
 
-The `instructions` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
+The `instruction` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
 
 **Prefer operational docs:**
 ```
-instructions: "Prefer runbooks and operational guides over conceptual or reference docs"
+instruction: "Prefer runbooks and operational guides over conceptual or reference docs"
 ```
 
 **Prefer architecture and design docs:**
 ```
-instructions: "Prefer ADRs and architecture decision records over README files and setup guides"
+instruction: "Prefer ADRs and architecture decision records over README files and setup guides"
 ```
 
 **Scope to a team or service:**
 ```
-instructions: "Focus results on payments team documentation; deprioritize infrastructure docs"
+instruction: "Focus results on payments team documentation; deprioritize infrastructure docs"
 ```
 
 **Prefer maintained docs:**
 ```
-instructions: "Deprioritize docs marked as deprecated or archived"
+instruction: "Deprioritize docs marked as deprecated or archived"
 ```

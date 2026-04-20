@@ -95,26 +95,26 @@ Do connected repos share a single HTTP client configuration or does each service
 How does error serialization differ between the GraphQL and REST layers across connected repos?
 ```
 
-## Using `instructions` for Fine-Grained Control
+## Using `instruction` for Fine-Grained Control
 
-The `instructions` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
+The `instruction` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
 
 **Prefer entry points over tests:**
 ```
-instructions: "Prefer interface definitions, entry points, and core implementations over test files and mocks"
+instruction: "Prefer interface definitions, entry points, and core implementations over test files and mocks"
 ```
 
 **Scope to specific repos:**
 ```
-instructions: "Focus results on billing-service and payments-service; deprioritize web-client"
+instruction: "Focus results on billing-service and payments-service; deprioritize web-client"
 ```
 
 **Filter file types:**
 ```
-instructions: "Return only TypeScript source files; exclude generated code and vendor directories"
+instruction: "Return only TypeScript source files; exclude generated code and vendor directories"
 ```
 
 **Prefer recent or active code:**
 ```
-instructions: "Deprioritize deprecated or archived modules"
+instruction: "Deprioritize deprecated or archived modules"
 ```

@@ -19,6 +19,14 @@ Issue-only retrieval across connected projects. Calls `context_search_issues` wi
 
 **Sources:** Jira, Jira Data Center, Linear, Asana.
 
+## How to Invoke
+
+Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix and `context_research` fallback instructions.
+
+1. **Try the CLI first.** Run `unblocked context-search-issues --query "<your query>" [--instruction "<instruction>"]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
+2. **If the CLI is not installed or fails to run**, try MCP. Note that `context_search_issues` is not exposed on MCP in most environments — if it's missing, fall back to the MCP `context_research` tool with a steering `instruction` like `"Prefer issue tracker results; deprioritize code and messages"` (see `unblocked-tools-guide` for per-source steering instructions).
+3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with other issue-search tools as a replacement.
+
 ## When This Adds Value Over Grep/Read
 
 Grep and Read show you what the code does now. Use this tool when:
@@ -37,7 +45,7 @@ Use `context_research` when you need the full organizational picture alongside i
 | Parameter | Required | Description |
 |:---|:---|:---|
 | `query` | Yes | What to find — write a complete question with concrete identifiers, not bare keywords. |
-| `instructions` | No | Fine-grained control over which results surface: preferred projects, statuses, or issue types to prioritize or deprioritize. |
+| `instruction` | No | Fine-grained control over which results surface: preferred projects, statuses, or issue types to prioritize or deprioritize. |
 
 **Writing effective queries** — include the most concrete identifiers you have:
 
@@ -55,7 +63,7 @@ Write a complete question or directive, not a keyword fragment:
 | `auth bug` | `Has the JWT token expiry issue in the API gateway been reported or tracked?` |
 | `pagination` | `What issue or epic tracked the addition of cursor-based pagination to the REST API?` |
 
-**`instructions` examples:**
+**`instruction` examples:**
 - `"Prefer open or in-progress issues; deprioritize closed/resolved"`
 - `"Focus results on the payments project; deprioritize unrelated teams"`
 - `"Prefer bug reports over feature requests"`
@@ -86,4 +94,4 @@ Split distinct unknowns into separate `context_search_issues` calls rather than 
 
 ## Reference
 
-- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instructions` patterns
+- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instruction` patterns

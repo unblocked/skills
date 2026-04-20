@@ -98,26 +98,26 @@ Find PRs that discuss the tradeoffs of the current database sharding strategy.
 How did the API versioning strategy develop — were there earlier approaches tried and abandoned?
 ```
 
-## Using `instructions` for Fine-Grained Control
+## Using `instruction` for Fine-Grained Control
 
-The `instructions` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
+The `instruction` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
 
 **Scope to specific repos:**
 ```
-instructions: "Focus results on billing-service and payments-service; deprioritize web-client"
+instruction: "Focus results on billing-service and payments-service; deprioritize web-client"
 ```
 
 **Prefer recent PRs:**
 ```
-instructions: "Focus on PRs merged in the last 6 months; deprioritize older history"
+instruction: "Focus on PRs merged in the last 6 months; deprioritize older history"
 ```
 
 **Prefer merged over open/draft:**
 ```
-instructions: "Prefer merged PRs; deprioritize drafts and abandoned branches"
+instruction: "Prefer merged PRs; deprioritize drafts and abandoned branches"
 ```
 
 **Surface substantive discussions:**
 ```
-instructions: "Prefer PRs with detailed descriptions or review discussions over one-line PRs"
+instruction: "Prefer PRs with detailed descriptions or review discussions over one-line PRs"
 ```

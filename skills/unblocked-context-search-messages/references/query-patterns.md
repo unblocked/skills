@@ -98,26 +98,26 @@ Did the backend team discuss standards for API versioning?
 Find discussions about how services should handle idempotency for webhook processing.
 ```
 
-## Using `instructions` for Fine-Grained Control
+## Using `instruction` for Fine-Grained Control
 
-The `instructions` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
+The `instruction` parameter shapes which results surface without changing what is searched. Use it when default ranking would pull in noise.
 
 **Scope to specific channels:**
 ```
-instructions: "Focus results on #payments-team and #backend-review; deprioritize general channels"
+instruction: "Focus results on #payments-team and #backend-review; deprioritize general channels"
 ```
 
 **Focus on recent discussions:**
 ```
-instructions: "Focus on conversations from the last 3 months; deprioritize older threads"
+instruction: "Focus on conversations from the last 3 months; deprioritize older threads"
 ```
 
 **Prefer substantive threads:**
 ```
-instructions: "Prefer threads with multiple participants and replies over one-off messages"
+instruction: "Prefer threads with multiple participants and replies over one-off messages"
 ```
 
 **Surface decision-oriented threads:**
 ```
-instructions: "Prefer threads that include conclusions, decisions, or action items"
+instruction: "Prefer threads that include conclusions, decisions, or action items"
 ```

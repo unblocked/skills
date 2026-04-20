@@ -22,6 +22,9 @@
         "./skills/unblocked-context-search-issues",
         "./skills/unblocked-context-search-documentation",
         "./skills/unblocked-context-search-messages",
+        "./skills/unblocked-context-query-issues",
+        "./skills/unblocked-context-query-prs",
+        "./skills/unblocked-context-get-urls",
         "./skills/unblocked-tools-guide"
       ],
       "mcpServers": {

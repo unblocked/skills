@@ -2,7 +2,7 @@
 name: unblocked-context-search-prs
 description: >
   PR-only search across connected repos via context_search_prs. Use this
-  instead of context_search when you want PR results — descriptions, review
+  instead of context_research when you want PR results — descriptions, review
   discussions, and change history — without Slack, Jira, or doc noise mixed
   in. TRIGGER when: you need to understand WHY code works the way it does
   (decision history, reasoning, rejected alternatives); investigating what
@@ -10,7 +10,7 @@ description: >
   "what changed", "what PR introduced X", or "was this tried before"; you're
   doing bug archaeology and want to trace a change back to its PR. DO NOT
   TRIGGER when: you need the current code state — use Grep/Glob/Read; you
-  need Slack threads, issues, or docs alongside PRs — use context_search
+  need Slack threads, issues, or docs alongside PRs — use context_research
   instead.
 ---
 
@@ -20,25 +20,33 @@ PR-only retrieval across connected repos. Calls `context_search_prs` with a natu
 
 **Sources:** GitHub, GitHub Enterprise, GitLab, GitLab Self-Managed, Bitbucket, Bitbucket Data Center, Azure DevOps.
 
+## How to Invoke
+
+Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix and `context_research` fallback instructions.
+
+1. **Try the CLI first.** Run `unblocked context-search-prs --query "<your query>" [--instruction "<instruction>"]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
+2. **If the CLI is not installed or fails to run**, try MCP. Note that `context_search_prs` is not exposed on MCP in most environments — if it's missing, fall back to the MCP `context_research` tool with a steering `instruction` like `"Prefer PR descriptions and review discussions; deprioritize other sources"` (see `unblocked-tools-guide` for per-source steering instructions).
+3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with other PR-search tools as a replacement.
+
 ## When This Adds Value Over Grep/Read
 
 Grep and Read show you what the code does now. Use this tool when:
 
 - **You need the WHY** — PR descriptions and review threads contain the reasoning, constraints, and tradeoffs that don't appear in code
 - **You're tracing a change** — "what introduced this behavior" requires searching change history, not current state
-- **You want PR-only results** — `context_search` returns everything (Slack, Jira, docs, code); this returns only PRs, so results stay focused when that's all you need
+- **You want PR-only results** — `context_research` returns everything (Slack, Jira, docs, code); this returns only PRs, so results stay focused when that's all you need
 - **The PR might be in another repo** — cross-repo PR search surfaces decisions from services outside the local workspace
 
-## When to Use `context_search` Instead
+## When to Use `context_research` Instead
 
-Use `context_search` when you need the full organizational picture alongside PRs — Slack threads, design docs, issue tracker context, architectural decisions from multiple sources. This tool returns PRs only; broader context requires `context_search`.
+Use `context_research` when you need the full organizational picture alongside PRs — Slack threads, design docs, issue tracker context, architectural decisions from multiple sources. This tool returns PRs only; broader context requires `context_research`.
 
 ## Input
 
 | Parameter | Required | Description |
 |:---|:---|:---|
 | `query` | Yes | What to find — write a complete question with concrete identifiers, not bare keywords. |
-| `instructions` | No | Fine-grained control over which results surface: preferred repos, date ranges, or PR attributes to prioritize or deprioritize. |
+| `instruction` | No | Fine-grained control over which results surface: preferred repos, date ranges, or PR attributes to prioritize or deprioritize. |
 
 **Writing effective queries** — include the most concrete identifiers you have:
 
@@ -56,7 +64,7 @@ Write a complete question or directive, not a keyword fragment:
 | `rate limiting` | `What PR added rate limiting to the API gateway and what approach was chosen?` |
 | `pagination` | `Were there any rejected approaches to cursor-based pagination in the REST API?` |
 
-**`instructions` examples:**
+**`instruction` examples:**
 - `"Focus results on billing-service and payments-service repos"`
 - `"Prefer merged PRs; deprioritize draft or abandoned PRs"`
 - `"Focus on PRs from the last 6 months"`
@@ -76,7 +84,7 @@ Split distinct unknowns into separate `context_search_prs` calls rather than cra
 ## When to Skip
 
 - You need the current code state, not history — use Grep/Glob/Read
-- You also need Slack threads, issues, or docs — use `context_search` instead
+- You also need Slack threads, issues, or docs — use `context_research` instead
 
 ## Interpreting Results
 
@@ -87,4 +95,4 @@ Split distinct unknowns into separate `context_search_prs` calls rather than cra
 
 ## Reference
 
-- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instructions` patterns
+- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instruction` patterns

@@ -22,6 +22,18 @@ description: >
 
 Surgical single-entity retrieval at any phase of work. Returns code, PRs, docs, Slack threads, and Jira issues for one focused question. Use it whenever the answer to "why does this exist?" or "why does it work this way?" is not visible in the code itself. If the question spans multiple systems or you would need 3+ calls to build the picture, use `research_task` instead.
 
+## Tool Availability Safety Handler
+
+Tool names referenced in this skill (e.g. `unblocked_context_engine`) may not match what is registered in the current environment. Before calling any tool named here, follow this protocol:
+
+1. **Attempt the documented tool call first.** If it succeeds, continue normally.
+2. **If the tool is missing** (not registered, "tool not found", "unknown tool", or equivalent error), **do not fail the task and do not fabricate a call.** Instead:
+   - Invoke `listTools` (or the host's equivalent tool-discovery mechanism) to enumerate the currently available tools.
+   - Pick the most relevant replacement based on intent. For single-entity context lookups, a likely match is `context_research`.
+   - Call the replacement tool with the same natural-language query, adapting only the required argument shape.
+3. **If no suitable replacement exists,** say so explicitly, list what you searched for, and fall back to Grep/Glob/Read plus any other available skills. Never invent tool names.
+4. **Cache the mapping for the rest of the session** — once you have confirmed the resolved tool name in this environment, skip step 1 on subsequent calls.
+
 ## When This Adds Value Over Grep/Read
 
 Grep and Read show you **what the code does now**. This tool adds:

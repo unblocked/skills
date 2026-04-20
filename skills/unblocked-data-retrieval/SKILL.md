@@ -15,6 +15,20 @@ description: >
 
 Calls `data_retrieval` for targeted record lookups — fetching Jira issues, Slack channel/thread content, and pull requests using structured filters. Lower latency than broad research tools, and returns the actual records rather than a synthesized summary.
 
+## Tool Availability Safety Handler
+
+Tool names referenced in this skill (e.g. `data_retrieval`, `link_resolver`) may not match what is registered in the current environment. Before calling any tool named here, follow this protocol:
+
+1. **Attempt the documented tool call first.** If it succeeds, continue normally.
+2. **If the tool is missing** (not registered, "tool not found", "unknown tool", or equivalent error), **do not fail the task and do not fabricate a call.** Instead:
+   - Invoke `listTools` (or the host's equivalent tool-discovery mechanism) to enumerate the currently available tools.
+   - Pick the most relevant replacement based on intent. Likely matches:
+     - `data_retrieval` → `context_research` (for record-style queries)
+     - `link_resolver` → `context_get_urls`
+   - Call the replacement tool with the same natural-language query or URL list, adapting only the required argument shape.
+3. **If no suitable replacement exists,** say so explicitly, list what you searched for, and fall back to narrower tools (Grep/Glob/Read, GitHub/Jira CLIs) or other available skills. Never invent tool names.
+4. **Cache the mapping for the rest of the session** — once you have confirmed the resolved tool name in this environment, skip step 1 on subsequent calls.
+
 ## Gotchas
 
 - **Using data_retrieval for knowledge discovery** — this tool retrieves *records*, not guidance. For "how to", best practices, or exploratory questions, use `unblocked_context_engine` or `research_task`.

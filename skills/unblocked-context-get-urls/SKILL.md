@@ -71,6 +71,15 @@ If the URL is truly public (a blog post, public docs) and you don't need auth, a
 - Malformed URLs or URLs missing the scheme (`http://`/`https://`)
 - Session-scoped URLs that require the user's browser state
 
+## Checking Supported URL Patterns
+
+The exact set of supported URL patterns is **org-specific** — it depends on which connectors (GitHub orgs, Jira/Linear workspaces, Slack, Notion, etc.) have been configured for the current user. Before assuming a URL will resolve, inspect the live list of patterns from the tool itself:
+
+1. **CLI (preferred):** run `unblocked context-get-urls --help`. The output includes a "Supported URL patterns" section listing every regex that the current installation accepts (e.g. which GitHub orgs are wired up, which Slack workspace, which Jira/Linear/Notion hosts).
+2. **MCP fallback:** inspect the `context_get_urls` tool description exposed by the MCP server. The same per-org pattern list is embedded in the tool's description field, so `tools/list` (or the equivalent in the agent's MCP client) will surface it.
+
+If a user-supplied URL doesn't match any listed pattern, either the connector isn't configured or the URL belongs to a different org/tenant — stop and tell the user instead of calling the tool and getting an empty result.
+
 ## Batching
 
 When you have a related cluster of URLs, pass them all in one call rather than making one call per URL. Example: the top 3 PRs returned from a `context-research` pass.

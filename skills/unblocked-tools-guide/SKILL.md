@@ -56,6 +56,7 @@ These tools no longer exist. If you see them in older skills, instructions, or c
 | `data_retrieval` | `context_research` |
 | `research_task` | `context_research` |
 | `unblocked_context_engine` | `context_research` |
+| `link_resolver` | `context_get_urls` (or `context_research` if the URL isn't known) |
 
 ## Routing and Fallbacks
 

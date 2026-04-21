@@ -8,9 +8,16 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 
 | Skill | Description |
 |-------|-------------|
-| [unblocked-context-engine](skills/unblocked-context-engine/) | Focused institutional-context lookups for architecture, conventions, prior art, and plan validation |
-| [unblocked-research](skills/unblocked-research/) | Deep investigation across code, PRs, docs, Slack, and Jira when the agent needs to understand how something works, what changed, or what risks exist |
-| [unblocked-data-retrieval](skills/unblocked-data-retrieval/) | Targeted record retrieval for Jira issues, Slack channels/threads, and pull requests — direct lookups, filtered queries, and activity checks |
+| [unblocked-context-research](skills/unblocked-context-research/) | Unified context retrieval across code, PRs, docs, messages, and issues via `context_research` — semantic lookups, structured data queries, and multi-source research in a single tool |
+| [unblocked-context-search-code](skills/unblocked-context-search-code/) | Code-only semantic search across connected repos via `context_search_code` |
+| [unblocked-context-search-prs](skills/unblocked-context-search-prs/) | PR descriptions and review discussions via `context_search_prs` — decision history and change reasoning |
+| [unblocked-context-search-issues](skills/unblocked-context-search-issues/) | Issue tracker search via `context_search_issues` — bugs, tasks, and epics across Jira, Linear, and Asana |
+| [unblocked-context-search-documentation](skills/unblocked-context-search-documentation/) | Documentation search via `context_search_documentation` — wikis, runbooks, ADRs, and API references |
+| [unblocked-context-search-messages](skills/unblocked-context-search-messages/) | Team conversation search via `context_search_messages` — Slack and Microsoft Teams threads |
+| [unblocked-context-query-issues](skills/unblocked-context-query-issues/) | Structured, filtered issue retrieval via `context_query_issues` — scoped by project and person |
+| [unblocked-context-query-prs](skills/unblocked-context-query-prs/) | Structured, filtered PR retrieval via `context_query_prs` — scoped by repository and person |
+| [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Direct URL content resolution via `context_get_urls` — PRs, issues, docs, and public pages |
+| [unblocked-tools-guide](skills/unblocked-tools-guide/) | Tool selection guide and legacy-name mapping for Unblocked search tools |
 
 ## Setup
 

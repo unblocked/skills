@@ -16,9 +16,16 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/unblocked-context-engine",
-        "./skills/unblocked-research",
-        "./skills/unblocked-data-retrieval"
+        "./skills/unblocked-context-research",
+        "./skills/unblocked-context-search-code",
+        "./skills/unblocked-context-search-prs",
+        "./skills/unblocked-context-search-issues",
+        "./skills/unblocked-context-search-documentation",
+        "./skills/unblocked-context-search-messages",
+        "./skills/unblocked-context-query-issues",
+        "./skills/unblocked-context-query-prs",
+        "./skills/unblocked-context-get-urls",
+        "./skills/unblocked-tools-guide"
       ],
       "mcpServers": {
         "unblocked": {

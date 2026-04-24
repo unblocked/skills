@@ -22,7 +22,7 @@ Direct URL resolution. Calls `context_get_urls` with one or more URLs to return 
 
 ## How to Invoke
 
-Run `command -v unblocked` once per session and cache the result. `context_get_urls` is one of the two tools that IS exposed on MCP, so both paths work — prefer the CLI when available. See `unblocked-tools-guide` for full routing rules.
+**`context_get_urls` is exposed on both CLI and MCP** — unlike the `context_search_*` and `context_query_*` family, you will see it in your MCP tool list. Prefer the CLI when available for uniform behavior. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
 
 **CLI (preferred):**
 ```

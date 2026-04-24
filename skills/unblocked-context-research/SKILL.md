@@ -30,7 +30,7 @@ unblocked context-research --query "<your query>" [--instruction "<instruction>"
 
 **MCP fallback** (only if CLI is confirmed unavailable): call `context_research` with equivalent arguments (`query`, `instruction`, `effort`). `context_research` is exposed on MCP in virtually all environments.
 
-**If neither is available:** stop and tell the user: "Unblocked is not available in this environment. See https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the MCP server." Do not substitute with web search or other sources.
+**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with web search or other sources.
 
 ## When This Adds Value Over Grep/Read
 

@@ -29,7 +29,7 @@ Structured issue retrieval. Calls `context_query_issues` with a natural-language
 unblocked context-query-issues --query "<your query>" [--projects PROJ_KEY another-project] [--user-name "Alice Smith"]
 ```
 
-**MCP fallback** (only if CLI is confirmed unavailable): fall back to `context_research` with `instruction: "Prefer issue tracker results filtered by project and assignee; deprioritize code and messages"`. Note that the filtered-enumeration semantics degrade on this fallback — prefer the CLI whenever possible.
+**MCP fallback** (only if CLI is confirmed unavailable): `context_query_issues` has no true MCP equivalent. `context_research` with `instruction: "Prefer issue tracker results filtered by project and assignee; deprioritize code and messages"` will return *ranked* results — not an enumeration. If the user's request depends on completeness ("list all…", "every open bug…"), stop and surface the CLI requirement rather than silently dropping matches. Use the fallback only for conceptual queries that happen to be scoped to issues.
 
 **If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with raw Jira/Linear CLIs.
 

@@ -21,11 +21,16 @@ Unified retrieval for engineering context. Calls `context_research` with a natur
 
 ## How to Invoke
 
-Always prefer the Unblocked CLI. Fall back to the MCP tool only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for full routing rules and availability matrix.
+**Do not infer CLI availability from the MCP tool list** — fine-grained tools are CLI-only, so the MCP surface tells you nothing. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
 
-1. **Try the CLI first.** Run `unblocked context-research --query "<your query>" [--instruction "<instruction>"] [--effort low|medium|high]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
-2. **If the CLI is not installed or fails to run**, fall back to the MCP tool `context_research` with equivalent arguments (`query`, `instruction`, `effort`).
-3. **If neither is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not attempt to answer the research question from other sources as a substitute.
+**CLI (preferred):**
+```
+unblocked context-research --query "<your query>" [--instruction "<instruction>"] [--effort low|medium|high]
+```
+
+**MCP fallback** (only if CLI is confirmed unavailable): call `context_research` with equivalent arguments (`query`, `instruction`, `effort`). `context_research` is exposed on MCP in virtually all environments.
+
+**If neither is available:** stop and tell the user: "Unblocked is not available in this environment. See https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the MCP server." Do not substitute with web search or other sources.
 
 ## When This Adds Value Over Grep/Read
 

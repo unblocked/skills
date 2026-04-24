@@ -21,11 +21,16 @@ Messaging-only retrieval. Calls `context_search_messages` with a natural-languag
 
 ## How to Invoke
 
-Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix and `context_research` fallback instructions.
+**`context_search_messages` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
 
-1. **Try the CLI first.** Run `unblocked context-search-messages --query "<your query>" [--instruction "<instruction>"]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
-2. **If the CLI is not installed or fails to run**, try MCP. Note that `context_search_messages` is not exposed on MCP in most environments — if it's missing, fall back to the MCP `context_research` tool with a steering `instruction` like `"Prefer Slack threads and team conversations; deprioritize code and docs"` (see `unblocked-tools-guide` for per-source steering instructions).
-3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with other messaging-search tools as a replacement.
+**CLI (preferred):**
+```
+unblocked context-search-messages --query "<your query>" [--instruction "<instruction>"]
+```
+
+**MCP fallback** (only if CLI is confirmed unavailable): fall back to `context_research` with `instruction: "Prefer Slack threads and team conversations; deprioritize code and docs"`.
+
+**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with other messaging-search tools.
 
 ## When This Adds Value Over Grep/Read
 

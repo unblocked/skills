@@ -14,12 +14,20 @@ description: >
 
 # Unblocked Tools Guide
 
+## Critical — Do Not Confuse MCP Surface With CLI Availability
+
+**The MCP server exposes only `context_research` and `context_get_urls` in most environments.** The fine-grained tools (`context_search_code`, `context_search_prs`, `context_search_issues`, `context_search_documentation`, `context_search_messages`, `context_query_prs`, `context_query_issues`) are **CLI-only** — they do not appear in your MCP tool list even when they are fully available on the machine.
+
+**Therefore:** not seeing `context_search_*` or `context_query_*` in your deferred/MCP tool list tells you **nothing** about whether they are available. You must check the CLI separately with `command -v unblocked`.
+
+Skipping this check and declaring the tools "unavailable" based on the MCP surface is the single most common failure mode for this skill family.
+
 ## Access Policy — CLI First, Then MCP, Then Stop
 
 For every Unblocked call, follow this order:
 
-1. **Prefer the Unblocked CLI.** Check availability with `unblocked --help` or `command -v unblocked`. If present, invoke the matching CLI subcommand.
-2. **Fall back to MCP only if the CLI is unavailable or fails.** Use the equivalent MCP tool (`context_research`, `context_get_urls`, etc.).
+1. **Prefer the Unblocked CLI.** Check availability **once per session** with `command -v unblocked` (or `unblocked --help`). Cache the result — do not re-probe on every call. If present, invoke the matching CLI subcommand directly.
+2. **Fall back to MCP only if the CLI is confirmed unavailable or a CLI call fails.** Use the equivalent MCP tool (`context_research`, `context_get_urls`, etc.). On MCP-only, fine-grained tools are not exposed — fall back to `context_research` with a steering `instruction` (see routing table below).
 3. **If neither is available, stop and notify the user.** Do not substitute with unrelated tools (web search, Grep-only guessing, etc.). Tell the user:
 
    > Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry.
@@ -53,7 +61,9 @@ These tools no longer exist. If you see them in older skills, instructions, or c
 
 | Deprecated tool | Use instead |
 |:---|:---|
-| `data_retrieval` | `context_research` |
+| `data_retrieval` | `context_query_prs` / `context_query_issues` (filtered enumeration) or `context_research` |
+| `historical_context` | `context_research` (or `context_search_prs` for PR-scoped archaeology) |
+| `failure_debugging` | `context_research` with the error text as the query |
 | `research_task` | `context_research` |
 | `unblocked_context_engine` | `context_research` |
 | `link_resolver` | `context_get_urls` (or `context_research` if the URL isn't known) |

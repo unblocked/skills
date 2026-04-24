@@ -22,11 +22,16 @@ Structured issue retrieval. Calls `context_query_issues` with a natural-language
 
 ## How to Invoke
 
-Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix and `context_research` fallback instructions.
+**`context_query_issues` has no MCP equivalent — it is CLI-only.** It does not appear in the MCP tool list regardless of availability. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
 
-1. **Try the CLI first.** Run `unblocked context-query-issues --query "<your query>" [--projects PROJ_KEY another-project] [--user-name "Alice Smith"]`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
-2. **If the CLI is not installed or fails to run**, try MCP. Note that `context_query_issues` is not exposed on MCP in most environments — if it's missing, fall back to the MCP `context_research` tool with a steering `instruction` like `"Prefer issue tracker results filtered by project and assignee; deprioritize code and messages"` (see `unblocked-tools-guide` for per-source steering instructions).
-3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with other issue-tracker tools as a replacement.
+**CLI (preferred):**
+```
+unblocked context-query-issues --query "<your query>" [--projects PROJ_KEY another-project] [--user-name "Alice Smith"]
+```
+
+**MCP fallback** (only if CLI is confirmed unavailable): fall back to `context_research` with `instruction: "Prefer issue tracker results filtered by project and assignee; deprioritize code and messages"`. Note that the filtered-enumeration semantics degrade on this fallback — prefer the CLI whenever possible.
+
+**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with raw Jira/Linear CLIs.
 
 ## When This Differs From `context-search-issues`
 

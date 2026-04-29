@@ -22,11 +22,16 @@ Direct URL resolution. Calls `context_get_urls` with one or more URLs to return 
 
 ## How to Invoke
 
-Always prefer the Unblocked CLI. Fall back to MCP only if the CLI is unavailable. If neither is available, stop and notify the user. See `unblocked-tools-guide` for the full routing matrix.
+**`context_get_urls` is exposed on both CLI and MCP** — unlike the `context_search_*` and `context_query_*` family, you will see it in your MCP tool list. Prefer the CLI when available for uniform behavior. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
 
-1. **Try the CLI first.** Run `unblocked context-get-urls --urls "<url1>" "<url2>" ...`. Verify it's installed with `unblocked --help` or `command -v unblocked` before first use in a session.
-2. **If the CLI is not installed or fails to run**, fall back to the MCP tool `context_get_urls` with equivalent arguments (`urls` as an array). This tool is exposed on MCP in most environments.
-3. **If neither CLI nor MCP is available**, stop executing this skill and tell the user: "Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry. See the `unblocked-tools-guide` skill for routing details." Do not substitute with a generic web-fetch tool if the URL is a private connector resource (Jira, Linear, Slack, private GitHub) — those require Unblocked's auth.
+**CLI (preferred):**
+```
+unblocked context-get-urls --urls "<url1>" "<url2>" ...
+```
+
+**MCP fallback** (use if CLI is confirmed unavailable): call `context_get_urls` with `urls` as an array. Exposed on MCP in virtually all environments.
+
+**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with a generic web-fetch tool for private connector resources (Jira, Linear, Slack, private GitHub) — those require Unblocked's auth.
 
 ## When This Adds Value Over a Plain Web Fetch
 

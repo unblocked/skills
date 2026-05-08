@@ -18,6 +18,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | [unblocked-context-query-prs](skills/unblocked-context-query-prs/) | Structured, filtered PR retrieval via `context_query_prs` — scoped by repository and person |
 | [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Direct URL content resolution via `context_get_urls` — PRs, issues, docs, and public pages |
 | [unblocked-tools-guide](skills/unblocked-tools-guide/) | Tool selection guide and legacy-name mapping for Unblocked search tools |
+| [grill-with-unblocked-docs](skills/grill-with-unblocked-docs/) | Plan-grilling workflow that challenges terminology and design choices against local code plus `context_research`, focused `context_search_*`, `context_query_*`, and `context_get_urls` results, then recommends next steps with confidence levels |
 
 ## Setup
 

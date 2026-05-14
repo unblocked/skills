@@ -55,19 +55,6 @@ The CLI is preferred because it exposes the full set of fine-grained tools, hand
 
 If you're on MCP only and a fine-grained tool call fails with "tool not found", that's expected — fall back to `context_research` with an `instruction` that steers it toward the source type you want (see below).
 
-## Legacy Tool Mapping
-
-These tools no longer exist. If you see them in older skills, instructions, or conversation history, replace with `context_research`:
-
-| Deprecated tool | Use instead |
-|:---|:---|
-| `data_retrieval` | `context_query_prs` / `context_query_issues` (filtered enumeration) or `context_research` |
-| `historical_context` | `context_research` (or `context_search_prs` for PR-scoped archaeology) |
-| `failure_debugging` | `context_research` with the error text as the query |
-| `research_task` | `context_research` |
-| `unblocked_context_engine` | `context_research` |
-| `link_resolver` | `context_get_urls` (or `context_research` if the URL isn't known) |
-
 ## Routing and Fallbacks
 
 Use the preferred tool when available via the CLI. If the CLI is present but a fine-grained subcommand errors, or you're on MCP-only and the fine-grained tool isn't exposed, fall back to `context_research` and steer it with the `--instruction` / `instruction` parameter:

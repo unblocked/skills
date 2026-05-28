@@ -40,6 +40,7 @@ The CLI is preferred because it exposes the full set of fine-grained tools, hand
 |:---|:---|:---|:---:|:---:|
 | Broad search across all sources | `unblocked context-research` | `context_research` | yes | yes |
 | Resolve URL content | `unblocked context-get-urls` | `context_get_urls` | yes | yes |
+| Repository coding rules & conventions | `unblocked context-get-rules` | `context_get_rules` | yes | no |
 | Code-only search | `unblocked context-search-code` | `context_search_code` | yes | no |
 | PR descriptions and review discussions | `unblocked context-search-prs` | `context_search_prs` | yes | no |
 | Issue tracker results | `unblocked context-search-issues` | `context_search_issues` | yes | no |
@@ -52,6 +53,7 @@ The CLI is preferred because it exposes the full set of fine-grained tools, hand
 - `context-research` and `context-search-*`: `--query <text>` (required), `--instruction <text>` (optional); `context-research` additionally accepts `--effort low|medium|high`.
 - `context-query-*`: `--query <text>` (required), `--projects <name...>` (optional, array), `--user-name <name>` (optional).
 - `context-get-urls`: `--urls <url...>` (required, array). No `--query`.
+- `context-get-rules`: `--repo-name <owner/repo>` (required); optional `--task code-review|code-generation|code-questions`, `--language <lang>`, `--paths <p...>` (array, scopes to changed files). No `--query`.
 
 If you're on MCP only and a fine-grained tool call fails with "tool not found", that's expected — fall back to `context_research` with an `instruction` that steers it toward the source type you want (see below).
 
@@ -70,6 +72,7 @@ Use the preferred tool when available via the CLI. If the CLI is present but a f
 | Filtered issue enumeration (by project/person) | `context_query_issues` | `"Prefer issue tracker results filtered by project and assignee; enumerate rather than rank"` |
 | Filtered PR enumeration (by repo/person) | `context_query_prs` | `"Prefer PR results filtered by repository and author; enumerate rather than rank"` |
 | Resolve a known URL to full content | `context_get_urls` | — (this tool is available on MCP; no fallback needed) |
+| Repository coding rules & conventions | `context_get_rules` | `"Prefer the repository's codified coding rules and conventions extracted from CLAUDE.md, AGENTS.md, .cursorrules, and similar convention files; deprioritize other sources"` |
 | Current local code | Grep / Glob / Read | — |
 
 ## Search vs. Query — Which to Use
@@ -81,4 +84,4 @@ The tool family has two shapes for the same sources:
 
 If you don't have a concrete project/repo/person anchor, reach for `context_search_*`. If you do, `context_query_*` gives cleaner, more deterministic results.
 
-For detailed guidance on any tool, see the corresponding skill: `unblocked-context-research`, `unblocked-context-search-code`, `unblocked-context-search-prs`, `unblocked-context-search-issues`, `unblocked-context-search-documentation`, `unblocked-context-search-messages`, `unblocked-context-query-issues`, `unblocked-context-query-prs`, or `unblocked-context-get-urls`.
+For detailed guidance on any tool, see the corresponding skill: `unblocked-context-research`, `unblocked-context-search-code`, `unblocked-context-search-prs`, `unblocked-context-search-issues`, `unblocked-context-search-documentation`, `unblocked-context-search-messages`, `unblocked-context-query-issues`, `unblocked-context-query-prs`, `unblocked-context-get-urls`, or `unblocked-context-get-rules`.

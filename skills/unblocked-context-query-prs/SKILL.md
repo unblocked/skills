@@ -22,16 +22,17 @@ Structured PR retrieval. Calls `context_query_prs` with a natural-language query
 
 ## How to Invoke
 
-**`context_query_prs` has no MCP equivalent — it is CLI-only.** It does not appear in the MCP tool list regardless of availability. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+For most cases, call `context_research` with a filtering instruction:
 
-**CLI (preferred):**
 ```
-unblocked context-query-prs --query "<your query>" [--projects repo-name another-repo] [--user-name "Alice Smith"]
+context_research(query: "<your query>", instruction: "Prefer PR results filtered by repository and author; deprioritize code, issues, and messages")
 ```
 
-**MCP fallback** (only if CLI is confirmed unavailable): `context_query_prs` has no true MCP equivalent. `context_research` with `instruction: "Prefer PR results filtered by repository and author; deprioritize code, issues, and messages"` will return *ranked* results — not an enumeration. If the user's request depends on completeness ("list all…", "every PR…"), stop and surface the CLI requirement rather than silently dropping matches. Use the fallback only for conceptual queries that happen to be scoped to PRs.
+This works wherever Unblocked is configured, but returns *ranked* results — not an exhaustive enumeration.
 
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with GitHub/GitLab CLI tools.
+**When completeness matters, use the CLI:** if the user's request depends on a definitive list ("list all…", "every PR…"), `unblocked context-query-prs --query "<your query>" [--projects repo-name another-repo] [--user-name "Alice Smith"]` enumerates every match (it has no MCP equivalent). If the CLI isn't available for a completeness-dependent request, say the result is ranked rather than passing it off as complete. See `unblocked-tools-guide` for routing details.
+
+If Unblocked isn't configured at all, tell the user rather than substituting GitHub/GitLab CLI tools.
 
 ## When This Differs From `context-search-prs`
 

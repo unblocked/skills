@@ -22,16 +22,17 @@ PR-only retrieval across connected repos. Calls `context_search_prs` with a natu
 
 ## How to Invoke
 
-**`context_search_prs` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+Call `context_research` with a steering instruction focused on PRs:
 
-**CLI (preferred):**
 ```
-unblocked context-search-prs --query "<your query>" [--instruction "<instruction>"]
+context_research(query: "<your query>", instruction: "Prefer PR descriptions and review discussions; deprioritize other sources")
 ```
 
-**MCP fallback** (only if CLI is confirmed unavailable): fall back to `context_research` with `instruction: "Prefer PR descriptions and review discussions; deprioritize other sources"`.
+This works wherever Unblocked is configured.
 
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with other PR-search tools.
+**Optional — the CLI gives PR-scoped results:** if the Unblocked CLI is already installed, `unblocked context-search-prs --query "<your query>" [--instruction "<instruction>"]` returns PR-only results (this fine-grained search isn't exposed over MCP). Use it when it's available; otherwise the call above is a solid substitute — there's no need to probe for the CLI. See `unblocked-tools-guide` for routing details.
+
+If Unblocked isn't configured at all, tell the user rather than substituting other PR-search tools.
 
 ## When This Adds Value Over Grep/Read
 

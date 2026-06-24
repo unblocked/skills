@@ -22,16 +22,11 @@ Direct URL resolution. Calls `context_get_urls` with one or more URLs to return 
 
 ## How to Invoke
 
-**`context_get_urls` is exposed on both CLI and MCP** — unlike the `context_search_*` and `context_query_*` family, you will see it in your MCP tool list. Prefer the CLI when available for uniform behavior. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
+Call `context_get_urls` with `urls` as an array. It's exposed on MCP in virtually all environments, so this works out of the box.
 
-**CLI (preferred):**
-```
-unblocked context-get-urls --urls "<url1>" "<url2>" ...
-```
+**Optional — CLI:** if the Unblocked CLI is already installed, `unblocked context-get-urls --urls "<url1>" "<url2>" ...` does the same thing from the terminal. Use whichever is already available; there's no need to probe for the CLI.
 
-**MCP fallback** (use if CLI is confirmed unavailable): call `context_get_urls` with `urls` as an array. Exposed on MCP in virtually all environments.
-
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with a generic web-fetch tool for private connector resources (Jira, Linear, Slack, private GitHub) — those require Unblocked's auth.
+If Unblocked isn't configured at all, tell the user (see `unblocked-tools-guide`) rather than substituting a generic web-fetch tool for private connector resources (Jira, Linear, Slack, private GitHub) — those require Unblocked's auth.
 
 ## When This Adds Value Over a Plain Web Fetch
 
@@ -80,8 +75,8 @@ If the URL is truly public (a blog post, public docs) and you don't need auth, a
 
 The exact set of supported URL patterns is **org-specific** — it depends on which connectors (GitHub orgs, Jira/Linear workspaces, Slack, Notion, etc.) have been configured for the current user. Before assuming a URL will resolve, inspect the live list of patterns from the tool itself:
 
-1. **CLI (preferred):** run `unblocked context-get-urls --help`. The output includes a "Supported URL patterns" section listing every regex that the current installation accepts (e.g. which GitHub orgs are wired up, which Slack workspace, which Jira/Linear/Notion hosts).
-2. **MCP fallback:** inspect the `context_get_urls` tool description exposed by the MCP server. The same per-org pattern list is embedded in the tool's description field, so `tools/list` (or the equivalent in the agent's MCP client) will surface it.
+1. **On MCP:** inspect the `context_get_urls` tool description exposed by the MCP server. The per-org pattern list is embedded in the tool's description field, so `tools/list` (or the equivalent in the agent's MCP client) will surface it.
+2. **With the CLI:** run `unblocked context-get-urls --help`. The output includes the same "Supported URL patterns" section listing every regex that the current installation accepts (e.g. which GitHub orgs are wired up, which Slack workspace, which Jira/Linear/Notion hosts).
 
 If a user-supplied URL doesn't match any listed pattern, either the connector isn't configured or the URL belongs to a different org/tenant — stop and tell the user instead of calling the tool and getting an empty result.
 

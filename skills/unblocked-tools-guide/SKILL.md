@@ -14,25 +14,19 @@ description: >
 
 # Unblocked Tools Guide
 
-## Critical — Do Not Confuse MCP Surface With CLI Availability
+## What's Available Where
 
-**The MCP server exposes only `context_research` and `context_get_urls` in most environments.** The fine-grained tools (`context_search_code`, `context_search_prs`, `context_search_issues`, `context_search_documentation`, `context_search_messages`, `context_query_prs`, `context_query_issues`) are **CLI-only** — they do not appear in your MCP tool list even when they are fully available on the machine.
+Most environments expose Unblocked over **MCP**: `context_research` and `context_get_urls` are available out of the box and cover the large majority of needs. `context_research` can stand in for any of the fine-grained tools by steering it with an `instruction` (see the routing table below).
 
-**Therefore:** not seeing `context_search_*` or `context_query_*` in your deferred/MCP tool list tells you **nothing** about whether they are available. You must check the CLI separately with `command -v unblocked`.
+The **fine-grained tools** — `context_search_code`, `context_search_prs`, `context_search_issues`, `context_search_documentation`, `context_search_messages`, `context_query_prs`, `context_query_issues` — are only available through the Unblocked **CLI** and won't appear in your MCP tool list. When the CLI is installed they return cleaner, source-scoped results, and the `context_query_*` pair enumerates (rather than ranks) matches.
 
-Skipping this check and declaring the tools "unavailable" based on the MCP surface is the single most common failure mode for this skill family.
+## How to Choose
 
-## Access Policy — CLI First, Then MCP, Then Stop
-
-For every Unblocked call, follow this order:
-
-1. **Prefer the Unblocked CLI.** Check availability **once per session** with `command -v unblocked` (or `unblocked --help`). Cache the result — do not re-probe on every call. If present, invoke the matching CLI subcommand directly.
-2. **Fall back to MCP only if the CLI is confirmed unavailable or a CLI call fails.** Use the equivalent MCP tool (`context_research`, `context_get_urls`, etc.). On MCP-only, fine-grained tools are not exposed — fall back to `context_research` with a steering `instruction` (see routing table below).
-3. **If neither is available, stop and notify the user.** Do not substitute with unrelated tools (web search, Grep-only guessing, etc.). Tell the user:
+1. **Default to MCP.** Use `context_research` (or `context_get_urls` for a known URL). This works everywhere Unblocked is configured — no need to check whether a CLI is installed before calling it.
+2. **Reach for the CLI when it's already available and you want a sharper result** — source-scoped search or exhaustive enumeration. If `unblocked` is on PATH, the matching subcommand gives a tighter result than a steered `context_research` call. Don't go out of your way to probe for it on every call.
+3. **If Unblocked isn't configured at all, stop and notify the user.** Don't substitute unrelated tools (web search, Grep-only guessing, etc.). Tell the user:
 
    > Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry.
-
-The CLI is preferred because it exposes the full set of fine-grained tools, handles auth locally, and is more robust than MCP in most environments.
 
 ## CLI ↔ MCP Tool Mapping
 
@@ -55,11 +49,11 @@ The CLI is preferred because it exposes the full set of fine-grained tools, hand
 
 If you're on MCP only and a fine-grained tool call fails with "tool not found", that's expected — fall back to `context_research` with an `instruction` that steers it toward the source type you want (see below).
 
-## Routing and Fallbacks
+## Routing
 
-Use the preferred tool when available via the CLI. If the CLI is present but a fine-grained subcommand errors, or you're on MCP-only and the fine-grained tool isn't exposed, fall back to `context_research` and steer it with the `--instruction` / `instruction` parameter:
+Default to `context_research` over MCP, steered with the `instruction` in the right-hand column. If the Unblocked CLI is available and you want a sharper, source-scoped result, use the CLI tool in the middle column instead — same data, less cross-source noise.
 
-| What you need | Preferred tool | `context_research` fallback instruction |
+| What you need | Source-scoped tool (CLI) | `context_research` instruction (MCP) |
 |:---|:---|:---|
 | Full picture across all sources | `context_research` | — |
 | Code (semantic, cross-repo) | `context_search_code` | `"Prefer code and implementation results; deprioritize docs, issues, and messages"` |

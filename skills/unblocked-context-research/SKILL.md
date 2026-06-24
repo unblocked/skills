@@ -21,16 +21,17 @@ Unified retrieval for engineering context. Calls `context_research` with a natur
 
 ## How to Invoke
 
-**Do not infer CLI availability from the MCP tool list** — fine-grained tools are CLI-only, so the MCP surface tells you nothing. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
+Call `context_research` with a natural-language query:
 
-**CLI (preferred):**
 ```
-unblocked context-research --query "<your query>" [--instruction "<instruction>"] [--effort low|medium|high]
+context_research(query: "<your query>", instruction: "<optional steering>", effort: low|medium|high)
 ```
 
-**MCP fallback** (only if CLI is confirmed unavailable): call `context_research` with equivalent arguments (`query`, `instruction`, `effort`). `context_research` is exposed on MCP in virtually all environments.
+`context_research` is exposed on MCP in virtually all environments, so this works out of the box.
 
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with web search or other sources.
+**Optional — CLI:** if the Unblocked CLI is already installed, `unblocked context-research --query "<your query>" [--instruction "<instruction>"] [--effort low|medium|high]` does the same thing from the terminal. Use whichever is already available; there's no need to probe for the CLI.
+
+If Unblocked isn't configured at all, tell the user (see `unblocked-tools-guide`) rather than substituting web search or other sources.
 
 ## When This Adds Value Over Grep/Read
 

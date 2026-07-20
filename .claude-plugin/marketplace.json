@@ -13,7 +13,8 @@
     {
       "name": "unblocked-skills",
       "description": "Skills for engineering context gathering — bring PRs, Slack, Jira, and docs into your coding workflow",
-      "source": "./"
+      "source": "./",
+      "strict": true
     }
   ]
 }

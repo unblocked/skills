@@ -17,6 +17,7 @@ Skills are modular, self-contained packages that extend AI coding agents with sp
 | [unblocked-context-query-issues](skills/unblocked-context-query-issues/) | Structured, filtered issue retrieval via `context_query_issues` — scoped by project and person |
 | [unblocked-context-query-prs](skills/unblocked-context-query-prs/) | Structured, filtered PR retrieval via `context_query_prs` — scoped by repository and person |
 | [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Direct URL content resolution via `context_get_urls` — PRs, issues, docs, and public pages |
+| [unblocked-context-get-rules](skills/unblocked-context-get-rules/) | Repository coding rules and conventions via `context_get_rules` — severity-tagged rules extracted from CLAUDE.md, AGENTS.md, .cursorrules, and more, scoped by task/language/paths |
 | [unblocked-tools-guide](skills/unblocked-tools-guide/) | Tool selection guide and legacy-name mapping for Unblocked search tools |
 
 ## Setup

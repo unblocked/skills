@@ -1,15 +1,9 @@
 ---
 name: unblocked-tools-guide
 description: >
-  Tool selection guide and legacy mapping for Unblocked search tools. Use
-  this skill whenever you're unsure which Unblocked tool to call; when a
-  tool call fails because a tool isn't found or isn't available; when you
-  encounter references to deprecated tools such as data_retrieval,
-  research_task, or unblocked_context_engine; or when a fine-grained tool
-  like context_search_code, context_search_prs, context_query_issues,
-  context_query_prs, or context_get_urls isn't available in your current
-  environment. This skill explains what's available where and how to fall
-  back gracefully.
+  Explains Unblocked CLI and MCP availability, tool selection, and fallbacks.
+  Use when a tool is missing, a CLI or MCP call fails, or the correct
+  Unblocked tool is unclear.
 ---
 
 # Unblocked Tools Guide

@@ -1,17 +1,10 @@
 ---
 name: unblocked-context-query-issues
 description: >
-  Structured, filtered issue retrieval via context_query_issues. Use this
-  instead of context_search_issues when you need a precise filtered list
-  — scoped by project and/or person — rather than semantic relevance
-  matching. TRIGGER when: the user asks "what bugs are open in PROJECT",
-  "what issues is Alice working on", "list in-progress tickets for the
-  payments team", "issues I filed last month"; you need a definitive
-  list rather than a ranked set of relevant items; you already know the
-  project key or person's name and want to enumerate issues under that
-  filter. DO NOT TRIGGER when: the question is conceptual ("is there an
-  issue about X") or you don't have a project/person anchor — use
-  context-search-issues for semantic matching instead.
+  Returns complete filtered issue lists with context_query_issues. Use when
+  the request names a project or person and asks for issues by status or
+  time. Use context_search_issues for conceptual or relevance-ranked
+  matching.
 ---
 
 # Unblocked Context Query — Issues

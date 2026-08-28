@@ -1,17 +1,10 @@
 ---
 name: unblocked-context-search-documentation
 description: >
-  Documentation-only search via context_search_documentation. Use this
-  instead of context_research when you want docs — wikis, READMEs, runbooks,
-  API references, architecture docs, ADRs, and onboarding guides — without
-  Slack, PR, or issue noise mixed in. TRIGGER when: looking for setup or
-  configuration instructions; finding a runbook or operational procedure;
-  understanding an API contract or event schema; locating an architecture
-  decision record or design doc; the user asks "is there docs for X",
-  "how do I set up Y", "is this documented", or "find the runbook for Z".
-  DO NOT TRIGGER when: you need the current code state — use Grep/Glob/Read;
-  you need Slack threads, PRs, or issues alongside docs — use context_research
-  instead.
+  Semantically searches connected documentation with
+  context_search_documentation. Use for setup guides, runbooks, API
+  contracts, schemas, architecture docs, ADRs, or onboarding. Use
+  context_research when the answer needs other source types.
 ---
 
 # Unblocked Context Search — Documentation

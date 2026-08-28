@@ -1,17 +1,9 @@
 ---
 name: unblocked-context-query-prs
 description: >
-  Structured, filtered PR retrieval via context_query_prs. Use this
-  instead of context_search_prs when you need a precise filtered list
-  — scoped by project/repo and/or person — rather than semantic
-  relevance matching. TRIGGER when: the user asks "what PRs did Alice
-  open last week", "list merged PRs in payments-service this month",
-  "PRs I'm waiting on review for", "what did the team ship yesterday";
-  you need a definitive list rather than a ranked set; you already know
-  the repo name or person and want to enumerate PRs under that filter.
-  DO NOT TRIGGER when: the question is conceptual ("why was this
-  introduced", "what PR added feature X") — use context-search-prs for
-  semantic matching instead.
+  Returns complete filtered PR lists with context_query_prs. Use when the
+  request names a repository or person and asks for PRs by status or time.
+  Use context_search_prs for change rationale or relevance-ranked matching.
 ---
 
 # Unblocked Context Query — PRs

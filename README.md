@@ -41,7 +41,7 @@ claude plugin install unblocked-skills
 ### Using the Skills CLI
 
 ```bash
-npx skills add unblocked/skills
+bunx skills add unblocked/skills
 ```
 
 ### Manual Copy

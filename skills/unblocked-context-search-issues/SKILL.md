@@ -1,16 +1,10 @@
 ---
 name: unblocked-context-search-issues
 description: >
-  Issue-only search across connected projects via context_search_issues. Use
-  this instead of context_research when you want issue tracker results —
-  bug reports, feature requests, tasks, and epics — without Slack, PR, or
-  doc noise mixed in. TRIGGER when: investigating whether a bug is already
-  known or tracked; finding the requirement or ticket behind a feature;
-  checking if work is already planned or in progress; the user asks "is
-  there an issue for this", "is this a known bug", "what ticket covers X",
-  or "has this been reported before". DO NOT TRIGGER when: you need the
-  current code state — use Grep/Glob/Read; you need Slack threads, PRs, or
-  docs alongside issues — use context_research instead.
+  Searches issues with context_search_issues. Use when one bug, requirement,
+  ticket, or epic should answer, including its rationale. Use
+  context_query_issues for complete filtered lists. Use context_research only
+  when other sources are needed.
 ---
 
 # Unblocked Context Search — Issues

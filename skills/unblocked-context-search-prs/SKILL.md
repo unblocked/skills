@@ -1,17 +1,10 @@
 ---
 name: unblocked-context-search-prs
 description: >
-  PR-only search across connected repos via context_search_prs. Use this
-  instead of context_research when you want PR results — descriptions, review
-  discussions, and change history — without Slack, Jira, or doc noise mixed
-  in. TRIGGER when: you need to understand WHY code works the way it does
-  (decision history, reasoning, rejected alternatives); investigating what
-  PRs introduced or changed a behavior; the user asks "why was this done",
-  "what changed", "what PR introduced X", or "was this tried before"; you're
-  doing bug archaeology and want to trace a change back to its PR. DO NOT
-  TRIGGER when: you need the current code state — use Grep/Glob/Read; you
-  need Slack threads, issues, or docs alongside PRs — use context_research
-  instead.
+  Searches PR descriptions and reviews with context_search_prs. Use for
+  rationale, rejected approaches, bug archaeology, or the PR that introduced
+  a behavior. Use context_query_prs for filtered lists and context_research
+  for mixed sources.
 ---
 
 # Unblocked Context Search — PRs

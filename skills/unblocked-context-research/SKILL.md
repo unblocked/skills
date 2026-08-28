@@ -1,18 +1,10 @@
 ---
 name: unblocked-context-research
 description: >
-  Unified context retrieval via context_research. Searches PRs, docs,
-  messaging platforms, issue trackers, and code history to surface WHY
-  code works the way it does, what was tried before, and what constraints
-  apply. TRIGGER when: you need decision history, prior art, or
-  conventions before modifying code; planning, scoping, or researching a
-  topic; investigating a bug or incident; you need filtered lookups
-  across issues, messages, or PRs (e.g., "open bugs in PROJECT",
-  "what did X work on last week"); Grep/Glob/Read failed to find the
-  referenced code — this skill searches across repos and systems beyond
-  the current workspace. DO NOT TRIGGER when: you only need current
-  implementation (not history or reasoning) — use Grep/Glob/Read
-  directly.
+  Searches and synthesizes code, PRs, docs, issues, and messages with
+  context_research. Use for planning, incidents, cross-system questions,
+  or history that may span sources. Use a source-specific skill when one
+  source is enough.
 ---
 
 # Unblocked Context Search

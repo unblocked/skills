@@ -1,16 +1,10 @@
 ---
 name: unblocked-context-search-messages
 description: >
-  Messaging-only search via context_search_messages. Use this instead of
-  context_research when you want team conversation results — Slack threads,
-  channel discussions, and chat history — without PR, issue, or doc noise
-  mixed in. TRIGGER when: finding what the team discussed or decided in
-  chat; surfacing informal context around a feature, incident, or decision;
-  the user asks "did anyone discuss X", "was there a conversation about Y",
-  "what did the team say about Z", or "who has been talking about this".
-  DO NOT TRIGGER when: you need the current code state — use Grep/Glob/Read;
-  you need PRs, issues, or docs alongside messages — use context_research
-  instead.
+  Semantically searches team messages with context_search_messages. Use for
+  chat discussions, informal decisions, incident threads, ownership, or what
+  people said about a topic. Use context_research when the answer needs other
+  source types.
 ---
 
 # Unblocked Context Search — Messages

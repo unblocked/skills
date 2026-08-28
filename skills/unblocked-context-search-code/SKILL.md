@@ -1,16 +1,10 @@
 ---
 name: unblocked-context-search-code
 description: >
-  Code-only search across the current repo and connected repos via
-  context_search_code. Use this instead of context_research when you want
-  code results without Slack, Jira, or doc noise mixed in. TRIGGER when:
-  Grep/Glob/Read can't find a referenced class, function, or module (it may
-  live in another connected repo); you need semantic code search rather than
-  a literal pattern match; you want to find how something is implemented or
-  used across repos; the user asks to "find", "locate", or "search for" code.
-  DO NOT TRIGGER when: local Grep/Glob/Read can find what you need; you also
-  need PR history, team decisions, Slack context, or issue tracker data —
-  use context_research instead.
+  Semantically searches code across connected repositories with
+  context_search_code. Use when local Grep/Glob/Read cannot find an
+  implementation, usage, or cross-repo pattern. Use context_research when
+  history or team context is also needed.
 ---
 
 # Unblocked Context Search — Code

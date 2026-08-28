@@ -1,17 +1,9 @@
 ---
 name: unblocked-context-get-urls
 description: >
-  Direct URL content resolution via context_get_urls. Use this to fetch
-  full content from one or more URLs the agent already has in hand —
-  PRs, issues, docs, Slack messages, or arbitrary web pages that were
-  surfaced by a prior search or provided by the user. TRIGGER when: you
-  already have concrete URLs from a previous context_research /
-  context_search_* result and want the full body, not just the title and
-  URL; the user pasted one or more links and wants them summarized or
-  analyzed; you need to resolve a Jira/Linear/PR/Slack link directly.
-  DO NOT TRIGGER when: you need to search for content (use
-  context_research or the context_search_* family); the URL is local
-  (localhost, file://, private network) — those aren't reachable.
+  Fetches full content for known URLs with context_get_urls. Use when the
+  user provides links or prior search results return URLs to PRs, issues,
+  docs, or messages. Use search when no URL is known.
 ---
 
 # Unblocked Context Get URLs

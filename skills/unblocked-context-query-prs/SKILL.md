@@ -14,14 +14,14 @@ Structured PR retrieval. Calls `context_query_prs` with a natural-language query
 
 ## How to Invoke
 
-**`context_query_prs` has no MCP equivalent — it is CLI-only.** It does not appear in the MCP tool list regardless of availability. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+**`context_query_prs` is CLI-only** — it has no MCP equivalent, so check for the CLI with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
 unblocked context-query-prs --query "<your query>" [--projects repo-name another-repo] [--user-name "Alice Smith"]
 ```
 
-**MCP fallback** (only if CLI is confirmed unavailable): `context_query_prs` has no true MCP equivalent. `context_research` with `instruction: "Prefer PR results filtered by repository and author; deprioritize code, issues, and messages"` will return *ranked* results — not an enumeration. If the user's request depends on completeness ("list all…", "every PR…"), stop and surface the CLI requirement rather than silently dropping matches. Use the fallback only for conceptual queries that happen to be scoped to PRs.
+**MCP fallback** (only if CLI is confirmed unavailable): `context_query_prs` has no true MCP equivalent. `context_research` with `instruction: "Prefer PR results filtered by repository and author; enumerate rather than rank"` will return *ranked* results — not an enumeration. If the user's request depends on completeness ("list all…", "every PR…"), stop and surface the CLI requirement rather than silently dropping matches. Use the fallback only for conceptual queries that happen to be scoped to PRs.
 
 **If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with GitHub/GitLab CLI tools.
 

@@ -10,18 +10,18 @@ description: >
 
 Direct URL resolution. Calls `context_get_urls` with one or more URLs to return their full content — bypassing semantic search when the agent already knows exactly which documents it wants.
 
-**Sources:** any URL reachable through Unblocked's configured connectors (PRs, issues, docs, messages) and arbitrary public web pages.
+**Sources:** any URL matching a pattern from the org's configured connectors (PRs, issues, docs, messages, and public sites indexed through an External Websites connector). The live pattern list is in `unblocked context-get-urls --help`.
 
 ## How to Invoke
 
-**`context_get_urls` is exposed on both CLI and MCP** — unlike the `context_search_*` and `context_query_*` family, you will see it in your MCP tool list. Prefer the CLI when available for uniform behavior. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
+`context_get_urls` is exposed on both CLI and MCP. Prefer the CLI when available; check for it with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
 unblocked context-get-urls --urls "<url1>" "<url2>" ...
 ```
 
-**MCP fallback** (use if CLI is confirmed unavailable): call `context_get_urls` with `urls` as an array. Exposed on MCP in virtually all environments.
+**MCP fallback** (use if CLI is confirmed unavailable): call `context_get_urls` with `urls` as a single string, one URL per line. Set `verbose: "true"` to include PR diffs and issue comments. Exposed on MCP in virtually all environments.
 
 **If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with a generic web-fetch tool for private connector resources (Jira, Linear, Slack, private GitHub) — those require Unblocked's auth.
 
@@ -31,7 +31,7 @@ unblocked context-get-urls --urls "<url1>" "<url2>" ...
 - **Uniform content shape** — results come back in a consistent text form regardless of source type
 - **Batching** — pass multiple URLs in one call when you need to resolve a cluster of references
 
-If the URL is truly public (a blog post, public docs) and you don't need auth, a plain fetch also works — but this tool handles both cases.
+For a public page that no connector pattern covers, use a plain web fetch instead.
 
 ## When to Use This vs. a Search Tool
 
@@ -49,7 +49,8 @@ If the URL is truly public (a blog post, public docs) and you don't need auth, a
 
 | Parameter | Required | Description |
 |:---|:---|:---|
-| `urls` | Yes | One or more URLs to retrieve content from. CLI accepts multiple space-separated values: `--urls <url1> <url2>`. MCP expects an array. |
+| `urls` | Yes | One or more URLs to retrieve content from. CLI accepts multiple space-separated values: `--urls <url1> <url2>`. MCP expects one string with one URL per line. |
+| `verbose` | No (MCP only) | Set to `"true"` to include extra detail such as PR diffs and issue comments regardless of URL count. Not available on the CLI. |
 
 **Good inputs:**
 
@@ -59,7 +60,7 @@ If the URL is truly public (a blog post, public docs) and you don't need auth, a
 - GitHub issue: `https://github.com/acme/payments-service/issues/42`
 - Slack thread: `https://acme.slack.com/archives/C0123/p1712345678`
 - Confluence/Notion: direct page URLs
-- Public web pages
+- Public pages covered by an External Websites connector pattern
 
 **Bad inputs (will fail or return nothing useful):**
 
@@ -93,7 +94,7 @@ Keep batches reasonably sized (roughly 5–10 URLs); very large batches can time
 ## Interpreting Results
 
 - Content reflects the current state of the URL at resolution time — for PRs and issues this is the live state, not a snapshot
-- For PRs, you'll typically get the description and comments — not the diff; pair with Grep/Read or `gh pr diff` locally if you need the change
+- For PRs, you'll typically get the description and comments — not the diff. On MCP, pass `verbose: "true"` to include it; on the CLI, pair with Grep/Read or `gh pr diff` locally
 - For Jira/Linear, you'll get the issue body and comments — statuses may have moved since any earlier search
 - If a URL resolves to an empty or auth-gated page, the connector for that source may not be configured — tell the user rather than guessing
 

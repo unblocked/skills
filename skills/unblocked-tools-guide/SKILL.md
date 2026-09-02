@@ -8,13 +8,9 @@ description: >
 
 # Unblocked Tools Guide
 
-## Critical — Do Not Confuse MCP Surface With CLI Availability
+## MCP Surface vs. CLI Availability
 
-**The MCP server exposes only `context_research` and `context_get_urls` in most environments.** The fine-grained tools (`context_search_code`, `context_search_prs`, `context_search_issues`, `context_search_documentation`, `context_search_messages`, `context_query_prs`, `context_query_issues`) are **CLI-only** — they do not appear in your MCP tool list even when they are fully available on the machine.
-
-**Therefore:** not seeing `context_search_*` or `context_query_*` in your deferred/MCP tool list tells you **nothing** about whether they are available. You must check the CLI separately with `command -v unblocked`.
-
-Skipping this check and declaring the tools "unavailable" based on the MCP surface is the single most common failure mode for this skill family.
+The MCP server typically exposes only the broad tools (`context_research`, `context_get_urls`, `context_get_rules`). The fine-grained tools (`context_search_code`, `context_search_prs`, `context_search_issues`, `context_search_documentation`, `context_search_messages`, `context_query_prs`, `context_query_issues`) are CLI-only, so their absence from the MCP tool list says nothing about whether they are installed. Check the CLI separately with `command -v unblocked` before deciding a fine-grained tool is unavailable.
 
 ## Access Policy — CLI First, Then MCP, Then Stop
 
@@ -22,7 +18,7 @@ For every Unblocked call, follow this order:
 
 1. **Prefer the Unblocked CLI.** Check availability **once per session** with `command -v unblocked` (or `unblocked --help`). Cache the result — do not re-probe on every call. If present, invoke the matching CLI subcommand directly.
 2. **Fall back to MCP only if the CLI is confirmed unavailable or a CLI call fails.** Use the equivalent MCP tool (`context_research`, `context_get_urls`, etc.). On MCP-only, fine-grained tools are not exposed — fall back to `context_research` with a steering `instruction` (see routing table below).
-3. **If neither is available, stop and notify the user.** Do not substitute with unrelated tools (web search, Grep-only guessing, etc.). Tell the user:
+3. **If neither is available, stop and notify the user.** Do not substitute with unrelated tools (web search, Grep-only guessing, etc.) — the user asked for organizational context, and a substitute answer hides the fact that Unblocked is not set up. Tell the user:
 
    > Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry.
 
@@ -46,8 +42,6 @@ The CLI is preferred because it exposes the full set of fine-grained tools, hand
 - `context-research` and `context-search-*`: `--query <text>` (required), `--instruction <text>` (optional); `context-research` additionally accepts `--effort low|medium|high`.
 - `context-query-*`: `--query <text>` (required), `--projects <name...>` (optional, array), `--user-name <name>` (optional).
 - `context-get-urls`: `--urls <url...>` (required, array). No `--query`.
-
-If you're on MCP only and a fine-grained tool call fails with "tool not found", that's expected — fall back to `context_research` with an `instruction` that steers it toward the source type you want (see below).
 
 ## Routing and Fallbacks
 

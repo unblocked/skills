@@ -15,7 +15,7 @@ Documentation-only retrieval. Calls `context_search_documentation` with a natura
 
 ## How to Invoke
 
-**`context_search_documentation` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+**`context_search_documentation` is CLI-only** — it does not appear in the MCP tool list even when installed, so check for the CLI with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
@@ -34,10 +34,6 @@ Grep and Read search local files. Use this tool when:
 - **You need operational guidance** — runbooks, deployment procedures, and incident playbooks are typically documented, not coded
 - **You want doc-only results** — `context_research` returns everything (Slack, PRs, issues, code); this returns only documentation, so results stay focused when that's all you need
 - **You're looking for explained concepts** — architecture decisions, design rationale, and API contracts are often captured in docs rather than code comments
-
-## When to Use `context_research` Instead
-
-Use `context_research` when you need the full picture alongside docs — PR discussions, Slack threads, issue tracker context, or code history. This tool returns documentation only; broader context requires `context_research`.
 
 ## Input
 

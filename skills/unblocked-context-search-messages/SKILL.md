@@ -15,7 +15,7 @@ Messaging-only retrieval. Calls `context_search_messages` with a natural-languag
 
 ## How to Invoke
 
-**`context_search_messages` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+**`context_search_messages` is CLI-only** — it does not appear in the MCP tool list even when installed, so check for the CLI with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
@@ -34,10 +34,6 @@ Grep and Read search local files. Use this tool when:
 - **You need incident context** — outage war-rooms, incident threads, and post-mortems often live in Slack
 - **You want messaging-only results** — `context_research` returns everything (PRs, issues, docs, code); this returns only messages, so results stay focused when that's all you need
 - **You want to know who knows what** — conversations surface who has context on a topic, not just what was said
-
-## When to Use `context_research` Instead
-
-Use `context_research` when you need the full picture alongside messages — PR discussions, issue tracker context, docs, or code history. This tool returns messaging only; broader context requires `context_research`.
 
 ## Input
 

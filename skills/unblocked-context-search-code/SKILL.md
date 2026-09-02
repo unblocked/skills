@@ -15,7 +15,7 @@ Code-only retrieval across the current repo and other connected repos. Calls `co
 
 ## How to Invoke
 
-**`context_search_code` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+**`context_search_code` is CLI-only** — it does not appear in the MCP tool list even when installed, so check for the CLI with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
@@ -34,11 +34,7 @@ Grep and Read are fast for literal matches in the local workspace. Use this tool
 - **The query is conceptual** — "find all payment processors" or "how is retry logic implemented" won't match a grep pattern
 - **You want code-only results** — `context_research` returns everything (Slack, Jira, docs, PRs); this returns only code, so results stay focused when that's all you need
 
-If local Grep can find it, use that. This tool's value is reach (cross-repo) and semantics (concept-level matching).
-
-## When to Use `context_research` Instead
-
-Use `context_research` when you need the full picture alongside the code — PR discussions, team decisions, issue tracker context, Slack threads, architectural docs. This tool returns code only; organizational context requires `context_research`.
+This tool's value is reach (cross-repo) and semantics (concept-level matching).
 
 ## Input
 

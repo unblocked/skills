@@ -15,7 +15,7 @@ PR-only retrieval across connected repos. Calls `context_search_prs` with a natu
 
 ## How to Invoke
 
-**`context_search_prs` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
+**`context_search_prs` is CLI-only** — it does not appear in the MCP tool list even when installed, so check for the CLI with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
@@ -34,10 +34,6 @@ Grep and Read show you what the code does now. Use this tool when:
 - **You're tracing a change** — "what introduced this behavior" requires searching change history, not current state
 - **You want PR-only results** — `context_research` returns everything (Slack, Jira, docs, code); this returns only PRs, so results stay focused when that's all you need
 - **The PR might be in another repo** — cross-repo PR search surfaces decisions from services outside the local workspace
-
-## When to Use `context_research` Instead
-
-Use `context_research` when you need the full organizational picture alongside PRs — Slack threads, design docs, issue tracker context, architectural decisions from multiple sources. This tool returns PRs only; broader context requires `context_research`.
 
 ## Input
 

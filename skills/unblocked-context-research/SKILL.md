@@ -13,7 +13,7 @@ Unified retrieval for engineering context. Calls `context_research` with a natur
 
 ## How to Invoke
 
-**Do not infer CLI availability from the MCP tool list** — fine-grained tools are CLI-only, so the MCP surface tells you nothing. Run `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for full routing rules.
+Check for the CLI with `command -v unblocked` once per session and cache the result. See `unblocked-tools-guide` for routing rules.
 
 **CLI (preferred):**
 ```
@@ -35,14 +35,10 @@ Grep and Read show you **what the code does now**. This tool adds:
 - **What happened** (filtered activity — PRs merged, issues completed, message threads in a time range)
 - **What exists elsewhere** (code in other repos, services, or systems not in the local workspace)
 
-If your question is purely about current implementation and the code is local, Grep/Read is faster. If your question involves intent, history, conventions, activity across systems, or code outside the current repo, this tool surfaces context that isn't available locally.
+If your question is purely about current implementation and the code is local, Grep/Read is faster. If your question involves intent, history, conventions, activity across systems, or code outside the current repo, this tool surfaces context that isn't available locally. Call it at the start of planning, migration, refactor, or incident work, in the same tool block as your first local reads — recognizing a service, flag, or class name is not the same as knowing its current state or history.
 
 ## Gotchas
 
-- **Keyword queries return noise** — `auth` or `rate limiting` scatters results across too many entities. Write a full natural-language question with concrete identifiers: `How does AuthService.validateToken() handle expired JWTs?`
-- **Not mining identifiers from results before re-querying** — the first result contains stronger nouns (file paths, class names, PR numbers) than the original request. Extract them before forming follow-up queries.
-- **Treating returned code as current local state** — results reflect the default branch, not the local workspace. Always verify against local files before acting.
-- **Asking questions the code can answer directly** — if you only need the current implementation (not history or reasoning), use Grep/Glob/Read instead. The tool's value is organizational context, not code search.
 - **Confusing "completed" date semantics** — "completed" uses *resolved date* (issue trackers) or *merged status* (PRs), not created date. "Issues I completed last week" = resolved by me in that range.
 - **Using time filters for current status** — "what am I working on" = status filter (open/InProgress), no time range. Time filters are for activity windows ("last week", "since Monday").
 - **Not using "me" for self-references** — when the user says "I"/"my"/"me", include `me` in the query. Use actual names only for other people.
@@ -53,13 +49,7 @@ If your question is purely about current implementation and the code is local, G
 |:---|:---|:---|
 | `query` | Yes | What to search for — the topic, entities, and any hard filters (date range, author, status). Write a complete phrase, not bare keywords. |
 | `effort` | No | Search effort: `low` (default), `medium`, or `high`. Use `low` for targeted lookups anchored on one entity, URL, or file; `medium` for exploratory queries without a clear anchor; `high` for planning, architecture reviews, migrations, incident retros, and cross-system investigations. |
-| `include_content` | No | String. If `"true"`, return full content for each match. If omitted, return only title and URL. |
 | `instruction` | No | Relevance criteria that shape which results surface and in what order, without changing what is searched. E.g., "Prefer architecture decision records over API reference docs". |
-| `max_results` | No | String. Maximum number of documents to return. Defaults to the server's limit if omitted. |
-
-**`effort` selection:** `low` (default) for targeted lookups anchored on one entity, URL, or file. `medium` for exploratory queries without a clear anchor. `high` for planning, architecture, migrations, incident retros, and cross-system investigations — use whenever you're about to produce a plan or design.
-
-**`include_content` selection:** Use `"true"` when you need to read the actual content inline. Omit it for initial discovery passes where titles and URLs suffice — you can always follow up with `include_content: "true"` or resolve individual URLs.
 
 Write each query as a complete question or directive. Include the most concrete details you have:
 

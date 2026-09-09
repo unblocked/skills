@@ -6,14 +6,12 @@ This repository contains public connection documentation, [MCP Registry metadata
 
 ## Connect to hosted Unblocked MCP
 
-You need an Unblocked account with access to your team's workspace. Your team must connect its data sources to provide organizational context. See [account and team setup](https://docs.getunblocked.com/inviting-users) and [data source setup](https://docs.getunblocked.com/configuring-data-sources). If your team requires license approval, ask an admin for access.
+You need an Unblocked account with access to your team's workspace. To set up Unblocked, first [connect your source code](https://docs.getunblocked.com/connecting-source-code). Then [add data sources](https://docs.getunblocked.com/configuring-data-sources) such as documentation, issue trackers, and messaging platforms to give your agents context beyond the code. Follow the [MCP setup guide](https://docs.getunblocked.com/unblocked-mcp/mcp-overview) to connect your coding agent.
 
 1. Add a remote MCP server in a client that supports Streamable HTTP and OAuth.
 2. Set the server URL to `https://getunblocked.com/api/mcpsse`.
 3. Select Streamable HTTP, sometimes shown as HTTP in the client.
 4. Follow the client's OAuth prompt. Sign in to Unblocked and authorize the connection.
-
-The `mcpsse` path is historical. The endpoint uses Streamable HTTP. The OAuth connection does not require a static API token or a manually configured authorization header.
 
 See the [current remote connection instructions](https://docs.getunblocked.com/unblocked-mcp/install-other#remote-mcp) for client setup and authentication details.
 

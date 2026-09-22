@@ -62,6 +62,16 @@ claude plugin marketplace add unblocked/skills
 claude plugin install unblocked-skills
 ```
 
+### Devin plugin
+
+Install the plugin for your personal Devin scope:
+
+```bash
+devin plugins install unblocked/skills
+```
+
+To install it for an organization or enterprise, open Customize, select Add plugin, choose From repository, and enter `unblocked/skills`.
+
 ### Cursor plugin
 
 This repository is a single Cursor plugin. It installs all skills and configures the hosted Unblocked MCP server.
@@ -74,12 +84,6 @@ git clone https://github.com/unblocked/skills ~/.cursor/plugins/local/unblocked-
 ```
 
 Restart Cursor or run `Developer: Reload Window`. Open Customize and confirm that the Unblocked skills and MCP server are present. Cursor will start the Unblocked OAuth flow when the MCP server needs authentication.
-
-Run the repository check after changing plugin metadata or skills:
-
-```bash
-bun scripts/validate-cursor-plugin.mjs
-```
 
 ### Using the Skills CLI
 

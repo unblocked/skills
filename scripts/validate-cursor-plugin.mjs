@@ -35,7 +35,18 @@ function readFrontmatter(content) {
 async function validateSkills() {
   const skillsDirectory = path.join(repositoryRoot, "skills");
   const entries = await fs.readdir(skillsDirectory, { withFileTypes: true });
-  const skillDirectories = entries.filter((entry) => entry.isDirectory());
+  const skillDirectories = [];
+  for (const entry of entries) {
+    if (!entry.isDirectory()) {
+      continue;
+    }
+    try {
+      await fs.access(path.join(skillsDirectory, entry.name, "SKILL.md"));
+      skillDirectories.push(entry);
+    } catch {
+      continue;
+    }
+  }
 
   if (skillDirectories.length === 0) {
     errors.push("skills: no skill directories found");
@@ -43,13 +54,7 @@ async function validateSkills() {
 
   for (const entry of skillDirectories) {
     const relativePath = path.join("skills", entry.name, "SKILL.md");
-    let content;
-    try {
-      content = await fs.readFile(path.join(repositoryRoot, relativePath), "utf8");
-    } catch {
-      errors.push(`${relativePath}: file is missing`);
-      continue;
-    }
+    const content = await fs.readFile(path.join(repositoryRoot, relativePath), "utf8");
 
     const frontmatter = readFrontmatter(content);
     if (!frontmatter) {

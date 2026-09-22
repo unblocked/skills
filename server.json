@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.getunblocked/unblocked-mcp",
   "title": "Unblocked",
-  "description": "Give coding agents organizational context from code, docs, issues, and conversations.",
-  "version": "1.0.1",
+  "description": "Unblocked is the context layer for agentic software development.",
+  "version": "1.0.2",
   "websiteUrl": "https://getunblocked.com/unblocked-mcp/",
   "repository": {
     "url": "https://github.com/unblocked/skills",

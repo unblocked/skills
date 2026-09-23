@@ -21,6 +21,14 @@ import path from 'path';
 
 const SKILL_PATH = process.argv[2] ?? 'skills/unblock';
 
+// Reject absolute paths and any path that escapes the repository root via
+// traversal sequences (e.g. `../../etc`) before it is used in git commands.
+const normalizedSkillPath = path.normalize(SKILL_PATH);
+if (path.isAbsolute(normalizedSkillPath) || normalizedSkillPath.split(path.sep).includes('..')) {
+    console.error(`Refusing to use unsafe skill path: ${SKILL_PATH}`);
+    process.exit(1);
+}
+
 function git(args, opts = {}) {
     return execFileSync('git', args, { encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024, ...opts });
 }

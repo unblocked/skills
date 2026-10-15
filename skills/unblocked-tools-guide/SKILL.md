@@ -47,7 +47,7 @@ The CLI is preferred because it exposes the full set of fine-grained tools, hand
 - `context-research` and `context-search-*`: `--query <text>` (required), `--instruction <text>` (optional); `context-research` additionally accepts `--effort low|medium|high`.
 - `context-query-*`: `--query <text>` (required), `--projects <name...>` (optional, array), `--user-name <name>` (optional).
 - `context-get-urls`: `--urls <url...>` (required, array). No `--query`.
-- `context-repo-map`: `--repo-name <owner/repo>` (required); optional `--view overview|definitions|dependents`, `--files <p...>`, `--symbols <s...>`, `--languages <l...>`, `--max-files <n>`, `--token-budget <n>`, `--min-callers <n>`. No `--query`.
+- `context-repo-map`: `--repo-name <owner/repo>` (required); optional `--view overview|definitions|dependents|blast_radius`, `--files <p...>`, `--symbols <s...>`, `--languages <l...>`, `--max-files <n>`, `--token-budget <n>`, `--min-callers <n>`. No `--query`.
 
 If you're on MCP only and a fine-grained tool call fails with "tool not found", that's expected — fall back to `context_research` with an `instruction` that steers it toward the source type you want (see below).
 

@@ -19,7 +19,7 @@ Structural index of one repository. Calls `context_repo_map` to answer "where do
 
 **CLI (preferred):**
 ```
-unblocked context-repo-map --repo-name "<owner>/<repo>" [--view overview|definitions|dependents] [--files <p...>] [--symbols <s...>] [--languages <l...>] [--max-files <n>] [--token-budget <n>] [--min-callers <n>]
+unblocked context-repo-map --repo-name "<owner>/<repo>" [--view overview|definitions|dependents|blast_radius] [--files <p...>] [--symbols <s...>] [--languages <l...>] [--max-files <n>] [--token-budget <n>] [--min-callers <n>]
 ```
 
 **MCP fallback** (use if CLI is confirmed unavailable): call `context_repo_map` with `repo_name` and the same options in snake_case (`max_files`, `token_budget`, `min_callers`). `files`, `symbols`, and `languages` are arrays.
@@ -33,21 +33,22 @@ unblocked context-repo-map --repo-name "<owner>/<repo>" [--view overview|definit
 | `overview` (default) | none | Top files by structural importance (PageRank), each with its leading definitions and reference counts. |
 | `definitions` | exactly one of `files` or `symbols` | For `files`: the symbols each file defines, ranked by cross-file references. For `symbols`: each symbol's definition site (`path:line`, kind, signature) and how many files reference or import it. |
 | `dependents` | `files`, `symbols`, or both | The files that import or reference the targets, with sample locations. |
+| `blast_radius` | `files` only (a diff's changed paths) | The symbols each changed file defines, with files ranked by their widest cross-file fan-in, so the token budget drops the low-impact tail first. Changed paths the map cannot represent are listed under "Not represented". |
 
-Passing both `files` and `symbols` to `definitions`, or no target to `definitions` or `dependents`, returns an error message naming the fix.
+Passing both `files` and `symbols` to `definitions`, no target to `definitions` or `dependents`, or anything but `files` to `blast_radius` returns an error message naming the fix.
 
 ## Input
 
 | Parameter | Required | Description |
 |:---|:---|:---|
 | `repo_name` | Yes | Repository in `owner/repo` form. CLI: `--repo-name`. |
-| `view` | No | `overview` (default), `definitions`, or `dependents`. |
+| `view` | No | `overview` (default), `definitions`, `dependents`, or `blast_radius`. |
 | `files` | No | Repo-relative paths to target. `languages` is ignored when `files` is set. |
 | `symbols` | No | Symbol names (classes, functions, types) to target. |
 | `languages` | No | Case-insensitive allowlist, e.g. `kotlin`, `python`. Applies to `overview` and `symbols`. |
 | `max_files` | No | `overview` only. Default 30. CLI: `--max-files`. |
 | `token_budget` | No | Approximate cap on output size. Default 4096. Lowest-ranked entries are dropped to fit. CLI: `--token-budget`. |
-| `min_callers` | No | `definitions` with `files` only. Keep symbols referenced by at least this many other files. Default 0; use e.g. 3 for blast radius. CLI: `--min-callers`. |
+| `min_callers` | No | `definitions` with `files`, or `blast_radius`. Keep symbols referenced by at least this many other files. Default 0. CLI: `--min-callers`. |
 
 `dependents` (boolean) is deprecated. Use `view: dependents`.
 
@@ -56,7 +57,7 @@ Passing both `files` and `symbols` to `definitions`, or no target to `definition
 | Situation | Use |
 |:---|:---|
 | New to a repo and need the important files | `context-repo-map` (overview) |
-| Reviewing a diff and want its blast radius | `context-repo-map --view definitions --files <changed files> --min-callers 3` |
+| Reviewing a diff and want its blast radius | `context-repo-map --view blast_radius --files <changed files>` (add `--min-callers 3` to keep only widely referenced symbols) |
 | "Is `AuthService` used, and where is it defined?" | `context-repo-map --view definitions --symbols AuthService` |
 | "Who breaks if I change this file?" | `context-repo-map --view dependents --files <path>` |
 | "How is retry logic implemented?" (concept, not a name) | `context-search-code` |
@@ -66,6 +67,7 @@ Passing both `files` and `symbols` to `definitions`, or no target to `definition
 ## Interpreting Results
 
 - The header gives the commit the map was built at, total parsed files and definitions, and `TRUNCATED to fit token budget` when output was cut. Raise `token_budget` or narrow the target if truncated.
+- `blast_radius` ranks at most 30 changed files. Files past that cap are reported as dropped in the output and do not set `TRUNCATED`; raising `token_budget` will not bring them back.
 - **References are matched by name.** Identically named symbols share one count, so treat counts as an upper bound for common names.
 - **Counts stay within a language family**: Kotlin, Java, and Scala count together, as do TypeScript and JavaScript, and C and C++. A Python reference never counts toward a Kotlin symbol.
 - References are reported as counts and file lists, not individual call sites. Read the files to see the calls.

@@ -17,12 +17,13 @@ See the [current remote connection instructions](https://docs.getunblocked.com/u
 
 ## MCP tools
 
-The hosted MCP server exposes two tools:
+The hosted MCP server exposes three tools:
 
 | MCP tool | Purpose |
 |----------|---------|
 | [`context_research`](https://docs.getunblocked.com/unblocked-mcp/mcp-context-research) | Research across code, pull requests, docs, issues, and conversations. Returns an answer with source citations. |
 | [`context_get_urls`](https://docs.getunblocked.com/unblocked-mcp/mcp-context-get-urls) | Retrieve content from one or more known URLs. |
+| `context_get_rules` | Retrieve a repository's coding rules and conventions. |
 
 MCP tools, CLI commands, and skills are separate. The [Unblocked CLI](https://docs.getunblocked.com/unblocked-cli/cli-overview) provides commands such as `unblocked context-research` and `unblocked context-get-urls`. It also provides `context-search-*` and `context-query-*` commands. Those extra commands are not hosted MCP tools. The skills below guide agents through these workflows.
 
@@ -30,7 +31,7 @@ MCP tools, CLI commands, and skills are separate. The [Unblocked CLI](https://do
 
 | Skill | Description |
 |-------|-------------|
-| [unblocked-context-research](skills/unblocked-context-research/) | Research across connected sources using the CLI or MCP |
+| [unblocked-context-research](skills/unblocked-context-research/) | Research across connected sources using MCP or the CLI |
 | [unblocked-context-search-code](skills/unblocked-context-search-code/) | Search code across connected repositories using the CLI |
 | [unblocked-context-search-prs](skills/unblocked-context-search-prs/) | Search pull request descriptions and reviews using the CLI |
 | [unblocked-context-search-issues](skills/unblocked-context-search-issues/) | Search issue trackers using the CLI |
@@ -38,8 +39,9 @@ MCP tools, CLI commands, and skills are separate. The [Unblocked CLI](https://do
 | [unblocked-context-search-messages](skills/unblocked-context-search-messages/) | Search team conversations using the CLI |
 | [unblocked-context-query-issues](skills/unblocked-context-query-issues/) | Retrieve issues filtered by project and person using the CLI |
 | [unblocked-context-query-prs](skills/unblocked-context-query-prs/) | Retrieve pull requests filtered by repository and person using the CLI |
-| [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Retrieve URL content using the CLI or MCP |
-| [unblocked-tools-guide](skills/unblocked-tools-guide/) | Choose between CLI commands and MCP tools, and handle unavailable tools |
+| [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Retrieve URL content using MCP or the CLI |
+| [unblocked-context-get-rules](skills/unblocked-context-get-rules/) | Retrieve a repository's coding rules using MCP or the CLI |
+| [unblocked-tools-guide](skills/unblocked-tools-guide/) | Choose between CLI commands and MCP tools, run headless, and handle unavailable tools |
 
 ## Setup
 

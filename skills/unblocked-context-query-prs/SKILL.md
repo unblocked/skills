@@ -1,102 +1,14 @@
 ---
 name: unblocked-context-query-prs
-description: >
-  Returns complete filtered PR lists with context_query_prs. Use when the
-  request names a repository or person and asks for PRs by status or time.
-  Use context_search_prs for change rationale or relevance-ranked matching.
+description: "Use when listing PRs by repo, author, reviewer, status, or date, like 'my open PRs' or 'what merged last week'. Why a change was made: search-prs."
 ---
 
-# Unblocked Context Query — PRs
+Use this to get a filtered list of pull requests rather than a relevance ranking: what someone authored or is reviewing, what merged in a repo during a period, or which PRs are still open.
 
-Structured PR retrieval. Calls `context_query_prs` with a natural-language query scoped by `--projects` and/or `--user-name` filters — producing a filtered list rather than a ranked semantic match set.
+Run `unblocked context-query-prs --query "..." [--projects <name> ...] [--user-name "<person>"]`. Start the query with a list verb and include status and time window, for example "List PRs merged in the last 7 days". When the user means themselves, keep "me" in the query and omit --user-name; pass --user-name only for someone else. Pass the bare repo name to --projects (payments-service, not acme/payments-service); a repo named only in the query text is not used as a filter. It prints `{sources: [{title, url, content}]}` as JSON. This command exists only in the CLI, so it never appears in the MCP tool list; check for the CLI with `command -v unblocked`.
 
-**Sources:** GitHub, GitHub Enterprise, GitLab, GitLab Self-Managed, Bitbucket, Bitbucket Data Center, Azure DevOps.
+Without the CLI, call the context_research MCP tool with effort medium and instruction "List pull requests matching these filters; prefer enumeration over relevance". That returns ranked matches, not a complete list, so say the list may be incomplete. If neither the CLI nor the MCP tool exists, stop and tell the user Unblocked is not set up here and link https://docs.getunblocked.com/unblocked-mcp/mcp-overview.
 
-## How to Invoke
+Merged means completed; a request about what someone shipped is about merged PRs. A request about current work, like what I am reviewing, needs a status filter and no time range. An empty result can mean a wrong project name as easily as no matches, so check the name and status filter before reporting none. Results stop at about 50, so narrow the time range or status if you hit that.
 
-**`context_query_prs` has no MCP equivalent — it is CLI-only.** It does not appear in the MCP tool list regardless of availability. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
-
-**CLI (preferred):**
-```
-unblocked context-query-prs --query "<your query>" [--projects repo-name another-repo] [--user-name "Alice Smith"]
-```
-
-**MCP fallback** (only if CLI is confirmed unavailable): `context_query_prs` has no true MCP equivalent. `context_research` with `instruction: "Prefer PR results filtered by repository and author; deprioritize code, issues, and messages"` will return *ranked* results — not an enumeration. If the user's request depends on completeness ("list all…", "every PR…"), stop and surface the CLI requirement rather than silently dropping matches. Use the fallback only for conceptual queries that happen to be scoped to PRs.
-
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with GitHub/GitLab CLI tools.
-
-## When This Differs From `context-search-prs`
-
-Both operate on the same PR data, but they optimize for different questions:
-
-| Use case | Use |
-|:---|:---|
-| "What PR introduced the retry-with-backoff logic?" (conceptual) | `context-search-prs` |
-| "List merged PRs in payments-service last week" (filtered enumeration) | `context-query-prs` |
-| "Were there rejected approaches to JWT refresh?" (semantic match) | `context-search-prs` |
-| "What PRs is Alice waiting on review for?" (filtered activity) | `context-query-prs` |
-
-If you don't have a concrete repo or person to filter on, use `context-search-prs` — `context-query-prs` shines when the filters are precise.
-
-## Input
-
-| Parameter | Required | Description |
-|:---|:---|:---|
-| `query` | Yes | Structured natural-language query describing the PRs to retrieve. Include status (`open`, `merged`, `closed`, `draft`), time range, and any intent not covered by `projects`/`user-name`. |
-| `projects` | No | One or more repository names to scope the search. CLI accepts multiple values: `--projects payments-service web-client`. |
-| `user-name` | No | Name or username of a person referenced in the query (author, reviewer, or requester depending on query phrasing). |
-
-**Writing effective queries** — lead with a clear list directive and use the filters for scope:
-
-- Start with an enumeration verb: "List", "Show", "Find all", "Enumerate"
-- Include status explicitly when relevant: `open`, `merged`, `draft`, `closed`
-- Include time windows when relevant: `last week`, `since 2025-04-01`, `this sprint`
-- Use `me` in the query when the user says "I"/"my"; use the actual name via `--user-name` for other people
-
-| Instead of | Write |
-|:---|:---|
-| `PRs in payments` | `List open PRs in payments-service`, `--projects payments-service` |
-| `Alice's PRs` | `Show PRs authored by Alice that are open or in-review`, `--user-name "Alice Smith"` |
-| `what shipped` | `List PRs merged last week`, `--projects payments-service` |
-| `my reviews` | `List PRs where I am a requested reviewer` (with `me` implied) |
-
-## Self-Reference (`me`)
-
-When the user says "I"/"my"/"me", put `me` directly in the query — do not pass `--user-name me`. Use `--user-name` only for other people.
-
-**Right:**
-- `query: "List PRs I authored that are still open"`, `projects: ["payments-service"]`
-- `query: "Show PRs authored by Alice in the last 30 days"`, `user-name: "Alice Smith"`
-
-**Wrong:**
-- `user-name: "me"` — does not resolve correctly; keep `me` inside the query string
-
-## Splitting Queries
-
-Split distinct filter sets into separate `context-query-prs` calls. Run in parallel when independent.
-
-**One query, two filters (diluted):**
-> List merged PRs in payments-service this week and also open PRs in web-client waiting on review.
-
-**Two parallel queries (focused):**
-> Query 1: `query: "List PRs merged this week"`, `projects: ["payments-service"]`
->
-> Query 2: `query: "List open PRs waiting on review"`, `projects: ["web-client"]`
-
-## When to Skip
-
-- You need semantic matching or relevance ranking, not a filtered list — use `context-search-prs`
-- You need context from multiple sources (issues, messages, docs) alongside PRs — use `context-research`
-- You need the current code state, not PR history — use Grep/Glob/Read
-
-## Interpreting Results
-
-- Results reflect PR state at query time — status (open/merged/closed) may have changed; verify before acting
-- Mine PR numbers, repo names, author/reviewer names from results for follow-up queries
-- "Completed" / "shipped" semantics = *merged status*, not created; filter accordingly
-- "What am I reviewing" = open PRs with `me` as reviewer, no time range
-- If the list is empty, re-check repo names and status expectations before concluding nothing exists
-
-## Reference
-
-- `references/query-patterns.md` — query examples organized by use case
+It is done when the answer gives the filtered list with a link for each item, the filters used, and whether the list may be incomplete.

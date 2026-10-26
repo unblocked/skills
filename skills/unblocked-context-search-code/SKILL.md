@@ -1,98 +1,14 @@
 ---
 name: unblocked-context-search-code
-description: >
-  Semantically searches code across connected repositories with
-  context_search_code. Use when local Grep/Glob/Read cannot find an
-  implementation, usage, or cross-repo pattern. Use context_research when
-  history or team context is also needed.
+description: "Use when Grep can't find a class, function, or pattern because it may live in another connected repo, or you need search by concept. History: research."
 ---
 
-# Unblocked Context Search — Code
+Use this for semantic code search across every repo connected to Unblocked: finding where something is implemented when it is not in the local checkout, how other services use an API, or code that matches a concept rather than a string. Code in the local workspace is faster to find with Grep and Read.
 
-Code-only retrieval across the current repo and other connected repos. Calls `context_search_code` with a natural-language query to semantically search code — finding implementations, usages, and patterns that Grep can't reach because the code lives in another repo or the query is conceptual rather than literal.
+Run `unblocked context-search-code --query "..." [--instruction "..."]`. Write the query as a full question with the concrete names you have, and use instruction to say what to prefer. It prints `{sources: [{title, url, content}]}` as JSON. This search exists only in the CLI, so it never appears in the MCP tool list; check for the CLI with `command -v unblocked`.
 
-**Sources:** GitHub, GitHub Enterprise, GitLab, GitLab Self-Managed, Bitbucket, Bitbucket Data Center, Azure DevOps.
+Without the CLI, call the context_research MCP tool with effort medium and instruction "Prefer code and implementation results; deprioritize docs, issues, and messages". If neither the CLI nor the MCP tool exists, stop and tell the user Unblocked is not set up here and link https://docs.getunblocked.com/unblocked-mcp/mcp-overview.
 
-## How to Invoke
+Results come from each repo's default branch as last indexed, not your working tree. Quote the repo and path for every snippet you rely on, and read the local file before changing code that also exists here.
 
-**`context_search_code` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
-
-**CLI (preferred):**
-```
-unblocked context-search-code --query "<your query>" [--instruction "<instruction>"]
-```
-
-**MCP fallback** (only if CLI is confirmed unavailable): fall back to `context_research` with `instruction: "Prefer code and implementation results; deprioritize docs, issues, and messages"`.
-
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with other code-search tools.
-
-## When This Adds Value Over Grep/Read
-
-Grep and Read are fast for literal matches in the local workspace. Use this tool when:
-
-- **The code might live elsewhere** — a referenced class, service, or utility may be in a connected repo that isn't in the local workspace
-- **The query is conceptual** — "find all payment processors" or "how is retry logic implemented" won't match a grep pattern
-- **You want code-only results** — `context_research` returns everything (Slack, Jira, docs, PRs); this returns only code, so results stay focused when that's all you need
-
-If local Grep can find it, use that. This tool's value is reach (cross-repo) and semantics (concept-level matching).
-
-## When to Use `context_research` Instead
-
-Use `context_research` when you need the full picture alongside the code — PR discussions, team decisions, issue tracker context, Slack threads, architectural docs. This tool returns code only; organizational context requires `context_research`.
-
-## Input
-
-| Parameter | Required | Description |
-|:---|:---|:---|
-| `query` | Yes | What to find — write a complete phrase with concrete identifiers, not bare keywords. |
-| `instruction` | No | Fine-grained control over which results surface: preferred repos, file types, or code patterns to prioritize or deprioritize. |
-
-**Writing effective queries** — include the most concrete identifiers you have:
-
-- Class or method names (`PaymentProcessor.charge()`, `AuthService`)
-- File paths or module names (`billing-service/src/webhooks`, `shared/utils/retry`)
-- Repo names when you know them (`payments-service`, `web-client`)
-- Conceptual descriptions when you don't (`the rate limiting middleware in the API gateway`)
-
-Write a complete question or directive, not a keyword fragment:
-
-| Instead of | Write |
-|:---|:---|
-| `retry logic` | `Where is retry-with-backoff implemented across connected repos?` |
-| `auth middleware` | `Find the authentication middleware that validates JWTs in the API gateway.` |
-| `PaymentProcessor` | `How is PaymentProcessor.charge() implemented, and which services call it?` |
-| `pagination` | `How do connected repos implement cursor-based pagination in REST APIs?` |
-
-**`instruction` examples:**
-- `"Prefer interface definitions and entry points over test files"`
-- `"Focus results on the billing-service and payments-service repos"`
-- `"Deprioritize generated or vendor code"`
-
-## Splitting Queries
-
-Split distinct unknowns into separate `context_search_code` calls rather than cramming everything into one query. Run them in parallel when the unknowns are independent.
-
-**One query, two unknowns (diluted results):**
-> Find the rate limiting middleware and also how authentication tokens are validated.
-
-**Two parallel queries (focused results):**
-> Query 1: Where is the rate limiting middleware implemented in the API gateway?
->
-> Query 2: How does the authentication service validate JWT tokens?
-
-## When to Skip
-
-- Local Grep/Glob/Read finds what you need — no reason to reach for this tool
-- You also need PR history, team discussions, issue context, or docs — use `context_research` instead, which covers all sources in one call
-- You already know the exact file and line — direct file reads are faster
-
-## Interpreting Results
-
-- Returned code reflects the default branch of each repo, not your local workspace state — verify against local files before acting on the result
-- Mine concrete identifiers (file paths, class names, module names, repo names) from results and use them in follow-up queries for precision
-- If results are thin, re-query with a more specific identifier you extracted from the first pass
-- Cross-reference key claims against the actual source file before driving implementation decisions
-
-## Reference
-
-- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instruction` patterns
+It is done when the answer cites the results it relies on, or says what was searched and found nothing.

@@ -1,78 +1,22 @@
 ---
 name: unblocked-tools-guide
-description: >
-  Explains Unblocked CLI and MCP availability, tool selection, and fallbacks.
-  Use when a tool is missing, a CLI or MCP call fails, or the correct
-  Unblocked tool is unclear.
+description: "Use when an Unblocked tool seems missing, a call fails, you need to run Unblocked headless, or you're unsure which Unblocked tool fits a question."
 ---
 
-# Unblocked Tools Guide
+Unblocked reaches agents two ways. The MCP server exposes context_research, context_get_urls, and context_get_rules; its tool names may carry a client prefix such as mcp__unblocked__. The `unblocked` CLI has those three plus source-scoped searches and filtered lists that MCP does not expose, so a short MCP tool list says nothing about the CLI. Check for the CLI once with `command -v unblocked`.
 
-## Critical — Do Not Confuse MCP Surface With CLI Availability
-
-**The MCP server exposes only `context_research` and `context_get_urls` in most environments.** The fine-grained tools (`context_search_code`, `context_search_prs`, `context_search_issues`, `context_search_documentation`, `context_search_messages`, `context_query_prs`, `context_query_issues`) are **CLI-only** — they do not appear in your MCP tool list even when they are fully available on the machine.
-
-**Therefore:** not seeing `context_search_*` or `context_query_*` in your deferred/MCP tool list tells you **nothing** about whether they are available. You must check the CLI separately with `command -v unblocked`.
-
-Skipping this check and declaring the tools "unavailable" based on the MCP surface is the single most common failure mode for this skill family.
-
-## Access Policy — CLI First, Then MCP, Then Stop
-
-For every Unblocked call, follow this order:
-
-1. **Prefer the Unblocked CLI.** Check availability **once per session** with `command -v unblocked` (or `unblocked --help`). Cache the result — do not re-probe on every call. If present, invoke the matching CLI subcommand directly.
-2. **Fall back to MCP only if the CLI is confirmed unavailable or a CLI call fails.** Use the equivalent MCP tool (`context_research`, `context_get_urls`, etc.). On MCP-only, fine-grained tools are not exposed — fall back to `context_research` with a steering `instruction` (see routing table below).
-3. **If neither is available, stop and notify the user.** Do not substitute with unrelated tools (web search, Grep-only guessing, etc.). Tell the user:
-
-   > Unblocked is not available in this environment. See the setup docs at https://docs.getunblocked.com/unblocked-mcp/mcp-overview to install the CLI or configure the Unblocked MCP server, then retry.
-
-The CLI is preferred because it exposes the full set of fine-grained tools, handles auth locally, and is more robust than MCP in most environments.
-
-## CLI ↔ MCP Tool Mapping
-
-| Purpose | CLI subcommand | MCP tool | CLI? | MCP? |
-|:---|:---|:---|:---:|:---:|
-| Broad search across all sources | `unblocked context-research` | `context_research` | yes | yes |
-| Resolve URL content | `unblocked context-get-urls` | `context_get_urls` | yes | yes |
-| Code-only search | `unblocked context-search-code` | `context_search_code` | yes | no |
-| PR descriptions and review discussions | `unblocked context-search-prs` | `context_search_prs` | yes | no |
-| Issue tracker results | `unblocked context-search-issues` | `context_search_issues` | yes | no |
-| Documentation (wikis, runbooks, ADRs) | `unblocked context-search-documentation` | `context_search_documentation` | yes | no |
-| Messaging (Slack, Teams) | `unblocked context-search-messages` | `context_search_messages` | yes | no |
-| Structured issue queries | `unblocked context-query-issues` | — | yes | no |
-| Structured PR queries | `unblocked context-query-prs` | — | yes | no |
-
-**Common flags (CLI):**
-- `context-research` and `context-search-*`: `--query <text>` (required), `--instruction <text>` (optional); `context-research` additionally accepts `--effort low|medium|high`.
-- `context-query-*`: `--query <text>` (required), `--projects <name...>` (optional, array), `--user-name <name>` (optional).
-- `context-get-urls`: `--urls <url...>` (required, array). No `--query`.
-
-If you're on MCP only and a fine-grained tool call fails with "tool not found", that's expected — fall back to `context_research` with an `instruction` that steers it toward the source type you want (see below).
-
-## Routing and Fallbacks
-
-Use the preferred tool when available via the CLI. If the CLI is present but a fine-grained subcommand errors, or you're on MCP-only and the fine-grained tool isn't exposed, fall back to `context_research` and steer it with the `--instruction` / `instruction` parameter:
-
-| What you need | Preferred tool | `context_research` fallback instruction |
+| Need | MCP tool | CLI command |
 |:---|:---|:---|
-| Full picture across all sources | `context_research` | — |
-| Code (semantic, cross-repo) | `context_search_code` | `"Prefer code and implementation results; deprioritize docs, issues, and messages"` |
-| PR history and decision reasoning | `context_search_prs` | `"Prefer PR descriptions and review discussions; deprioritize other sources"` |
-| Issue tracker (bugs, tasks, epics) | `context_search_issues` | `"Prefer issue tracker results; deprioritize code and messages"` |
-| Docs (wikis, runbooks, ADRs) | `context_search_documentation` | `"Prefer documentation, wikis, and runbooks; deprioritize code and messages"` |
-| Team chat (Slack, Teams) | `context_search_messages` | `"Prefer Slack threads and team conversations; deprioritize code and docs"` |
-| Filtered issue enumeration (by project/person) | `context_query_issues` | `"Prefer issue tracker results filtered by project and assignee; enumerate rather than rank"` |
-| Filtered PR enumeration (by repo/person) | `context_query_prs` | `"Prefer PR results filtered by repository and author; enumerate rather than rank"` |
-| Resolve a known URL to full content | `context_get_urls` | — (this tool is available on MCP; no fallback needed) |
-| Current local code | Grep / Glob / Read | — |
+| Answer a question from all sources | context_research | `unblocked context-research --query "..." --effort medium` |
+| Read known links | context_get_urls | `unblocked context-get-urls --urls <url> ...` |
+| A repo's coding rules | context_get_rules | `unblocked context-get-rules --repo-name owner/repo` |
+| Search one source: code, prs, issues, documentation, messages | none | `unblocked context-search-<source> --query "..."` |
+| Filtered list of PRs or issues | none | `unblocked context-query-prs` or `context-query-issues --query "..."` |
 
-## Search vs. Query — Which to Use
+When a CLI-only search is unavailable, call context_research with an instruction naming the source to prefer. For a complete filtered list without the CLI, say the ranked results may be incomplete. Use effort medium or higher whenever you need an answer; low returns sources with no summary.
 
-The tool family has two shapes for the same sources:
+The CLI prints JSON on stdout: `{sources: [{title, url, content}]}`, plus a `summary` from context-research. Failures print `{error, message}` and exit 1; a bad flag prints usage and exits 1. For CI and other headless runs, set `UNBLOCKED_API_TOKEN` or `UNBLOCKED_API_TOKEN_FILE`; interactively, `unblocked auth` logs in through the browser.
 
-- **`context_search_*`** — semantic relevance matching. Use when the question is conceptual ("is there an issue about X?", "what PR introduced Y?").
-- **`context_query_*`** — structured, filtered enumeration. Use when you have precise filters (project key, repo, person) and want a definitive list ("open bugs in PAY assigned to Alice", "merged PRs last week in payments-service").
+An auth error means the user needs to log in again. A not-found error covers both a missing resource and one the user cannot access. If neither the MCP tools nor the CLI exist, stop and tell the user Unblocked is not set up here and link https://docs.getunblocked.com/unblocked-mcp/mcp-overview; answering from other sources would hide that.
 
-If you don't have a concrete project/repo/person anchor, reach for `context_search_*`. If you do, `context_query_*` gives cleaner, more deterministic results.
-
-For detailed guidance on any tool, see the corresponding skill: `unblocked-context-research`, `unblocked-context-search-code`, `unblocked-context-search-prs`, `unblocked-context-search-issues`, `unblocked-context-search-documentation`, `unblocked-context-search-messages`, `unblocked-context-query-issues`, `unblocked-context-query-prs`, or `unblocked-context-get-urls`.
+It is done when the right tool has been called successfully, or the user knows exactly what to set up.

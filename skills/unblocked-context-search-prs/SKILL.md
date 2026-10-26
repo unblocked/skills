@@ -1,96 +1,14 @@
 ---
 name: unblocked-context-search-prs
-description: >
-  Searches PR descriptions and reviews with context_search_prs. Use for
-  rationale, rejected approaches, bug archaeology, or the PR that introduced
-  a behavior. Use context_query_prs for filtered lists and context_research
-  for mixed sources.
+description: "Use when asking which PR introduced a behavior, why a change was made, or what was tried and rejected. PRs only. Lists by repo or author: query-prs."
 ---
 
-# Unblocked Context Search — PRs
+Use this to search pull request descriptions and review threads across connected repos when you need the reasoning behind a change: which PR introduced a behavior, what tradeoffs reviewers raised, and which approaches were rejected. When you also need chat, docs, or issues, use context_research instead.
 
-PR-only retrieval across connected repos. Calls `context_search_prs` with a natural-language query to semantically search PR descriptions and review discussions — surfacing the WHY behind code changes that Grep can't tell you.
+Run `unblocked context-search-prs --query "..." [--instruction "..."]`. Write the query as a full question with the concrete names you have, and use instruction to say what to prefer. It prints `{sources: [{title, url, content}]}` as JSON. This search exists only in the CLI, so it never appears in the MCP tool list; check for the CLI with `command -v unblocked`.
 
-**Sources:** GitHub, GitHub Enterprise, GitLab, GitLab Self-Managed, Bitbucket, Bitbucket Data Center, Azure DevOps.
+Without the CLI, call the context_research MCP tool with effort medium and instruction "Prefer PR descriptions and review discussions; deprioritize other sources". If neither the CLI nor the MCP tool exists, stop and tell the user Unblocked is not set up here and link https://docs.getunblocked.com/unblocked-mcp/mcp-overview.
 
-## How to Invoke
+A PR shows intent at the time it merged and the code may have moved on, so check current files before acting. Open the strongest PRs with context_get_urls (verbose "true" adds the diff), and use git log or blame locally to tie a PR to the lines in question.
 
-**`context_search_prs` is CLI-only in most environments** — it does not appear in the MCP tool list even when fully available. Run `command -v unblocked` once per session and cache the result. Do not conclude the tool is unavailable from the MCP surface alone. See `unblocked-tools-guide` for full routing rules.
-
-**CLI (preferred):**
-```
-unblocked context-search-prs --query "<your query>" [--instruction "<instruction>"]
-```
-
-**MCP fallback** (only if CLI is confirmed unavailable): fall back to `context_research` with `instruction: "Prefer PR descriptions and review discussions; deprioritize other sources"`.
-
-**If neither is available:** stop and tell the user Unblocked is not configured in this environment (see `unblocked-tools-guide` for the full message). Do not substitute with other PR-search tools.
-
-## When This Adds Value Over Grep/Read
-
-Grep and Read show you what the code does now. Use this tool when:
-
-- **You need the WHY** — PR descriptions and review threads contain the reasoning, constraints, and tradeoffs that don't appear in code
-- **You're tracing a change** — "what introduced this behavior" requires searching change history, not current state
-- **You want PR-only results** — `context_research` returns everything (Slack, Jira, docs, code); this returns only PRs, so results stay focused when that's all you need
-- **The PR might be in another repo** — cross-repo PR search surfaces decisions from services outside the local workspace
-
-## When to Use `context_research` Instead
-
-Use `context_research` when you need the full organizational picture alongside PRs — Slack threads, design docs, issue tracker context, architectural decisions from multiple sources. This tool returns PRs only; broader context requires `context_research`.
-
-## Input
-
-| Parameter | Required | Description |
-|:---|:---|:---|
-| `query` | Yes | What to find — write a complete question with concrete identifiers, not bare keywords. |
-| `instruction` | No | Fine-grained control over which results surface: preferred repos, date ranges, or PR attributes to prioritize or deprioritize. |
-
-**Writing effective queries** — include the most concrete identifiers you have:
-
-- Class, method, or module names (`PaymentProcessor.charge()`, `auth-middleware`)
-- File paths or service names (`billing-service/src/webhooks`, `order-service`)
-- Feature or decision names (`JWT token refresh`, `gRPC migration`, `retry-with-backoff`)
-- Repo names when you know them (`payments-service`, `web-client`)
-
-Write a complete question or directive, not a keyword fragment:
-
-| Instead of | Write |
-|:---|:---|
-| `retry logic` | `What PR introduced the retry-with-backoff logic in order-service?` |
-| `auth refactor` | `What was the reasoning behind switching from session cookies to JWT tokens?` |
-| `rate limiting` | `What PR added rate limiting to the API gateway and what approach was chosen?` |
-| `pagination` | `Were there any rejected approaches to cursor-based pagination in the REST API?` |
-
-**`instruction` examples:**
-- `"Focus results on billing-service and payments-service repos"`
-- `"Prefer merged PRs; deprioritize draft or abandoned PRs"`
-- `"Focus on PRs from the last 6 months"`
-
-## Splitting Queries
-
-Split distinct unknowns into separate `context_search_prs` calls rather than cramming everything into one query. Run them in parallel when the unknowns are independent.
-
-**One query, two unknowns (diluted results):**
-> Find the PR that introduced rate limiting and also why we moved to gRPC.
-
-**Two parallel queries (focused results):**
-> Query 1: What PR introduced rate limiting to the API gateway?
->
-> Query 2: What was the reasoning behind moving from REST to gRPC for inter-service communication?
-
-## When to Skip
-
-- You need the current code state, not history — use Grep/Glob/Read
-- You also need Slack threads, issues, or docs — use `context_research` instead
-
-## Interpreting Results
-
-- Results reflect merged and open PRs at query time — verify code claims against local files before acting
-- Mine concrete identifiers (PR numbers, file paths, author names, repo names) from results and use them in follow-up queries
-- PR descriptions capture intent at the time of writing; the code may have diverged since — cross-reference against current state
-- If results are thin, re-query with a more specific identifier extracted from the first pass
-
-## Reference
-
-- `references/query-patterns.md` — query examples organized by use case, with good/bad comparisons and `instruction` patterns
+It is done when the answer cites the results it relies on, or says what was searched and found nothing.

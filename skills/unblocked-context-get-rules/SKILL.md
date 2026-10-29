@@ -1,6 +1,6 @@
 ---
 name: unblocked-context-get-rules
-description: "Use once per task before writing, refactoring, or reviewing code in a repo, or when asked for its conventions. Not for reading, explaining, or debugging code, or for questions about the open file. Why a rule exists: research."
+description: "Only when you are about to write or propose code changes, or review a diff or pull request, in a repo: fetch its coding rules once per task, or when asked which rules apply to a change. Never for finding, searching, reading, explaining, or debugging code. Why a rule exists: research."
 ---
 
 Call the context_get_rules MCP tool to get the coding rules Unblocked extracted from a repo's convention files (AGENTS.md, CLAUDE.md, .cursorrules, CONTRIBUTING.md, and nested copies). Call it once, before your first edit or review comment in a task, and reuse the result for the rest of the task. Skip it when the task only reads or explains code.

@@ -40,7 +40,6 @@ MCP tools, CLI commands, and skills are separate. The [Unblocked CLI](https://do
 | [unblocked-context-query-issues](skills/unblocked-context-query-issues/) | Retrieve issues filtered by project and person using the CLI |
 | [unblocked-context-query-prs](skills/unblocked-context-query-prs/) | Retrieve pull requests filtered by repository and person using the CLI |
 | [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Retrieve URL content using MCP or the CLI |
-| [unblocked-context-get-rules](skills/unblocked-context-get-rules/) | Retrieve a repository's coding rules using MCP or the CLI |
 | [unblocked-tools-guide](skills/unblocked-tools-guide/) | Choose between CLI commands and MCP tools, run headless, and handle unavailable tools |
 
 ## Setup

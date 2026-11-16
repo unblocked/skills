@@ -41,6 +41,7 @@ MCP tools, CLI commands, and skills are separate. The [Unblocked CLI](https://do
 | [unblocked-context-query-prs](skills/unblocked-context-query-prs/) | Retrieve pull requests filtered by repository and person using the CLI |
 | [unblocked-context-get-urls](skills/unblocked-context-get-urls/) | Retrieve URL content using MCP or the CLI |
 | [unblocked-tools-guide](skills/unblocked-tools-guide/) | Choose between CLI commands and MCP tools, run headless, and handle unavailable tools |
+| [unblocked-first-pr](skills/unblocked-first-pr/) | Find a task with Unblocked, plan it with team context, and open a pull request. Runs only when asked for by name |
 
 ## Setup
 
